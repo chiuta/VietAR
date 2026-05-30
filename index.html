@@ -294,7 +294,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v12 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v13 · 2026-05-31</span>
   </footer>
 </div>
 
@@ -490,26 +490,29 @@ const getAst=()=>loadPipe('audio-classification',AST.model,AST.dt);
 
 /* ===== CLIP cu amprente precalculate ===== */
 const CLIP_ID='Xenova/clip-vit-base-patch16';
-let clipTok=null,clipText=null,clipProc=null,clipVis=null,clipReady=false;
+let clipTok=null,clipText=null,clipProc=null,clipVis=null,clipReady=false,clipPromise=null;
 const clipTextCache={};
-async function ensureClip(){
-  if(clipReady)return;
-  const device=('gpu' in navigator)?'webgpu':'wasm';
-  const chain=device==='webgpu'?['fp16','fp32']:['q8','fp32'];
-  setStatus(`Prima rulare: descarc modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');showProgress(3);
-  if(!clipTok)clipTok=await AutoTokenizer.from_pretrained(CLIP_ID);
-  if(!clipProc)clipProc=await AutoProcessor.from_pretrained(CLIP_ID);
-  const pc=x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const v=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc CLIP… ${v}%${mb}`,'loading');showProgress(v);}};
-  let err;
-  for(const dtype of chain){try{
-    clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype,progress_callback:pc});
-    clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype,progress_callback:pc});
-    err=null;break;
-  }catch(e){err=e;console.warn('CLIP dtype',dtype,'eșuat',e.message);}}
-  if(err)throw err;
-  clipReady=true;showProgress(null);
-  // warm-up: precompilează shaderele GPU pe un cadru minuscul, ca prima detecție reală să fie rapidă
-  try{const c=document.createElement('canvas');c.width=c.height=224;const x=c.getContext('2d');x.fillStyle='#888';x.fillRect(0,0,224,224);await clipImageEmbed(c.toDataURL('image/jpeg',0.5));}catch(e){console.warn('warmup',e);}
+function ensureClip(){
+  if(clipReady)return Promise.resolve();
+  if(clipPromise)return clipPromise; // încărcare deja în curs → refolosește aceeași promisiune
+  clipPromise=(async()=>{
+    const device=('gpu' in navigator)?'webgpu':'wasm';
+    const chain=device==='webgpu'?['fp16','fp32']:['q8','fp32'];
+    setStatus(`Prima rulare: descarc modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');showProgress(3);
+    if(!clipTok)clipTok=await AutoTokenizer.from_pretrained(CLIP_ID);
+    if(!clipProc)clipProc=await AutoProcessor.from_pretrained(CLIP_ID);
+    const pc=x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const v=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc CLIP… ${v}%${mb}`,'loading');showProgress(v);}};
+    let err;
+    for(const dtype of chain){try{
+      clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype,progress_callback:pc});
+      clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype,progress_callback:pc});
+      err=null;break;
+    }catch(e){err=e;console.warn('CLIP dtype',dtype,'eșuat',e.message);}}
+    if(err){clipPromise=null;throw err;}
+    clipReady=true;showProgress(null);
+    try{const c=document.createElement('canvas');c.width=c.height=224;const x=c.getContext('2d');x.fillStyle='#888';x.fillRect(0,0,224,224);await clipImageEmbed(c.toDataURL('image/jpeg',0.5));}catch(e){console.warn('warmup',e);}
+  })();
+  return clipPromise;
 }
 function l2norm(a,off,len){let s=0;for(let i=0;i<len;i++){const v=a[off+i];s+=v*v;}s=Math.sqrt(s)||1;for(let i=0;i<len;i++)a[off+i]/=s;}
 async function clipTextMatrix(key,labels){
@@ -578,17 +581,18 @@ function renderRanked(items,note,leadFiltered){
   requestAnimationFrame(()=>results.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
   wireResultActions();
 }
+function esc(v){return (v==null?'':v+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function renderOnline(d){
   const conf=Number(d.incredere)||0;
   lastResult={ro:d.nume_ro,sci:d.nume_stiintific,kind:d.categorie,score:conf/100};
-  let html=`<div class="hero"><div class="ro">${d.nume_ro||'Nedeterminat'}</div>${d.nume_stiintific?`<div class="sci">${d.nume_stiintific}</div>`:''}<div class="meta"><span class="kind">${d.categorie||'—'}</span><span class="conf">${conf?conf+'% încredere':''}</span></div>${d.descriere?`<div class="desc">${d.descriere}</div>`:''}</div>`;
+  let html=`<div class="hero"><div class="ro">${esc(d.nume_ro)||'Nedeterminat'}</div>${d.nume_stiintific?`<div class="sci">${esc(d.nume_stiintific)}</div>`:''}<div class="meta"><span class="kind">${esc(d.categorie)||'—'}</span><span class="conf">${conf?conf+'% încredere':''}</span></div>${d.descriere?`<div class="desc">${esc(d.descriere)}</div>`:''}</div>`;
   if(/ciup|toxic|plant|flor/i.test(d.categorie||'')||TOXIC.test(d.nume_ro||''))html+=dangerBanner();
-  if(Array.isArray(d.alternative)&&d.alternative.length){html+=`<p class="res-note">Alte posibilități</p>`;d.alternative.slice(0,4).forEach((a,i)=>{const p=Number(a.incredere)||0;html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${a.nume_ro||'—'}</div>${a.nume_stiintific?`<div class="en">${a.nume_stiintific}</div>`:''}</div><div class="score">${p?p+'%':''}</div></div><div class="bar"><i data-w="${p}"></i></div></div>`;});}
+  if(Array.isArray(d.alternative)&&d.alternative.length){html+=`<p class="res-note">Alte posibilități</p>`;d.alternative.slice(0,4).forEach((a,i)=>{const p=Number(a.incredere)||0;html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${esc(a.nume_ro)||'—'}</div>${a.nume_stiintific?`<div class="en">${esc(a.nume_stiintific)}</div>`:''}</div><div class="score">${p?p+'%':''}</div></div><div class="bar"><i data-w="${p}"></i></div></div>`;});}
   html+=resultActions();
   results.innerHTML=html;
   requestAnimationFrame(()=>results.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
   wireResultActions();
-  if(d.autenticitate)appendAuthCard({verdict:d.autenticitate.verdict,motiv:d.autenticitate.motiv,src:'Claude (AI)'});
+  if(d.autenticitate)appendAuthCard({verdict:esc(d.autenticitate.verdict),motiv:esc(d.autenticitate.motiv),src:'Claude (AI)'});
 }
 function resultActions(){return `<div class="actbar"><button id="saveObs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Salvează în jurnal</button><button id="toINat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>iNaturalist</button></div>`;}
 function wireResultActions(){const s=$('saveObs'),n=$('toINat');if(s)s.onclick=()=>saveObservation();if(n)n.onclick=()=>window.open('https://www.inaturalist.org/observations/upload','_blank','noopener');}
@@ -617,16 +621,16 @@ async function doOnline(dataURL,cfg){
   try{
     let text;
     if(cfg.provider==='openai'){
-      const r=await fetch(cfg.endpoint||'https://api.openai.com/v1/chat/completions',{method:'POST',signal:ctrl.signal,headers:{'Authorization':'Bearer '+cfg.key,'content-type':'application/json'},body:JSON.stringify({model:cfg.model||'gpt-4o-mini',max_tokens:800,messages:[{role:'user',content:[{type:'text',text:PROMPT},{type:'image_url',image_url:{url:dataURL}}]}]})});
+      const r=await fetch(cfg.endpoint||'https://api.openai.com/v1/chat/completions',{method:'POST',signal:ctrl.signal,referrerPolicy:'no-referrer',headers:{'Authorization':'Bearer '+cfg.key,'content-type':'application/json'},body:JSON.stringify({model:cfg.model||'gpt-4o-mini',max_tokens:800,messages:[{role:'user',content:[{type:'text',text:PROMPT},{type:'image_url',image_url:{url:dataURL}}]}]})});
       const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);text=j.choices[0].message.content;
     }else{
-      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:ctrl.signal,headers:{'x-api-key':cfg.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model:cfg.model||'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:PROMPT}]}]})});
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:ctrl.signal,referrerPolicy:'no-referrer',headers:{'x-api-key':cfg.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model:cfg.model||'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:PROMPT}]}]})});
       const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);text=j.content.filter(c=>c.type==='text').map(c=>c.text).join('');
     }
     clearTimeout(timer);
     renderOnline(parseJSON(text));setStatus('Gata · AI','ready');
     if(lastFile)scanProvenance(lastFile).then(p=>{if(p)appendAuthCard({prov:p.text});}).catch(()=>{});
-  }catch(e){clearTimeout(timer);console.error(e);const msg=e.name==='AbortError'?'Timpul de așteptare a expirat (45s). Verifică conexiunea și reîncearcă.':'Eroare AI: '+e.message+'. Verifică cheia/modelul (⚙).';results.innerHTML=`<div class="empty">${msg}</div>`;setStatus('Eroare AI','err');}
+  }catch(e){clearTimeout(timer);console.error(e);let msg;if(e.name==='AbortError')msg='Timpul de așteptare a expirat (45s). Verifică conexiunea și reîncearcă.';else if(e instanceof TypeError&&cfg.provider==='openai'&&cfg.endpoint)msg='Conexiunea către endpoint-ul custom a fost blocată (CSP sau rețea). Endpoint-urile proprii necesită ajustarea regulii CSP din pagină sau folosește Anthropic/OpenAI standard.';else msg='Eroare AI: '+esc(e.message)+'. Verifică cheia/modelul (⚙).';results.innerHTML=`<div class="empty">${msg}</div>`;setStatus('Eroare AI','err');}
 }
 
 /* ===== identificare imagine ===== */
@@ -717,8 +721,9 @@ async function decodeMono16k(ab){
   const AC=window.AudioContext||window.webkitAudioContext;
   // iOS Safari acceptă decodeAudioData cu callback-uri, nu mereu Promise
   const ac=new AC();
-  const buf=await new Promise((res,rej)=>{const p=ac.decodeAudioData(ab.slice(0),res,rej);if(p&&p.then)p.then(res,rej);});
-  try{ac.close();}catch(e){console.warn('ac.close',e);}
+  let buf;
+  try{buf=await new Promise((res,rej)=>{const p=ac.decodeAudioData(ab.slice(0),res,rej);if(p&&p.then)p.then(res,rej);});}
+  finally{try{ac.close();}catch(e){console.warn('ac.close',e);}}
   const TARGET=16000, dur=Math.min(buf.duration,12);
   const frames=Math.max(1,Math.ceil(dur*TARGET));
   // OfflineAudioContext la 16kHz NU e acceptat de iOS Safari → reeșantionăm manual din canalul nativ
@@ -809,7 +814,10 @@ async function saveObservation(){
   let loc=null;
   if(wantLoc()&&navigator.geolocation){loc=await new Promise(r=>navigator.geolocation.getCurrentPosition(p=>r({lat:+p.coords.latitude.toFixed(5),lon:+p.coords.longitude.toFixed(5)}),()=>r(null),{timeout:8000,enableHighAccuracy:true}));}
   const thumb=await thumbFromCurrent();
-  try{await jPut({t:Date.now(),ro:lastResult.ro||'',sci:lastResult.sci||'',kind:lastResult.kind||'',score:lastResult.score||0,engine,loc,thumb:thumb||''});
+  const key=Date.now()+Math.floor(Math.random()*1000)/1000; // #8 evită coliziunea la salvări rapide
+  try{await jPut({t:key,ro:lastResult.ro||'',sci:lastResult.sci||'',kind:lastResult.kind||'',score:lastResult.score||0,engine,loc,thumb:thumb||''});
+    // #9 plafon 200: șterge cele mai vechi
+    try{const all=await jAll();if(all.length>200){for(const o of all.slice(200))await jDel(o.t);}}catch(e){console.warn('cap jurnal',e);}
     toast(loc?'✓ Salvat în jurnal (cu locație)':'✓ Salvat în jurnal');renderJournal();
   }catch(e){console.warn('save obs',e);toast('Nu am putut salva (stocare?).');}
 }
@@ -832,7 +840,7 @@ $('btnExportCsv').onclick=exportCSV;$('btnExportGeo').onclick=exportGeo;
 $('btnClearJrnl').onclick=async()=>{if(confirm('Ștergi tot jurnalul? Acțiunea nu poate fi anulată.')){await jClear();renderJournal();toast('Jurnal golit.');}};
 
 /* ===== scop ===== */
-function localScopeText(){const c={};SP.forEach(s=>c[s[3]]=(c[s[3]]||0)+1);const order=['bird','mammal','insect','spider','reptile','amphibian','tree','plant','flower','fungus','mollusc'];return `<b>Detectează ${SP_LEN} specii din România</b> · `+order.filter(k=>c[k]).map(k=>`${c[k]} ${CAT_PL[k]}`).join(' · ');}
+function localScopeText(){const c={};SP.forEach(s=>c[s[3]]=(c[s[3]]||0)+1);const order=['bird','mammal','insect','spider','reptile','amphibian','tree','plant','flower','fungus','mollusc'];return `<b>Detectează ${SP_LEN} taxoni din România</b> (specii și grupuri) · `+order.filter(k=>c[k]).map(k=>`${c[k]} ${CAT_PL[k]}`).join(' · ');}
 const SCOPE={general:'Detectează ~1000 de categorii ImageNet: animale (mamifere, păsări, pești, insecte), unele plante și multe obiecte.',birds:'Detectează ~525 de specii de păsări din lume (model dedicat) — top 5 candidați.',ai:'Detectează orice — faună, floră, ciuperci — cu denumire RO, alternative și verdict de autenticitate.'};
 function setScope(eng){const el=$('scope');if(!el)return;el.innerHTML=(eng==='local')?localScopeText():SCOPE[eng];}
 
@@ -991,7 +999,7 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
 if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
-const APP_VER='v12';
+const APP_VER='v13';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // pagina e mai veche decât serverul → aproape sigur cache zombi. Curăță forțat.
