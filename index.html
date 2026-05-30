@@ -6,7 +6,7 @@
 <title>VietAR · faună &amp; floră din România</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#2a3f2c" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob:; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
 <meta name="description" content="VietAR — identifică faună și floră din România din imagine, cameră (AR live) sau sunet, direct în browser. 519 specii locale, offline după prima descărcare." />
 <meta property="og:title" content="VietAR · faună & floră din România" />
 <meta property="og:description" content="Identifică vietăți și plante din România — imagine, cameră AR live sau sunet. Rulează local, în browser." />
@@ -204,6 +204,7 @@
 </head>
 
 <body>
+<noscript><div style="max-width:600px;margin:40px auto;padding:24px;font-family:system-ui,sans-serif;text-align:center;color:#2a3f2c;background:#f4ecdd;border-radius:14px;">VietAR are nevoie de JavaScript activat pentru a rula modelele de recunoaștere direct în browser. Activează JavaScript și reîncarcă pagina.</div></noscript>
 <div class="wrap">
   <header>
     <div class="eyebrow">Caiet de teren digital</div>
@@ -293,7 +294,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v11 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v12 · 2026-05-31</span>
   </footer>
 </div>
 
@@ -310,6 +311,7 @@
   <div class="field"><label for="model">Model</label><input id="model" type="text" placeholder="claude-sonnet-4-6" /></div>
   <div class="field" id="endpointField" style="display:none"><label for="endpoint">Endpoint (OpenAI-compatibil)</label><input id="endpoint" type="text" placeholder="https://api.openai.com/v1/chat/completions" /></div>
   <div class="sheet-actions"><button class="act ghost" id="btnCloseSettings" style="flex:1">Anulează</button><button class="act primary" id="btnSaveSettings" style="flex:1">Salvează</button></div>
+  <button class="act ghost" id="btnForgetKey" style="width:100%;margin-top:8px;border-color:var(--terracotta)!important;color:var(--terracotta)">Uită cheia acum (memorie + stocare)</button>
 </div></div>
 
 <!-- Help / guide -->
@@ -548,7 +550,12 @@ let lastResult=null;
 function dangerBanner(){return `<div class="danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Nu consuma și nu atinge pe baza acestei identificări. Unele plante și ciuperci sunt toxice sau mortale, iar recunoașterea automată poate greși. Confirmă cu un specialist.</span></div>`;}
 function scoreText(it){ // ciuperci: fără procent (nu sugerăm comestibilitate)
   if(it.kindkey==='fungus')return '<span style="color:var(--terracotta);font-weight:700">orientativ</span>';
-  if(it.cos!=null){const c=it.cos;const q=c>=0.28?'potrivire bună':c>=0.22?'potrivire medie':'potrivire slabă';const col=c>=0.28?'var(--moss)':c>=0.22?'var(--gold)':'var(--terracotta)';return `<span style="color:${col};font-weight:700">${q}</span>`;}
+  if(it.cos!=null){const c=it.cos;
+    // praguri per-categorie: text-vizual CLIP variază pe tip (flori/plante au cosinus mai mic decât păsări)
+    const T={bird:[0.27,0.21],mammal:[0.27,0.21],insect:[0.25,0.19],spider:[0.25,0.19],reptile:[0.26,0.20],amphibian:[0.26,0.20],tree:[0.24,0.18],plant:[0.23,0.17],flower:[0.23,0.17],mollusc:[0.25,0.19]};
+    const[hi,lo]=T[it.kindkey]||[0.26,0.20];
+    const q=c>=hi?'potrivire bună':c>=lo?'potrivire medie':'potrivire slabă';const col=c>=hi?'var(--moss)':c>=lo?'var(--gold)':'var(--terracotta)';
+    return `<span style="color:${col};font-weight:700">${q}</span>`;}
   return (it.score*100).toFixed(0)+'%';
 }
 function renderRanked(items,note,leadFiltered){
@@ -811,14 +818,15 @@ async function renderJournal(){
   $('jrnlActions').style.display=arr.length?'flex':'none';
   const loctoggle=`<label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="locToggle" ${wantLoc()?'checked':''} style="width:18px;height:18px"> Atașează locația la observații (GPS)</label>`;
   if(!arr.length){list.innerHTML=loctoggle+'<div class="empty">Jurnalul e gol. Identifică ceva și apasă „Salvează în jurnal".</div>';wireLocToggle();return;}
-  list.innerHTML=loctoggle+arr.map(o=>{const d=new Date(o.t);const dt=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const loc=o.loc?` · ${o.loc.lat}, ${o.loc.lon}`:'';return `<div class="jrnl-item">${o.thumb?`<img src="${o.thumb}" alt="">`:'<img alt="">'}<div class="meta"><div class="ro">${o.ro||'—'}</div><div class="sub2">${o.sci?o.sci+' · ':''}${dt}${loc}</div></div><button class="del" data-k="${o.t}" aria-label="Șterge observația">✕</button></div>`;}).join('');
+  list.innerHTML=loctoggle+arr.map(o=>{const d=new Date(o.t);const dt=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const loc=o.loc?` · ${o.loc.lat}, ${o.loc.lon}`:'';return `<div class="jrnl-item">${o.thumb?`<img src="${o.thumb}" loading="lazy" decoding="async" alt="">`:'<img alt="">'}<div class="meta"><div class="ro">${o.ro||'—'}</div><div class="sub2">${o.sci?o.sci+' · ':''}${dt}${loc}</div></div><button class="del" data-k="${o.t}" aria-label="Șterge observația">✕</button></div>`;}).join('');
   list.querySelectorAll('.del').forEach(b=>b.onclick=async()=>{await jDel(+b.dataset.k);renderJournal();});
   wireLocToggle();
 }
 function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>localStorage.setItem('iff_loc',c.checked?'1':'0');}
 function csvCell(v){let x=(v==null?'':v+'');if(/^[=+\-@\t\r]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"';}
-async function exportCSV(){const a=await jAll();if(!a.length)return;const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);}
-async function exportGeo(){const a=(await jAll()).filter(o=>o.loc);const fc={type:'FeatureCollection',features:a.map(o=>({type:'Feature',geometry:{type:'Point',coordinates:[o.loc.lon,o.loc.lat]},properties:{nume_ro:o.ro,nume_stiintific:o.sci,categorie:o.kind,data:new Date(o.t).toISOString(),scor:o.score}}))};download('vietar-jurnal.geojson','application/geo+json',JSON.stringify(fc,null,2));}
+async function exportCSV(){const a=await jAll();if(!a.length){toast('Jurnalul e gol.');return;}const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);toast(isIOS()?'CSV pregatit — se deschide într-o filă; salvează din meniul Share.':'CSV descărcat: '+a.length+' observații.');}
+async function exportGeo(){const a=(await jAll()).filter(o=>o.loc);if(!a.length){toast('Nicio observație cu locație.');return;}const fc={type:'FeatureCollection',features:a.map(o=>({type:'Feature',geometry:{type:'Point',coordinates:[o.loc.lon,o.loc.lat]},properties:{nume_ro:o.ro,nume_stiintific:o.sci,categorie:o.kind,data:new Date(o.t).toISOString(),scor:o.score}}))};download('vietar-jurnal.geojson','application/geo+json',JSON.stringify(fc,null,2));toast(isIOS()?'GeoJSON pregatit — salvează din meniul Share.':'GeoJSON descărcat: '+a.length+' puncte.');}
+const isIOS=()=>/iP(hone|ad|od)/.test(navigator.platform||'')||(/Mac/.test(navigator.platform||'')&&navigator.maxTouchPoints>1);
 function download(name,type,data){const b=new Blob([data],{type});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
 $('btnExportCsv').onclick=exportCSV;$('btnExportGeo').onclick=exportGeo;
 $('btnClearJrnl').onclick=async()=>{if(confirm('Ștergi tot jurnalul? Acțiunea nu poate fi anulată.')){await jClear();renderJournal();toast('Jurnal golit.');}};
@@ -833,7 +841,7 @@ function selectEngine(eng){engine=eng;setScope(eng);document.querySelectorAll('.
   if(!ENGINES[eng].live){stopLiveLoop();if(stream){arTag.textContent=ENGINES[eng].type==='online'?'AI · pe cerere':'Pe cerere';arName.textContent='Apasă „Salvează cadrul" / analizează';arPct.textContent='';arSci.textContent='';}}
   else{arTag.textContent='AR live';if(stream)startLiveLoop();}}
 document.querySelectorAll('.eng-btn').forEach(b=>{b.onclick=()=>{const eng=b.dataset.engine;if(eng==='birds'&&!pipes[ENGINES.birds.model]&&!localStorage.getItem('iff_birds_ok')){if(!confirm('Modelul „Păsări" e mare (sute de MB) și se descarcă o singură dată. Pe date mobile poate fi costisitor. Continui?')){return;}localStorage.setItem('iff_birds_ok','1');}selectEngine(eng);if(lastImageURL&&document.querySelector('.tab.active').dataset.tab==='upload')identify(lastImageURL,true);};});
-document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');const tab=t.dataset.tab;$('panel-'+tab).classList.add('active');if(tab!=='camera')stopCamera();
+document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>{x.classList.remove('active');x.removeAttribute('aria-current');});document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');t.setAttribute('aria-current','page');const tab=t.dataset.tab;$('panel-'+tab).classList.add('active');if(tab!=='camera')stopCamera();
   if(tab==='sunet'){results.innerHTML='<div class="empty">Înregistrează sau încarcă un sunet.</div>';$('scope').innerHTML='<b>Sunet</b> · vocalizări de animale (ciripit, lătrat, mieunat, grohăit, sâsâit, orăcăit, bâzâit…); filtrează sunetele umane/artificiale.';}
   else if(tab==='jurnal'){renderJournal();$('scope').innerHTML='<b>Jurnal</b> · observațiile tale salvate local; export CSV/GeoJSON pentru iNaturalist sau hărți.';results.innerHTML='<div class="empty">Observațiile salvate apar în fila Jurnal de mai sus.</div>';}
   else setScope(engine);};});
@@ -844,12 +852,16 @@ async function startCamera(){camErrHide(camErr);
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showErr(camErr,'Camera nu e disponibilă în acest browser. Folosește fila „Imagine" pentru a încărca o poză.');return;}
   if(!window.isSecureContext){showErr(camErr,'Camera necesită HTTPS. Deschide pagina pe https:// (sau localhost).');return;}
   try{stopCamera();
-    try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing}},audio:false});}
-    catch(e1){console.warn('facingMode ideal eșuat, încerc generic',e1);stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}
+    const gum=c=>navigator.mediaDevices.getUserMedia(c);
+    const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout permisiune')),ms))]);
+    try{stream=await withTimeout(gum({video:{facingMode:{ideal:facing}},audio:false}),20000);}
+    catch(e1){console.warn('facingMode ideal eșuat/timeout, încerc generic',e1);if(e1.message==='timeout permisiune'){showErr(camErr,'Nu am primit răspuns la permisiunea camerei. Verifică permisiunile browserului și reîncearcă.');return;}stream=await withTimeout(gum({video:true,audio:false}),20000);}
     video.srcObject=stream;try{await video.play();}catch(e2){console.warn('video.play() amânat',e2);}
+    // #7: dacă alt app preia camera, oprim curat
+    stream.getVideoTracks().forEach(t=>{t.onended=()=>{if(stream){toast('Camera a fost întreruptă.');stopCamera();}};});
     camHint.style.display='none';reticle.classList.add('show');arLabel.classList.add('show');btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg> Oprește';btnStart.dataset.on='1';btnFlip.disabled=false;btnCapture.disabled=false;
   if(ENGINES[engine].live){arTag.textContent='AR live';startLiveLoop();}else{arTag.textContent=ENGINES[engine].type==='online'?'AI · pe cerere':'Pe cerere';arName.textContent='Salvează cadrul pentru analiză';arPct.textContent='';}}
-  catch(e){showErr(camErr,'Nu pot accesa camera. Permite accesul și folosește HTTPS sau localhost.');}}
+  catch(e){console.warn('startCamera',e);showErr(camErr,'Nu pot accesa camera. Permite accesul și folosește HTTPS sau localhost.');}}
 function stopCamera(){stopLiveLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}reticle.classList.remove('show');arLabel.classList.remove('show');camHint.style.display='flex';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Pornește camera';btnStart.dataset.on='';btnFlip.disabled=true;btnCapture.disabled=true;}
 function grabFrame(reticleOnly){if(video.readyState<2||!video.videoWidth)return null;const S=320,vw=video.videoWidth,vh=video.videoHeight;let side=Math.min(vw,vh);if(reticleOnly)side=Math.round(side*0.64);grab.width=S;grab.height=S;gctx.drawImage(video,(vw-side)/2,(vh-side)/2,side,side,0,0,S,S);return grab.toDataURL('image/jpeg',0.85);}
 const isGroup=sci=>!!sci&&!/\s/.test(sci.trim()); // gen/familie = un singur cuvânt
@@ -941,6 +953,7 @@ provider.onchange=()=>{endpointField.style.display=provider.value==='openai'?'bl
 $('gear').onclick=openSettings;
 $('btnCloseSettings').onclick=()=>closeModal('modal');
 $('btnSaveSettings').onclick=()=>{const cfg={provider:provider.value,key:apiKey.value.trim(),model:modelInp.value.trim(),endpoint:endpoint.value.trim()};const sess=$('sessionOnly').checked;if(sess){sessionCfg=cfg;try{localStorage.removeItem('iff_cfg');}catch(e){}}else{sessionCfg=null;try{localStorage.setItem('iff_cfg',JSON.stringify(cfg));}catch(e){alert('Nu pot salva aici (stocare blocată).');}}closeModal('modal');if(engine==='ai')setStatus('AI online configurat','ready');};
+$('btnForgetKey').onclick=()=>{sessionCfg=null;try{localStorage.removeItem('iff_cfg');}catch(e){}apiKey.value='';toast('Cheia a fost ștearsă din memorie și stocare.');};
 $('help').onclick=()=>openModal('helpModal');
 $('btnCloseHelp').onclick=()=>closeModal('helpModal');
 async function prefetchOffline(){
@@ -978,7 +991,7 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
 if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
-const APP_VER='v11';
+const APP_VER='v12';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // pagina e mai veche decât serverul → aproape sigur cache zombi. Curăță forțat.
@@ -990,6 +1003,8 @@ fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   }
 }).catch(()=>{});
 setScope(engine);
+window.addEventListener('error',e=>{console.error('eroare globală',e.error||e.message);if(/loading|spin/.test(results.innerHTML)){results.innerHTML='<div class="danger" style="display:flex"><span>A apărut o eroare neașteptată. Încearcă din nou sau resetează din subsol („Șterge cache modele").</span></div>';setStatus('Eroare','err');}});
+window.addEventListener('unhandledrejection',e=>{console.error('promisiune respinsă',e.reason);if(/loading|spin/.test(results.innerHTML)){results.innerHTML='<div class="danger" style="display:flex"><span>Operația a eșuat (rețea sau model). Reîncearcă; dacă persistă, resetează din subsol.</span></div>';setStatus('Eroare','err');}});
 window.addEventListener('beforeunload',()=>{stopCamera();stopRec();});
 </script>
 </body>
