@@ -294,7 +294,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v13 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v14 · 2026-05-31</span>
   </footer>
 </div>
 
@@ -466,7 +466,7 @@ const isToxic=(ro,sci,kind)=>kind==='fungus'||TOXIC.test(ro)||TOXIC.test(sci||''
 const ENGINES={
   local:{type:'zsc',live:true},
   general:{type:'cls',task:'image-classification',model:'Xenova/vit-base-patch16-224',dt:{wasm:'q8',webgpu:'fp32'},live:true},
-  birds:{type:'cls',task:'image-classification',model:'chriamue/bird-species-classifier',dt:{wasm:'fp32',webgpu:'fp32'},live:true},
+  birds:{type:'cls',task:'image-classification',model:'chriamue/bird-species-classifier',dt:{wasm:'fp32',webgpu:'fp32'},opts:{model_file_name:'model'},subfolder:'',live:true},
   ai:{type:'online',live:false}
 };
 const AST={model:'Xenova/ast-finetuned-audioset-10-10-0.4593',dt:{wasm:'q8',webgpu:'fp32'}};
@@ -474,18 +474,18 @@ let engine='local'; const pipes={}; let lastImageURL=null,lastFile=null,busy=fal
 const setStatus=(t,c)=>{statusText.textContent=t;dot.className='dot '+(c||'');};
 function showProgress(p){if(p==null){progress.classList.remove('show');return;}progress.classList.add('show');progressBar.style.width=Math.max(3,p)+'%';}
 
-async function loadPipe(task,model,dt){
+async function loadPipe(task,model,dt,opts){
   if(pipes[model])return pipes[model];
   const device=('gpu' in navigator)?'webgpu':'wasm';
   let dtypes=[...new Set(device==='webgpu'?['fp16',dt.webgpu,'fp32']:[dt.wasm,'fp32'])]; let err;
   for(const dtype of dtypes){for(let attempt=0;attempt<2;attempt++){try{
     setStatus(attempt?`Reîncerc descărcarea (${device.toUpperCase()})…`:`Prima rulare: descarc modelul (${device.toUpperCase()}, ~zeci de MB, o singură dată)…`,'loading');showProgress(3);
-    const p=await pipeline(task,model,{device,dtype,progress_callback:x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const pc=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc modelul… ${pc}%${mb} (o singură dată)`,'loading');showProgress(pc);}}});
+    const p=await pipeline(task,model,{device,dtype,...(opts||{}),progress_callback:x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const pc=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc modelul… ${pc}%${mb} (o singură dată)`,'loading');showProgress(pc);}}});
     pipes[model]=p; setStatus('Gata · rulează local','ready');showProgress(null); return p;
   }catch(e){err=e;console.warn('dtype',dtype,'attempt',attempt,e);if(attempt===0)await new Promise(r=>setTimeout(r,1200));}}}
   showProgress(null); throw err;
 }
-const getPipe=eng=>loadPipe(ENGINES[eng].task,ENGINES[eng].model,ENGINES[eng].dt);
+const getPipe=eng=>loadPipe(ENGINES[eng].task,ENGINES[eng].model,ENGINES[eng].dt,ENGINES[eng].opts);
 const getAst=()=>loadPipe('audio-classification',AST.model,AST.dt);
 
 /* ===== CLIP cu amprente precalculate ===== */
@@ -969,19 +969,22 @@ async function prefetchOffline(){
   try{
     note.textContent='Descarc CLIP (motorul Local)…';
     await ensureClip();
-    note.textContent='Pregătesc amprentele celor '+SP_LEN+' specii…';
+    note.textContent='Pregătesc amprentele celor '+SP_LEN+' taxoni…';
     await clipTextMatrix('species',CLIP_SP);
     await clipTextMatrix('auth',AUTH_LABELS);
     note.textContent='Descarc modelul de sunet (AudioSet)…';
-    await getAst();
+    try{await getAst();}catch(e){console.warn('AST prefetch',e);}
     note.innerHTML='✓ Gata. Local + Sunet funcționează acum offline.';
-    if(confirm('Descarc și modelele mari opționale (General + Păsări, sute de MB)? Pe date mobile poate fi costisitor.')){
-      note.textContent='Descarc modelul General…';await getPipe('general');
-      note.textContent='Descarc modelul Păsări (mare)…';localStorage.setItem('iff_birds_ok','1');await getPipe('birds');
-      note.innerHTML='✓ Gata complet. Toate motoarele offline funcționează offline.';
+    if(confirm('Descarc și modelele mari opționale (General + Păsări, sute de MB)? Pe date mobile poate fi costisitor. Dacă unul nu e disponibil, restul rămân instalate.')){
+      let ok=[],fail=[];
+      note.textContent='Descarc modelul General…';
+      try{await getPipe('general');ok.push('General');}catch(e){console.warn('General prefetch',e);fail.push('General');}
+      note.textContent='Descarc modelul Păsări…';localStorage.setItem('iff_birds_ok','1');
+      try{await getPipe('birds');ok.push('Păsări');}catch(e){console.warn('Birds prefetch',e);fail.push('Păsări');}
+      note.innerHTML='✓ Gata. Instalat offline: Local, Sunet'+(ok.length?', '+ok.join(', '):'')+'.'+(fail.length?` <span style="color:var(--terracotta)">Indisponibil acum: ${fail.join(', ')} (poți reîncerca mai târziu).</span>`:'');
     }
     toast('Pregătit pentru offline.');
-  }catch(e){console.warn('prefetch',e);note.innerHTML='⚠ Descărcare incompletă: '+e.message+'. Reîncearcă cu conexiune stabilă.';}
+  }catch(e){console.warn('prefetch',e);note.innerHTML='⚠ Nu am putut pregăti motorul Local: '+esc(e.message)+'. Verifică conexiunea și reîncearcă.';}
 }
 $('btnPrefetch').onclick=()=>prefetchOffline();
 $('privacyLink').onclick=e=>{e.preventDefault();openModal('privacyModal');};
@@ -999,7 +1002,7 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
 if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
-const APP_VER='v13';
+const APP_VER='v14';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // pagina e mai veche decât serverul → aproape sigur cache zombi. Curăță forțat.
