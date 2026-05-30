@@ -189,6 +189,7 @@
   .warn{background:rgba(185,146,58,.14);border:1px solid var(--gold);border-radius:10px;padding:10px 12px;font-size:.8rem;color:#6a5a2a;margin-bottom:16px;}
   .sheet-actions{display:flex;gap:10px;margin-top:6px;}
   .sheet ul{margin:8px 0 16px 18px;font-size:.84rem;color:#4a4334;}.sheet li{margin-bottom:5px;}
+  @media (prefers-contrast: more){:root{--muted:#3a342a;--line:#7a6f55;}.scope,.res-note,.row .en{color:#3a342a;}.uncertain{border-width:2px;}}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
   @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}.ar-reticle .scan{display:none;}}
   @media (prefers-color-scheme: dark){
@@ -294,7 +295,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v14 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v15 · 2026-05-31</span>
   </footer>
 </div>
 
@@ -831,7 +832,7 @@ async function renderJournal(){
   wireLocToggle();
 }
 function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>localStorage.setItem('iff_loc',c.checked?'1':'0');}
-function csvCell(v){let x=(v==null?'':v+'');if(/^[=+\-@\t\r]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"';}
+function csvCell(v){let x=(v==null?'':v+'').replace(/[\r\n\t]+/g,' ');if(/^[=+\-@]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"';}
 async function exportCSV(){const a=await jAll();if(!a.length){toast('Jurnalul e gol.');return;}const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);toast(isIOS()?'CSV pregatit — se deschide într-o filă; salvează din meniul Share.':'CSV descărcat: '+a.length+' observații.');}
 async function exportGeo(){const a=(await jAll()).filter(o=>o.loc);if(!a.length){toast('Nicio observație cu locație.');return;}const fc={type:'FeatureCollection',features:a.map(o=>({type:'Feature',geometry:{type:'Point',coordinates:[o.loc.lon,o.loc.lat]},properties:{nume_ro:o.ro,nume_stiintific:o.sci,categorie:o.kind,data:new Date(o.t).toISOString(),scor:o.score}}))};download('vietar-jurnal.geojson','application/geo+json',JSON.stringify(fc,null,2));toast(isIOS()?'GeoJSON pregatit — salvează din meniul Share.':'GeoJSON descărcat: '+a.length+' puncte.');}
 const isIOS=()=>/iP(hone|ad|od)/.test(navigator.platform||'')||(/Mac/.test(navigator.platform||'')&&navigator.maxTouchPoints>1);
@@ -902,7 +903,7 @@ function stopLiveLoop(){liveActive=false;if(liveTimer){clearTimeout(liveTimer);l
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopLiveLoop();else if(stream&&ENGINES[engine].live&&document.querySelector('.tab.active').dataset.tab==='camera')startLiveLoop();});
 btnStart.onclick=()=>{btnStart.dataset.on?stopCamera():startCamera();};
 btnFlip.onclick=()=>{facing=facing==='environment'?'user':'environment';startCamera();};
-btnCapture.onclick=async()=>{const url=grabFrame(true)||arLast;if(!url)return;lastImageURL=url;lastFile=null;
+btnCapture.onclick=async()=>{const url=grabFrame(true)||arLast;if(!url){toast('Camera se inițializează — încearcă din nou într-o clipă.');return;}lastImageURL=url;lastFile=null;
   // îngheață: rulează o identificare completă (top 5) pe cadrul capturat, apoi salvează
   await identify(url,false);await saveObservation();};
 
@@ -988,7 +989,7 @@ async function prefetchOffline(){
 }
 $('btnPrefetch').onclick=()=>prefetchOffline();
 $('privacyLink').onclick=e=>{e.preventDefault();openModal('privacyModal');};
-$('clearCache').onclick=async e=>{e.preventDefault();if(!confirm('Ștergi modelele descărcate și resetezi aplicația? Se vor redescărca la următoarea folosire.'))return;try{if('caches' in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}toast('Resetat. Reîncarc…');setTimeout(()=>location.reload(true),1000);}catch(err){console.warn('clear cache',err);toast('Nu am putut goli cache-ul.');}};
+$('clearCache').onclick=async e=>{e.preventDefault();if(!confirm('Ștergi modelele descărcate și resetezi aplicația? Se vor redescărca la următoarea folosire.'))return;try{if('caches' in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}toast('Resetat. Reîncarc…');setTimeout(()=>location.reload(),1000);}catch(err){console.warn('clear cache',err);toast('Nu am putut goli cache-ul.');}};
 $('btnClosePrivacy').onclick=()=>closeModal('privacyModal');
 $('consentNo').onclick=()=>{closeModal('consentModal');pendingAI=null;};
 $('consentYes').onclick=()=>{localStorage.setItem('iff_consent','1');closeModal('consentModal');if(pendingAI){doOnline(pendingAI.dataURL,pendingAI.cfg);pendingAI=null;}};
@@ -1002,15 +1003,21 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
 if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
-const APP_VER='v14';
+const APP_VER='v15';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
-    // pagina e mai veche decât serverul → aproape sigur cache zombi. Curăță forțat.
-    toast('Versiune nouă pe server ('+v.version+'). Actualizez…');
+    // Desincronizare pagină↔server. Curățăm cache O SINGURĂ DATĂ ca să evităm bucla de reload
+    // (dacă index.html de pe server e încă vechi, reload-ul repetat n-ar rezolva nimic).
+    if(sessionStorage.getItem('iff_recovered')){
+      toast('Versiunea afișată ('+APP_VER+') diferă de server ('+v.version+'). Reîncarcă manual sau folosește „Șterge cache" din subsol.');
+      return;
+    }
+    sessionStorage.setItem('iff_recovered','1');
+    toast('Actualizez la versiunea nouă ('+v.version+')…');
     Promise.resolve()
       .then(()=>('caches' in window)?caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))):null)
       .then(()=>('serviceWorker' in navigator)?navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))):null)
-      .then(()=>setTimeout(()=>location.reload(true),1200));
+      .then(()=>setTimeout(()=>location.reload(),1400));
   }
 }).catch(()=>{});
 setScope(engine);
