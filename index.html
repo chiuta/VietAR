@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
 <title>VietAR · faună &amp; floră din România</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#2a3f2c" />
@@ -15,41 +15,52 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root{--parchment:#f4ecdd;--parchment-deep:#e9dec7;--ink:#26211a;--moss:#3d5a40;--moss-deep:#2a3f2c;--terracotta:#bf5b34;--terracotta-soft:#d97b54;--gold:#caa24b;--line:#cdbf9f;--shadow:rgba(42,33,20,.16);}
+  :root{
+    --parchment:#f4ecdd;--parchment-deep:#e9dec7;--ink:#231e16;
+    --moss:#36533a;--moss-deep:#243524;--terracotta:#a8472a;--terracotta-soft:#c25f3c;
+    --gold:#b9923a;--line:#c2b491;--muted:#6a604e;--shadow:rgba(42,33,20,.16);
+  }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
   body{font-family:'Spline Sans',sans-serif;color:var(--ink);background-color:var(--parchment);
-    background-image:radial-gradient(ellipse at 12% -10%,rgba(61,90,64,.10),transparent 45%),radial-gradient(ellipse at 110% 8%,rgba(191,91,52,.10),transparent 50%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    background-image:radial-gradient(ellipse at 12% -10%,rgba(54,83,58,.10),transparent 45%),radial-gradient(ellipse at 110% 8%,rgba(168,71,42,.10),transparent 50%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
     min-height:100%;line-height:1.5;overflow-x:hidden;}
-  .wrap{max-width:780px;margin:0 auto;padding:26px 18px 60px;}
-  header{text-align:center;margin-bottom:16px;}
+  .wrap{max-width:780px;margin:0 auto;padding:max(26px,env(safe-area-inset-top)) 18px 60px;}
+  header{text-align:center;margin-bottom:14px;}
   .eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--moss);font-weight:600;margin-bottom:6px;}
   h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.1rem,7vw,3.1rem);line-height:1.02;letter-spacing:-.01em;color:var(--moss-deep);}
   h1 em{font-style:italic;font-weight:500;color:var(--terracotta);}
-  .sub{margin-top:10px;font-size:.95rem;color:#6a6253;max-width:48ch;margin-inline:auto;}
-  .divider{margin:16px auto 0;width:120px;height:18px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%23caa24b' stroke-width='1.4'/%3E%3Cpath d='M60 2c-4 3-9 4-9 7s5 4 9 7c4-3 9-4 9-7s-5-4-9-7z' fill='none' stroke='%233d5a40' stroke-width='1.4'/%3E%3C/svg%3E");}
+  .sub{margin-top:10px;font-size:.95rem;color:var(--muted);max-width:48ch;margin-inline:auto;}
+  .divider{margin:14px auto 0;width:120px;height:18px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%23b9923a' stroke-width='1.4'/%3E%3Cpath d='M60 2c-4 3-9 4-9 7s5 4 9 7c4-3 9-4 9-7s-5-4-9-7z' fill='none' stroke='%2336533a' stroke-width='1.4'/%3E%3C/svg%3E");}
 
   .eng-row{display:flex;align-items:stretch;gap:8px;margin:18px 0 8px;}
   .engine{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:var(--parchment-deep);padding:5px;border-radius:14px;border:1px solid var(--line);transition:opacity .2s;}
   @media(min-width:580px){.engine{grid-template-columns:repeat(4,1fr);}}
   .engine.dim{opacity:.4;pointer-events:none;}
-  .eng-btn{border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.84rem;color:#7a7160;padding:10px 6px;border-radius:10px;transition:.22s;display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.15;}
-  .eng-btn small{font-size:.6rem;font-weight:500;opacity:.7;}
+  .eng-btn{border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.84rem;color:var(--muted);padding:10px 6px;border-radius:10px;transition:.22s;display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.15;}
+  .eng-btn small{font-size:.6rem;font-weight:500;opacity:.78;}
   .eng-btn.active{background:var(--moss-deep);color:var(--parchment);box-shadow:0 3px 10px var(--shadow);}
-  .eng-btn.active small{opacity:.85;}
-  .gear{flex:none;width:46px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--moss-deep);}
-  .gear svg{width:20px;height:20px;}
-  .scope{max-width:580px;margin:2px auto 0;text-align:center;font-size:.74rem;color:#6a6253;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:12px;padding:8px 14px;line-height:1.55;}
+  .eng-btn.active small{opacity:.9;}
+  .eng-btn:focus-visible,.tab:focus-visible,button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .iconbtn{flex:none;width:46px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--moss-deep);}
+  .iconbtn svg{width:20px;height:20px;}
+  .topbtns{display:flex;gap:8px;}
+
+  .scope{max-width:580px;margin:2px auto 0;text-align:center;font-size:.76rem;color:var(--muted);background:rgba(255,255,255,.45);border:1px solid var(--line);border-radius:12px;padding:8px 14px;line-height:1.55;}
   .scope b{color:var(--moss-deep);}
 
-  .status{display:flex;align-items:center;gap:9px;justify-content:center;font-size:.82rem;color:#6a6253;margin:8px auto 18px;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:40px;padding:7px 16px;width:fit-content;max-width:100%;text-align:center;}
+  .status{display:flex;align-items:center;gap:9px;justify-content:center;font-size:.82rem;color:var(--muted);margin:8px auto 8px;background:rgba(255,255,255,.45);border:1px solid var(--line);border-radius:40px;padding:7px 16px;width:fit-content;max-width:100%;text-align:center;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none;}
   .dot.loading{animation:pulse 1.3s infinite;}.dot.ready{background:var(--moss);}.dot.err{background:var(--terracotta);}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(202,162,75,.55);}70%{box-shadow:0 0 0 8px rgba(202,162,75,0);}100%{box-shadow:0 0 0 0 rgba(202,162,75,0);}}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(185,146,58,.55);}70%{box-shadow:0 0 0 8px rgba(185,146,58,0);}100%{box-shadow:0 0 0 0 rgba(185,146,58,0);}}
+  .progress{max-width:420px;margin:0 auto 10px;height:8px;background:var(--parchment-deep);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:none;}
+  .progress.show{display:block;}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--moss),var(--gold));transition:width .3s;}
 
   .tabs{display:flex;gap:6px;background:var(--parchment-deep);padding:5px;border-radius:14px;border:1px solid var(--line);margin-bottom:18px;}
-  .tab{flex:1;border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.92rem;color:#7a7160;padding:11px 6px;border-radius:10px;transition:.25s;display:flex;align-items:center;justify-content:center;gap:7px;}
+  .tab{flex:1;border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.9rem;color:var(--muted);padding:11px 6px;border-radius:10px;transition:.25s;display:flex;align-items:center;justify-content:center;gap:6px;}
   .tab svg{width:17px;height:17px;}
   .tab.active{background:var(--moss-deep);color:var(--parchment);box-shadow:0 3px 10px var(--shadow);}
   .panel{display:none;animation:fade .35s ease;}.panel.active{display:block;}
@@ -57,184 +68,273 @@
 
   .stage{position:relative;width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:var(--moss-deep);border:1px solid var(--line);box-shadow:0 12px 30px var(--shadow);display:flex;align-items:center;justify-content:center;}
   video,#preview{width:100%;height:100%;object-fit:cover;display:block;}#preview{display:none;}
-  .stage-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(244,236,221,.85);text-align:center;padding:24px;font-size:.92rem;}
-  .stage-hint svg{width:46px;height:46px;opacity:.8;}
-  .live-badge{position:absolute;left:12px;bottom:12px;right:12px;background:rgba(38,33,26,.78);backdrop-filter:blur(6px);border-radius:12px;padding:10px 14px;color:var(--parchment);display:none;align-items:center;gap:12px;}
-  .live-badge.show{display:flex;}.live-badge .lbl{flex:1;min-width:0;}
-  .live-badge .name{font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .live-badge .pct{font-weight:700;color:var(--gold);font-size:1.05rem;}
-  .live-tag{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta-soft);font-weight:700;}
+  .stage-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(244,236,221,.9);text-align:center;padding:24px;font-size:.92rem;}
+  .stage-hint svg{width:46px;height:46px;opacity:.85;}
+  /* AR overlay */
+  .ar-reticle{position:absolute;inset:0;pointer-events:none;display:none;}
+  .ar-reticle.show{display:block;}
+  /* pătrat central de 64% din latura mică — exact zona analizată */
+  .ar-box{position:absolute;left:50%;top:46%;width:64%;aspect-ratio:1;transform:translate(-50%,-50%);}
+  .ar-reticle .corner{position:absolute;width:30px;height:30px;border:3px solid rgba(244,236,221,.95);filter:drop-shadow(0 0 3px rgba(0,0,0,.55));}
+  .ar-reticle .tl{top:0;left:0;border-right:none;border-bottom:none;border-radius:6px 0 0 0;}
+  .ar-reticle .tr{top:0;right:0;border-left:none;border-bottom:none;border-radius:0 6px 0 0;}
+  .ar-reticle .bl{bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 6px;}
+  .ar-reticle .br{bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 6px 0;}
+  .ar-reticle .scan{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);top:0;animation:scan 2.4s ease-in-out infinite;}
+  @keyframes scan{0%,100%{transform:translateY(0);}50%{transform:translateY(calc(100% - 2px));}}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--moss-deep);color:var(--parchment);padding:12px 20px;border-radius:30px;font-weight:600;font-size:.88rem;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .ar-label{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(36,53,36,.82);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);border:1px solid rgba(185,146,58,.4);border-radius:14px;padding:11px 15px;color:var(--parchment);display:none;align-items:center;gap:12px;}
+  .ar-label.show{display:flex;}
+  .ar-label .lbl{flex:1;min-width:0;}
+  .ar-label .tag{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta-soft);font-weight:700;}
+  .ar-label .name{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ar-label .sci{font-size:.7rem;font-style:italic;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ar-label .pct{font-weight:700;color:var(--gold);font-size:1.1rem;}
 
   .controls{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
   button.act{flex:1;min-width:120px;border:none;cursor:pointer;border-radius:13px;padding:14px 16px;font-family:'Spline Sans';font-weight:700;font-size:.95rem;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
   button.act svg{width:19px;height:19px;}
-  .primary{background:var(--terracotta);color:#fff;box-shadow:0 5px 14px rgba(191,91,52,.35);}.primary:active{transform:translateY(1px);}
+  .primary{background:var(--terracotta);color:#fff;box-shadow:0 5px 14px rgba(168,71,42,.32);}.primary:active{transform:translateY(1px);}
   .ghost{background:transparent;color:var(--moss-deep);border:1.5px solid var(--moss)!important;}
   button:disabled{opacity:.4;cursor:not-allowed;}
 
-  .drop{width:100%;aspect-ratio:4/3;border-radius:18px;border:2px dashed var(--line);background:rgba(255,255,255,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;text-align:center;padding:24px;transition:.2s;}
-  .drop:hover,.drop.over{border-color:var(--moss);background:rgba(61,90,64,.06);}
-  .drop svg{width:50px;height:50px;color:var(--moss);}.drop b{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--moss-deep);}.drop span{font-size:.85rem;color:#7a7160;}
+  .drop{width:100%;aspect-ratio:4/3;border-radius:18px;border:2px dashed var(--line);background:rgba(255,255,255,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;text-align:center;padding:24px;transition:.2s;}
+  .drop:hover,.drop.over{border-color:var(--moss);background:rgba(54,83,58,.07);}
+  .drop svg{width:50px;height:50px;color:var(--moss);}.drop b{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--moss-deep);}.drop span{font-size:.85rem;color:var(--muted);}
 
-  /* audio */
-  .audio-stage{width:100%;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(61,90,64,.10),rgba(255,255,255,.4));padding:30px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 12px 30px var(--shadow);}
-  .mic{width:78px;height:78px;border-radius:50%;background:var(--moss-deep);display:flex;align-items:center;justify-content:center;color:var(--parchment);transition:.25s;}
-  .mic svg{width:34px;height:34px;}
+  .audio-stage{width:100%;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(54,83,58,.10),rgba(255,255,255,.42));padding:26px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 12px 30px var(--shadow);}
+  .mic{width:74px;height:74px;border-radius:50%;background:var(--moss-deep);display:flex;align-items:center;justify-content:center;color:var(--parchment);transition:.25s;}
+  .mic svg{width:32px;height:32px;}
   .mic.rec{background:var(--terracotta);animation:micpulse 1.1s infinite;}
-  @keyframes micpulse{0%{box-shadow:0 0 0 0 rgba(191,91,52,.55);}70%{box-shadow:0 0 0 18px rgba(191,91,52,0);}100%{box-shadow:0 0 0 0 rgba(191,91,52,0);}}
+  @keyframes micpulse{0%{box-shadow:0 0 0 0 rgba(168,71,42,.55);}70%{box-shadow:0 0 0 18px rgba(168,71,42,0);}100%{box-shadow:0 0 0 0 rgba(168,71,42,0);}}
   .audio-stage b{font-family:'Fraunces',serif;font-size:1.2rem;color:var(--moss-deep);}
-  .audio-stage span{font-size:.86rem;color:#7a7160;}
+  .audio-stage span{font-size:.86rem;color:var(--muted);}
+  .vu{width:80%;max-width:320px;height:10px;border-radius:6px;background:var(--parchment-deep);border:1px solid var(--line);overflow:hidden;display:none;}
+  .vu.show{display:block;}.vu i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--moss),var(--gold),var(--terracotta));transition:width .08s;}
+  .dursel{display:flex;gap:6px;background:var(--parchment-deep);border:1px solid var(--line);border-radius:10px;padding:4px;}
+  .dursel button{border:none;background:transparent;font-weight:700;font-size:.84rem;color:var(--muted);padding:7px 13px;border-radius:7px;cursor:pointer;}
+  .dursel button.on{background:var(--moss-deep);color:var(--parchment);}
 
   .results{margin-top:22px;}
   .results h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;color:var(--moss-deep);margin-bottom:4px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
   .kind{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-family:'Spline Sans';font-weight:700;color:var(--terracotta);border:1px solid var(--terracotta);border-radius:30px;padding:3px 10px;}
-  .res-note{font-size:.8rem;color:#8a8170;margin-bottom:14px;}
-  .row{background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin-bottom:9px;opacity:0;transform:translateY(8px);animation:rise .4s forwards;}
+  .res-note{font-size:.8rem;color:var(--muted);margin-bottom:14px;}
+  .row{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin-bottom:9px;opacity:0;transform:translateY(8px);animation:rise .4s forwards;}
   @keyframes rise{to{opacity:1;transform:none;}}
   .row .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px;}
   .row .ro{font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--ink);}
-  .row .en{font-size:.74rem;color:#9a9080;font-style:italic;}
+  .row .en{font-size:.74rem;color:var(--muted);font-style:italic;}
   .row .score{font-weight:700;color:var(--moss);font-size:1.02rem;flex:none;}
   .bar{height:8px;background:var(--parchment-deep);border-radius:6px;overflow:hidden;}
   .bar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--moss),var(--gold));transition:width .9s cubic-bezier(.2,.8,.2,1);}
   .row.lead .bar i{background:linear-gradient(90deg,var(--terracotta),var(--gold));}
-  .hero{background:linear-gradient(180deg,rgba(61,90,64,.10),rgba(255,255,255,.55));border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px;opacity:0;animation:rise .45s forwards;}
+  .hero{background:linear-gradient(180deg,rgba(54,83,58,.10),rgba(255,255,255,.6));border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px;opacity:0;animation:rise .45s forwards;}
   .hero .ro{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--moss-deep);line-height:1.1;}
-  .hero .sci{font-style:italic;color:#7a7160;margin-top:2px;font-size:.95rem;}
+  .hero .sci{font-style:italic;color:var(--muted);margin-top:2px;font-size:.95rem;}
   .hero .meta{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap;}
-  .hero .conf{font-weight:700;color:var(--terracotta);}.hero .desc{font-size:.92rem;color:#5a5346;margin-top:10px;}
-  .filtered{background:rgba(191,91,52,.1);border:1px solid var(--terracotta-soft);}
+  .hero .conf{font-weight:700;color:var(--terracotta);}.hero .desc{font-size:.92rem;color:#4a4334;margin-top:10px;}
+  .filtered{background:rgba(168,71,42,.1);border-color:var(--terracotta-soft);}
   .filtered .ro{color:var(--terracotta);}
-  .empty{text-align:center;color:#9a9080;padding:30px 10px;font-size:.9rem;}
+  .uncertain{display:inline-block;font-size:.72rem;font-weight:700;color:#6a5a2a;background:rgba(185,146,58,.2);border:1px solid var(--gold);border-radius:30px;padding:3px 10px;margin-top:8px;}
+  .danger{background:rgba(168,71,42,.14);border:1.5px solid var(--terracotta);border-radius:12px;padding:12px 15px;margin:10px 0;font-size:.86rem;color:#7a2a17;font-weight:600;display:flex;gap:9px;align-items:flex-start;}
+  .danger svg{width:20px;height:20px;flex:none;color:var(--terracotta);margin-top:1px;}
+  .empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:.9rem;}
   .spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--moss);border-radius:50%;animation:rot .8s linear infinite;margin:0 auto 12px;}
   @keyframes rot{to{transform:rotate(360deg);}}
+  .actbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .actbar button{font-size:.8rem;font-weight:700;border-radius:10px;padding:9px 13px;border:1.5px solid var(--moss);background:transparent;color:var(--moss-deep);cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+  .actbar button svg{width:15px;height:15px;}
 
-  /* authenticity card */
-  .auth{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.5);padding:16px 18px;}
+  .auth{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.55);padding:16px 18px;}
   .auth h3{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--moss-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
   .auth .verdict{display:inline-block;font-weight:700;font-size:.78rem;padding:4px 11px;border-radius:30px;margin:6px 0;}
-  .v-ok{background:rgba(61,90,64,.16);color:var(--moss-deep);}
-  .v-warn{background:rgba(202,162,75,.2);color:#6a5a2a;}
-  .v-bad{background:rgba(191,91,52,.16);color:var(--terracotta);}
-  .auth .line{font-size:.85rem;color:#5a5346;margin:5px 0;}
-  .auth .line b{color:var(--moss-deep);}
-  .auth .disc{font-size:.74rem;color:#9a9080;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px;}
+  .v-ok{background:rgba(54,83,58,.16);color:var(--moss-deep);}
+  .v-warn{background:rgba(185,146,58,.2);color:#6a5a2a;}
+  .v-bad{background:rgba(168,71,42,.16);color:var(--terracotta);}
+  .auth .line{font-size:.85rem;color:#4a4334;margin:5px 0;}.auth .line b{color:var(--moss-deep);}
+  .auth .disc{font-size:.74rem;color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px;}
 
-  .err-box{background:rgba(191,91,52,.1);border:1px solid var(--terracotta);color:var(--terracotta);border-radius:12px;padding:12px 15px;font-size:.86rem;margin-top:12px;display:none;}
-  .modal{position:fixed;inset:0;background:rgba(38,33,26,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50;}
-  .modal.show{display:flex;}
-  .sheet{background:var(--parchment);border:1px solid var(--line);border-radius:20px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
-  .sheet h3{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-deep);margin-bottom:4px;}
-  .sheet p.hint{font-size:.82rem;color:#7a7160;margin-bottom:16px;}
-  .field{margin-bottom:14px;}.field label{display:block;font-size:.78rem;font-weight:600;color:var(--moss-deep);margin-bottom:5px;}
-  .field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:'Spline Sans';font-size:.92rem;background:#fff;color:var(--ink);}
-  .field input:focus,.field select:focus{outline:none;border-color:var(--moss);}
-  .warn{background:rgba(202,162,75,.14);border:1px solid var(--gold);border-radius:10px;padding:10px 12px;font-size:.78rem;color:#6a5a2a;margin-bottom:16px;}
-  .sheet-actions{display:flex;gap:10px;margin-top:6px;}
-  footer{margin-top:34px;text-align:center;font-size:.76rem;color:#8a8170;line-height:1.7;}
+  /* journal */
+  .jrnl-item{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin-bottom:9px;display:flex;gap:12px;align-items:center;}
+  .jrnl-item img{width:54px;height:54px;border-radius:10px;object-fit:cover;flex:none;background:var(--parchment-deep);}
+  .jrnl-item .meta{flex:1;min-width:0;}
+  .jrnl-item .ro{font-family:'Fraunces',serif;font-weight:600;color:var(--ink);}
+  .jrnl-item .sub2{font-size:.74rem;color:var(--muted);}
+  .jrnl-item .del{border:none;background:transparent;color:var(--terracotta);cursor:pointer;font-size:1.2rem;padding:4px 8px;}
+
+  footer{margin-top:34px;text-align:center;font-size:.78rem;color:var(--muted);line-height:1.7;}
   footer .leaf{color:var(--moss);}a{color:var(--terracotta);}
   .donate{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0 14px;}
   .donate a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:700;font-size:.84rem;padding:9px 16px;border-radius:30px;border:1.5px solid var(--line);transition:.18s;}
   .donate a.coffee{background:var(--gold);color:#3a2f12;border-color:var(--gold);}
   .donate a.patreon{background:transparent;color:var(--terracotta);border-color:var(--terracotta);}
-  .donate a:active{transform:translateY(1px);}
-  .donate a svg{width:16px;height:16px;}
-  .byline{font-size:.78rem;color:#7a7160;}
-  .byline b{color:var(--moss-deep);}
+  .donate a:active{transform:translateY(1px);}.donate a svg{width:16px;height:16px;}
+  .byline{font-size:.78rem;color:var(--muted);}.byline b{color:var(--moss-deep);}
+
+  .modal{position:fixed;inset:0;background:rgba(36,30,22,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50;}
+  .modal.show{display:flex;}
+  .sheet{background:var(--parchment);border:1px solid var(--line);border-radius:20px;max-width:480px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
+  .sheet h3{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-deep);margin-bottom:4px;}
+  .sheet p.hint{font-size:.84rem;color:var(--muted);margin-bottom:16px;}
+  .field{margin-bottom:14px;}.field label{display:block;font-size:.8rem;font-weight:600;color:var(--moss-deep);margin-bottom:5px;}
+  .field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:'Spline Sans';font-size:.92rem;background:#fff;color:var(--ink);}
+  .warn{background:rgba(185,146,58,.14);border:1px solid var(--gold);border-radius:10px;padding:10px 12px;font-size:.8rem;color:#6a5a2a;margin-bottom:16px;}
+  .sheet-actions{display:flex;gap:10px;margin-top:6px;}
+  .sheet ul{margin:8px 0 16px 18px;font-size:.84rem;color:#4a4334;}.sheet li{margin-bottom:5px;}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}.ar-reticle .scan{display:none;}}
 </style>
 </head>
+
 <body>
 <div class="wrap">
   <header>
     <div class="eyebrow">Caiet de teren digital</div>
     <h1>Viet<em>AR</em></h1>
-    <p class="sub">Recunoaște faună și floră din imagine, cameră sau sunet, verifică autenticitatea pozelor — calibrat pe specii din România.</p>
+    <p class="sub">Recunoaște faună și floră din România — imagine, cameră (cu suprapunere AR live) sau sunet — și verifică autenticitatea pozelor.</p>
     <div class="divider"></div>
   </header>
 
   <div class="eng-row">
-    <div class="engine" id="engineBar">
-      <button class="eng-btn active" data-engine="local">Local · RO<small>specii din România</small></button>
-      <button class="eng-btn" data-engine="general">General<small>rapid · offline</small></button>
-      <button class="eng-btn" data-engine="birds">Păsări<small>specii de păsări</small></button>
-      <button class="eng-btn" data-engine="ai">AI online<small>cea mai precisă</small></button>
+    <div class="engine" id="engineBar" role="group" aria-label="Motor de identificare">
+      <button class="eng-btn active" data-engine="local" aria-pressed="true">Local · RO<small>specii din România</small></button>
+      <button class="eng-btn" data-engine="general" aria-pressed="false">General<small>rapid · offline</small></button>
+      <button class="eng-btn" data-engine="birds" aria-pressed="false">Păsări<small>specii de păsări</small></button>
+      <button class="eng-btn" data-engine="ai" aria-pressed="false">AI online<small>cea mai precisă</small></button>
     </div>
-    <button class="gear" id="gear" title="Setări AI online"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    <div class="topbtns">
+      <button class="iconbtn" id="help" aria-label="Ghid și informații" title="Ghid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
+      <button class="iconbtn" id="gear" aria-label="Setări AI online" title="Setări"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
   </div>
 
-  <div class="scope" id="scope"></div>
-  <div class="status"><span class="dot ready" id="dot"></span><span id="statusText">Pregătit</span></div>
+  <div class="scope" id="scope" aria-live="polite"></div>
+  <div class="status"><span class="dot ready" id="dot" aria-hidden="true"></span><span id="statusText" role="status">Pregătit</span></div>
+  <div class="progress" id="progress" aria-hidden="true"><i id="progressBar"></i></div>
 
-  <div class="tabs">
-    <button class="tab active" data-tab="camera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Cameră</button>
-    <button class="tab" data-tab="upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Imagine</button>
-    <button class="tab" data-tab="sunet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>Sunet</button>
+  <div class="tabs" role="group" aria-label="Sursă">
+    <button class="tab active" data-tab="camera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>AR live</button>
+    <button class="tab" data-tab="upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Imagine</button>
+    <button class="tab" data-tab="sunet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>Sunet</button>
+    <button class="tab" data-tab="jurnal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Jurnal</button>
   </div>
 
-  <section class="panel active" id="panel-camera">
+  <section class="panel active" id="panel-camera" role="tabpanel">
     <div class="stage">
-      <video id="video" playsinline muted autoplay></video>
-      <div class="stage-hint" id="camHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Apasă <b>Pornește camera</b> ca să începi.</span></div>
-      <div class="live-badge" id="liveBadge"><div class="lbl"><div class="live-tag" id="liveTag">Identificare live</div><div class="name" id="liveName">…</div></div><div class="pct" id="livePct"></div></div>
+      <video id="video" playsinline muted autoplay aria-label="Flux cameră"></video>
+      <div class="stage-hint" id="camHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Apasă <b>Pornește camera</b> pentru identificare cu suprapunere AR live.</span></div>
+      <div class="ar-reticle" id="reticle"><div class="ar-box"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="scan"></span></div></div>
+      <div class="ar-label" id="arLabel"><div class="lbl"><div class="tag" id="arTag">AR live</div><div class="name" id="arName">…</div><div class="sci" id="arSci"></div></div><div class="pct" id="arPct"></div></div>
     </div>
     <div class="controls">
-      <button class="act primary" id="btnStart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Pornește camera</button>
-      <button class="act primary" id="btnCapture" disabled style="background:var(--moss-deep)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Identifică cadrul</button>
-      <button class="act ghost" id="btnFlip" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Comută</button>
+      <button class="act primary" id="btnStart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>Pornește camera</button>
+      <button class="act primary" id="btnCapture" disabled style="background:var(--moss-deep)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Salvează cadrul</button>
+      <button class="act ghost" id="btnFlip" disabled aria-label="Comută camera față/spate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Comută</button>
     </div>
-    <div class="err-box" id="camErr"></div>
+    <div class="danger" id="camErr" style="display:none"></div>
   </section>
 
-  <section class="panel" id="panel-upload">
-    <div class="stage" id="previewStage" style="display:none;"><img id="preview" alt="previzualizare" /></div>
-    <label class="drop" id="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><b>Alege o fotografie</b><span>sau trage imaginea aici · se verifică și autenticitatea</span><input type="file" id="file" accept="image/*" hidden /></label>
-    <div class="controls"><button class="act primary" id="btnChoose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Încarcă imagine</button></div>
+  <section class="panel" id="panel-upload" role="tabpanel">
+    <div class="stage" id="previewStage" style="display:none;"><img id="preview" alt="Imaginea încărcată pentru identificare" /></div>
+    <label class="drop" id="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><b>Alege o fotografie</b><span>sau trage imaginea aici · se verifică și autenticitatea</span><input type="file" id="file" accept="image/*" hidden aria-label="Alege o imagine" /></label>
+    <div class="controls"><button class="act primary" id="btnChoose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Încarcă imagine</button></div>
   </section>
 
-  <section class="panel" id="panel-sunet">
+  <section class="panel" id="panel-sunet" role="tabpanel">
     <div class="audio-stage">
-      <div class="mic" id="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+      <div class="mic" id="mic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
       <b id="audioTitle">Identifică după sunet</b>
-      <span id="audioHint">Înregistrează ~5 secunde (ciripit, lătrat, mieunat…) sau încarcă un fișier audio. Sunetele umane/artificiale sunt filtrate.</span>
+      <span id="audioHint">Înregistrează un sunet de animal (ciripit, lătrat, mieunat…). Sunetele umane/artificiale sunt filtrate.</span>
+      <div class="vu" id="vu" aria-hidden="true"><i id="vuBar"></i></div>
+      <div class="dursel" id="dursel" role="group" aria-label="Durată înregistrare"><button data-sec="3">3s</button><button data-sec="5" class="on">5s</button><button data-sec="10">10s</button></div>
     </div>
     <div class="controls">
-      <button class="act primary" id="btnRec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>Înregistrează 5s</button>
-      <button class="act ghost" id="btnAudioFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Încarcă audio</button>
-      <input type="file" id="audioInput" accept="audio/*" hidden />
+      <button class="act primary" id="btnRec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>Înregistrează</button>
+      <button class="act ghost" id="btnAudioFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Încarcă audio</button>
+      <input type="file" id="audioInput" accept="audio/*" hidden aria-label="Alege un fișier audio" />
     </div>
-    <div class="err-box" id="audioErr"></div>
+    <div class="danger" id="audioErr" style="display:none"></div>
   </section>
 
-  <div class="results" id="results"><div class="empty" id="emptyState">Rezultatele apar aici.</div></div>
+  <section class="panel" id="panel-jurnal" role="tabpanel">
+    <div id="jrnlList"></div>
+    <div class="controls" id="jrnlActions" style="display:none">
+      <button class="act ghost" id="btnExportCsv">Export CSV</button>
+      <button class="act ghost" id="btnExportGeo">Export GeoJSON</button>
+      <button class="act ghost" id="btnClearJrnl" style="border-color:var(--terracotta)!important;color:var(--terracotta)">Golește jurnalul</button>
+    </div>
+  </section>
+
+  <div class="results" id="results" aria-live="polite" aria-atomic="false"><div class="empty" id="emptyState">Rezultatele apar aici.</div></div>
 
   <footer>
-    <button id="installBtn" class="act primary" style="display:none;max-width:300px;margin:0 auto 16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="3" x2="12" y2="16"/></svg>Instalează VietAR</button>
+    <button id="installBtn" class="act primary" style="display:none;max-width:300px;margin:0 auto 16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="3" x2="12" y2="16"/></svg>Instalează VietAR</button>
     <div class="byline">Creat de <b>Alexio</b> · Ecoul Stringurilor</div>
-    <!-- Donații -->
     <div class="donate">
-      <a class="coffee" href="https://buymeacoffee.com/echo.of.the.strings" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-        Buy me a coffee
-      </a>
-      <a class="patreon" href="https://www.patreon.com/c/alexio_tf" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="15" cy="8.5" r="5.5"/><rect x="2.5" y="2.5" width="3.4" height="19"/></svg>
-        Patreon
-      </a>
+      <a class="coffee" href="https://buymeacoffee.com/echo.of.the.strings" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Buy me a coffee</a>
+      <a class="patreon" href="https://www.patreon.com/c/alexio_tf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><circle cx="15" cy="8.5" r="5.5"/><rect x="2.5" y="2.5" width="3.4" height="19"/></svg>Patreon</a>
     </div>
-    <span class="leaf">❧</span> Imagine &amp; sunet rulează local prin transformers.js (offline după prima descărcare); AI online folosește cheia ta (⚙).<br>
-    Autenticitatea combină marcaje de proveniență C2PA/IPTC + euristică + AI. Semnale orientative, nu verdict legal.
+    <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
+    Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
+    <span style="opacity:.7">VietAR v10 · 2026-05-31</span>
   </footer>
 </div>
 
-<div class="modal" id="modal"><div class="sheet">
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Settings -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Setări AI online"><div class="sheet">
   <h3>Setări · AI online</h3>
   <p class="hint">Identifică specii (denumiri RO) și evaluează autenticitatea, calibrat pe regiunea București/România.</p>
-  <div class="warn">⚠ Nu pune cheia în fișierul găzduit public. Se salvează doar în browserul acestui dispozitiv și se trimite direct către furnizor.</div>
-  <div class="field"><label>Furnizor</label><select id="provider"><option value="anthropic">Anthropic (Claude) — recomandat</option><option value="openai">OpenAI-compatibil (OpenAI / OpenRouter)</option></select></div>
-  <div class="field"><label>Cheie API</label><input id="apiKey" type="password" placeholder="sk-ant-… / sk-…" autocomplete="off" /></div>
-  <div class="field"><label>Model</label><input id="model" type="text" placeholder="claude-sonnet-4-6" /></div>
-  <div class="field" id="endpointField" style="display:none"><label>Endpoint (OpenAI-compatibil)</label><input id="endpoint" type="text" placeholder="https://api.openai.com/v1/chat/completions" /></div>
+  <div class="warn">⚠ <b>Risc de securitate:</b> o cheie pusă în browser e accesibilă extensiilor instalate și oricărui script. Folosește o cheie dedicată, cu limită de cheltuieli, și revocă-o dacă bănuiești expunere. Nu o pune niciodată în codul găzduit public.</div>
+  <label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="sessionOnly" style="width:18px;height:18px"> Nu salva cheia (doar pentru această sesiune)</label>
+  <div class="field"><label for="provider">Furnizor</label><select id="provider"><option value="anthropic">Anthropic (Claude) — recomandat</option><option value="openai">OpenAI-compatibil (OpenAI / OpenRouter)</option></select></div>
+  <div class="field"><label for="apiKey">Cheie API</label><input id="apiKey" type="password" placeholder="sk-ant-… / sk-…" autocomplete="off" /></div>
+  <div class="field"><label for="model">Model</label><input id="model" type="text" placeholder="claude-sonnet-4-6" /></div>
+  <div class="field" id="endpointField" style="display:none"><label for="endpoint">Endpoint (OpenAI-compatibil)</label><input id="endpoint" type="text" placeholder="https://api.openai.com/v1/chat/completions" /></div>
   <div class="sheet-actions"><button class="act ghost" id="btnCloseSettings" style="flex:1">Anulează</button><button class="act primary" id="btnSaveSettings" style="flex:1">Salvează</button></div>
+</div></div>
+
+<!-- Help / guide -->
+<div class="modal" id="helpModal" role="dialog" aria-modal="true" aria-label="Ghid"><div class="sheet">
+  <h3>Ghid rapid</h3>
+  <p class="hint">VietAR are patru motoare. Dacă nu știi care, lasă <b>Local · RO</b> — e potrivit pentru ce vezi în România.</p>
+  <ul>
+    <li><b>Local · RO</b> — 519 specii românești, complet offline. AR live peste cameră.</li>
+    <li><b>General</b> — categorii largi (animale, obiecte), foarte rapid.</li>
+    <li><b>Păsări</b> — model dedicat, ~525 specii de păsări.</li>
+    <li><b>AI online</b> — cel mai precis, cu denumiri RO + autenticitate; necesită cheie proprie (⚙).</li>
+  </ul>
+  <p class="hint"><b>AR live:</b> tab-ul „AR live" pornește camera și suprapune numele speciei pe imagine, în timp real. <b>Salvează cadrul</b> adaugă observația în Jurnal (cu dată și, opțional, locație).</p>
+  <p class="hint" style="color:var(--terracotta)"><b>Atenție:</b> nu consuma plante sau ciuperci pe baza acestei aplicații. Identificarea automată poate greși, iar unele specii sunt toxice sau mortale.</p>
+  <div class="sheet-actions"><button class="act ghost" id="btnPrefetch" style="flex:1">⬇ Descarcă tot pentru offline</button><button class="act primary" id="btnCloseHelp" style="flex:1">Am înțeles</button></div>
+  <p class="hint" id="prefetchNote" style="margin-top:10px;display:none"></p>
+</div></div>
+
+<!-- Consent for AI online -->
+<div class="modal" id="consentModal" role="dialog" aria-modal="true" aria-label="Confirmare trimitere AI"><div class="sheet">
+  <h3>Trimitere către AI online</h3>
+  <p class="hint">Acest mod trimite <b>imaginea</b> către furnizorul ales (Anthropic sau OpenAI-compatibil), folosind cheia ta. Restul motoarelor rulează local, fără să trimită nimic.</p>
+  <ul>
+    <li>Se trimite: imaginea curentă + un text de instrucțiune.</li>
+    <li>Nu se trimite: locația, jurnalul, alte poze.</li>
+    <li>Cheia ta merge direct la furnizor, nu la un server VietAR (nu există).</li>
+  </ul>
+  <div class="sheet-actions"><button class="act ghost" id="consentNo" style="flex:1">Renunț</button><button class="act primary" id="consentYes" style="flex:1">Trimite</button></div>
+</div></div>
+
+<!-- Privacy -->
+<div class="modal" id="privacyModal" role="dialog" aria-modal="true" aria-label="Confidențialitate"><div class="sheet">
+  <h3>Confidențialitate</h3>
+  <ul>
+    <li><b>Imagini, sunet, cameră:</b> procesate local în browser. Nu se încarcă pe niciun server.</li>
+    <li><b>Jurnalul</b> (observații, miniaturi, locație) e salvat doar pe acest dispozitiv (localStorage). Îl poți șterge oricând.</li>
+    <li><b>Locația:</b> cerută doar când salvezi o observație și doar dacă accepți. Poți folosi aplicația și fără.</li>
+    <li><b>AI online:</b> opțional. Doar atunci imaginea pleacă spre furnizorul ales, cu cheia ta. Cheia stă în acest browser.</li>
+    <li><b>Modelele AI</b> se descarcă de la huggingface.co și rămân în cache-ul browserului pentru offline.</li>
+  </ul>
+  <div class="sheet-actions"><button class="act primary" id="btnClosePrivacy" style="flex:1">Închide</button></div>
 </div></div>
 
 <canvas id="grab" hidden></canvas>
@@ -244,16 +344,13 @@ import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjectio
 env.allowLocalModels=false; env.useBrowserCache=true;
 
 const $=id=>document.getElementById(id);
-const dot=$('dot'),statusText=$('statusText'),video=$('video'),camHint=$('camHint'),liveBadge=$('liveBadge'),
-  liveName=$('liveName'),livePct=$('livePct'),liveTag=$('liveTag'),btnStart=$('btnStart'),btnCapture=$('btnCapture'),
-  btnFlip=$('btnFlip'),camErr=$('camErr'),drop=$('drop'),fileInput=$('file'),btnChoose=$('btnChoose'),
-  preview=$('preview'),previewStage=$('previewStage'),results=$('results'),grab=$('grab'),engineBar=$('engineBar');
+const dot=$('dot'),statusText=$('statusText'),video=$('video'),camHint=$('camHint'),
+  reticle=$('reticle'),arLabel=$('arLabel'),arName=$('arName'),arSci=$('arSci'),arPct=$('arPct'),arTag=$('arTag'),
+  btnStart=$('btnStart'),btnCapture=$('btnCapture'),btnFlip=$('btnFlip'),camErr=$('camErr'),
+  drop=$('drop'),fileInput=$('file'),btnChoose=$('btnChoose'),preview=$('preview'),previewStage=$('previewStage'),
+  results=$('results'),grab=$('grab'),engineBar=$('engineBar'),progress=$('progress'),progressBar=$('progressBar');
 const gctx=grab.getContext('2d',{willReadFrequently:true});
 
-/* ===== specii România (zero-shot CLIP) ===== */
-const CAT_EN={bird:'bird',mammal:'mammal',insect:'insect',spider:'spider',reptile:'reptile',amphibian:'amphibian',tree:'tree',plant:'plant',flower:'flower',fungus:'mushroom',mollusc:'snail or slug'};
-const CAT_RO={bird:'Pasăre',mammal:'Mamifer',insect:'Insectă',spider:'Păianjen',reptile:'Reptilă',amphibian:'Amfibian',tree:'Arbore',plant:'Plantă',flower:'Floare',fungus:'Ciupercă',mollusc:'Moluscă'};
-const CAT_PL={bird:'păsări',mammal:'mamifere',insect:'insecte',spider:'păianjeni',reptile:'reptile',amphibian:'amfibieni',tree:'arbori',plant:'plante',flower:'flori',fungus:'ciuperci',mollusc:'moluște'};
 const SP=[
  ["house sparrow","Vrabie de casă","Passer domesticus","bird"],["Eurasian tree sparrow","Vrabie de câmp","Passer montanus","bird"],
  ["common blackbird","Mierlă","Turdus merula","bird"],["song thrush","Sturz cântător","Turdus philomelos","bird"],["fieldfare","Cocoșar","Turdus pilaris","bird"],
@@ -329,18 +426,27 @@ const SP=[
  // —— ciuperci (comestibile & otrăvitoare) ——
  ["destroying angel","Îngerul-morții (MORTAL)","Amanita virosa","fungus"],["panther cap","Buretele-pardosit (toxic)","Amanita pantherina","fungus"],["the blusher","Mânătarcă-roșietică","Amanita rubescens","fungus"],["Caesar's mushroom","Crăiță (bureți-domnești)","Amanita caesarea","fungus"],["saffron milkcap","Râșcov","Lactarius deliciosus","fungus"],["charcoal burner","Vinețică","Russula cyanoxantha","fungus"],["birch bolete","Pitarcă","Leccinum scabrum","fungus"],["bay bolete","Hrib-de-muște","Imleria badia","fungus"],["slippery jack","Hrib-untos","Suillus luteus","fungus"],["morel","Zbârciog","Morchella esculenta","fungus"],["false morel","Zbârciog-gras (toxic)","Gyromitra esculenta","fungus"],["field blewit","Nicoreț-vânăt","Lepista nuda","fungus"],["St George's mushroom","Bureți-de-mai","Calocybe gambosa","fungus"],["fairy ring mushroom","Bureți-de-rouă","Marasmius oreades","fungus"],["turkey tail","Iasca-pestriță","Trametes versicolor","fungus"],["tinder fungus","Iască","Fomes fomentarius","fungus"],["sulphur tuft","Buretele-pucios (toxic)","Hypholoma fasciculare","fungus"],["jelly ear","Urechiușă","Auricularia auricula-judae","fungus"]
 ];
-const SP_COUNT=SP.length;
-
-/* dicționar RO pentru General (ImageNet) */
 const RO={'robin':'măcăleandru/sturz','magpie':'coțofană','jay':'gaiță','goldfinch':'sticlete','chickadee':'pițigoi','sparrow':'vrabie','owl':'bufniță','peacock':'păun','goose':'gâscă','stork':'barză','tabby':'pisică tigrată','persian cat':'pisică persană','lynx':'râs','lion':'leu','tiger':'tigru','brown bear':'urs brun','red fox':'vulpe roșie','wolf':'lup','badger':'bursuc','otter':'vidră','beaver':'castor','hare':'iepure de câmp','hedgehog':'arici','wild boar':'mistreț','zebra':'zebră','gorilla':'gorilă','koala':'koala','tree frog':'broască de copac','green lizard':'gușter','scorpion':'scorpion','tarantula':'tarantulă','bee':'albină','ant':'furnică','grasshopper':'lăcustă','mantis':'călugăriță','dragonfly':'libelulă','ladybug':'buburuză','snail':'melc','jellyfish':'meduză','daisy':'margaretă','corn':'porumb','mushroom':'ciupercă','banana':'banană','strawberry':'căpșună','orange':'portocală','lemon':'lămâie','bell pepper':'ardei gras','cucumber':'castravete'};
-const PLANT_HINT=/daisy|corn|mushroom|banana|strawberry|orange|lemon|pepper|cucumber|fig|pineapple|broccoli/;
+const AUDIO_RO=[['rooster','Cocoș (cucurigu)','bird'],['crowing','Cucurigu de cocoș','bird'],['chicken','Găină','bird'],['cluck','Cotcodăcit de găină','bird'],['turkey','Curcan','bird'],['duck','Rață (măcăit)','bird'],['quack','Măcăit de rață','bird'],['goose','Gâscă (gâgâit)','bird'],['honk','Gâgâit','bird'],['owl','Bufniță (huhurit)','bird'],['hoot','Huhurit de bufniță','bird'],['crow','Cioară (croncănit)','bird'],['caw','Croncănit','bird'],['pigeon','Porumbel','bird'],['coo','Uguit de porumbel','bird'],['chirp','Ciripit de pasăre','bird'],['tweet','Ciripit','bird'],['bird vocalization','Cântec de pasăre','bird'],['bird call','Chemare de pasăre','bird'],['bird song','Cântec de pasăre','bird'],['bird','Pasăre','bird'],['squawk','Țipăt de pasăre','bird'],['cuckoo','Cuc','bird'],
+ ['dog','Câine','mammal'],['bark','Lătrat de câine','mammal'],['yip','Schelălăit','mammal'],['howl','Urlet (câine/lup)','mammal'],['bow-wow','Ham-ham','mammal'],['growling','Mârâit','mammal'],['whimper','Scâncet','mammal'],['cat','Pisică','mammal'],['meow','Mieunat de pisică','mammal'],['purr','Tors de pisică','mammal'],['caterwaul','Miorlăit','mammal'],['pig','Porc (grohăit)','mammal'],['oink','Grohăit de porc','mammal'],['cattle','Vită (muget)','mammal'],['moo','Muget de vacă','mammal'],['cowbell','Talangă','mammal'],['horse','Cal','mammal'],['neigh','Nechezat de cal','mammal'],['clip-clop','Tropot de copite','mammal'],['sheep','Oaie (behăit)','mammal'],['bleat','Behăit','mammal'],['goat','Capră','mammal'],['roaring cats','Răget de felină','mammal'],['roar','Răget','mammal'],['rodents','Rozătoare','mammal'],['mouse','Șoarece','mammal'],['rats','Șobolan','mammal'],['squeak','Chițăit','mammal'],['livestock','Animale de fermă','mammal'],['domestic animals','Animale domestice','mammal'],['canidae','Canide (câine/lup/vulpe)','mammal'],['fowl','Păsări de curte','bird'],['wild animals','Animale sălbatice','mammal'],['animal','Animal','mammal'],
+ ['frog','Broască (orăcăit)','amphibian'],['croak','Orăcăit de broască','amphibian'],['snake','Șarpe','reptile'],['rattle','Zornăit (șarpe cu clopoței)','reptile'],['hiss','Sâsâit / șuierat','reptile'],
+ ['cricket','Greier (țârâit)','insect'],['insect','Insectă','insect'],['mosquito','Țânțar (bâzâit)','insect'],['fly','Muscă (bâzâit)','insect'],['buzz','Bâzâit','insect'],['bee','Albină (bâzâit)','insect'],['wasp','Viespe (bâzâit)','insect']];
+const AUDIO_ARTIF=['speech','male speech','female speech','child speech','conversation','narration','monologue','babbling','shout','bellow','yell','children shouting','screaming','whispering','laughter','baby','crying','singing','choir','chant','humming','music','musical instrument','guitar','piano','drum','violin','trumpet','synthesizer','vehicle','car','engine','motorcycle','truck','bus','aircraft','helicopter','train','rail','traffic','tools','power tool','drill','hammer','sawing','jackhammer','alarm','siren','smoke detector','telephone','ringtone','cell phone','television','radio','machine','mechanisms','gears','door','sliding door','clapping','applause','footsteps','typing','keyboard','typewriter','clock','tick','beep','bleep','white noise','static','clicking','whistling','breathing','cough','sneeze','sniff','gasp','crowd','hubbub','hands','finger snapping','glass','shatter','explosion','gunshot','fireworks'];
+
+const SP_LEN=SP.length;
+const CAT_PL={bird:'păsări',mammal:'mamifere',insect:'insecte',spider:'păianjeni',reptile:'reptile',amphibian:'amfibieni',tree:'arbori',plant:'plante',flower:'flori',fungus:'ciuperci',mollusc:'moluște'};
+const CAT_EN={bird:'bird',mammal:'mammal',insect:'insect',spider:'spider',reptile:'reptile',amphibian:'amphibian',tree:'tree',plant:'plant',flower:'flower',fungus:'mushroom',mollusc:'snail or slug'};
+const CAT_RO={bird:'Pasăre',mammal:'Mamifer',insect:'Insectă',spider:'Păianjen',reptile:'Reptilă',amphibian:'Amfibian',tree:'Arbore',plant:'Plantă',flower:'Floare',fungus:'Ciupercă',mollusc:'Moluscă'};
+const CLIP_SP=SP.map(s=>'a photo of '+s[0]+', a '+CAT_EN[s[3]]);
 const clean=l=>l.split(',')[0].trim();
 const toRO=l=>{const x=l.toLowerCase();for(const k in RO)if(x.includes(k))return RO[k];return null;};
+const PLANT_HINT=/daisy|corn|mushroom|banana|strawberry|orange|lemon|pepper|cucumber|fig|pineapple|broccoli/;
 const kindGen=l=>PLANT_HINT.test(l.toLowerCase())?'Floră / vegetal':'Faună';
+const TOXIC=/toxic|toxică|mortal|otrăv|MORTAL/i;
+const isToxic=(ro,sci,kind)=>kind==='fungus'||TOXIC.test(ro)||TOXIC.test(sci||'');
 
-/* ===== motoare imagine + audio ===== */
 const ENGINES={
-  local:{type:'zsc',task:'zero-shot-image-classification',model:'Xenova/clip-vit-base-patch16',dt:{wasm:'q8',webgpu:'fp32'},live:false},
+  local:{type:'zsc',live:true},
   general:{type:'cls',task:'image-classification',model:'Xenova/vit-base-patch16-224',dt:{wasm:'q8',webgpu:'fp32'},live:true},
   birds:{type:'cls',task:'image-classification',model:'chriamue/bird-species-classifier',dt:{wasm:'fp32',webgpu:'fp32'},live:true},
   ai:{type:'online',live:false}
@@ -348,281 +454,449 @@ const ENGINES={
 const AST={model:'Xenova/ast-finetuned-audioset-10-10-0.4593',dt:{wasm:'q8',webgpu:'fp32'}};
 let engine='local'; const pipes={}; let lastImageURL=null,lastFile=null,busy=false;
 const setStatus=(t,c)=>{statusText.textContent=t;dot.className='dot '+(c||'');};
+function showProgress(p){if(p==null){progress.classList.remove('show');return;}progress.classList.add('show');progressBar.style.width=Math.max(3,p)+'%';}
 
 async function loadPipe(task,model,dt){
   if(pipes[model])return pipes[model];
   const device=('gpu' in navigator)?'webgpu':'wasm';
-  let dtypes=[...new Set(device==='webgpu'?[dt.webgpu]:[dt.wasm,'fp32'])]; let err;
+  let dtypes=[...new Set(device==='webgpu'?['fp16',dt.webgpu,'fp32']:[dt.wasm,'fp32'])]; let err;
   for(const dtype of dtypes){try{
-    setStatus(`Se descarcă modelul (${device.toUpperCase()})…`,'loading');
-    const p=await pipeline(task,model,{device,dtype,progress_callback:x=>{if(x.status==='progress'&&x.file&&x.file.endsWith('.onnx'))setStatus(`Model… ${Math.round(x.progress||0)}%`,'loading');}});
-    pipes[model]=p; setStatus('Gata · rulează local','ready'); return p;
+    setStatus(`Prima rulare: descarc modelul (${device.toUpperCase()}, ~zeci de MB, o singură dată)…`,'loading');showProgress(3);
+    const p=await pipeline(task,model,{device,dtype,progress_callback:x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const pc=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc modelul… ${pc}%${mb} (o singură dată)`,'loading');showProgress(pc);}}});
+    pipes[model]=p; setStatus('Gata · rulează local','ready');showProgress(null); return p;
   }catch(e){err=e;console.warn('dtype',dtype,e);}}
-  throw err;
+  showProgress(null); throw err;
 }
 const getPipe=eng=>loadPipe(ENGINES[eng].task,ENGINES[eng].model,ENGINES[eng].dt);
 const getAst=()=>loadPipe('audio-classification',AST.model,AST.dt);
 
-/* ===== CLIP cu amprente text precalculate (scalează la 500+ specii fără să încetinească) ===== */
+/* ===== CLIP cu amprente precalculate ===== */
 const CLIP_ID='Xenova/clip-vit-base-patch16';
-const CLIP_SP=SP.map(s=>'a photo of '+s[0]+', a '+CAT_EN[s[3]]);
 let clipTok=null,clipText=null,clipProc=null,clipVis=null,clipReady=false;
 const clipTextCache={};
 async function ensureClip(){
   if(clipReady)return;
   const device=('gpu' in navigator)?'webgpu':'wasm';
-  const dtype=device==='webgpu'?'fp32':'q8';
-  setStatus(`Se încarcă modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');
+  const chain=device==='webgpu'?['fp16','fp32']:['q8','fp32'];
+  setStatus(`Prima rulare: descarc modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');showProgress(3);
   if(!clipTok)clipTok=await AutoTokenizer.from_pretrained(CLIP_ID);
   if(!clipProc)clipProc=await AutoProcessor.from_pretrained(CLIP_ID);
-  try{
-    clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype});
-    clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype});
-  }catch(e){
-    console.warn('CLIP q8 eșuat, încerc fp32',e);
-    clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype:'fp32'});
-    clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype:'fp32'});
-  }
-  clipReady=true;
+  const pc=x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const v=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc CLIP… ${v}%${mb}`,'loading');showProgress(v);}};
+  let err;
+  for(const dtype of chain){try{
+    clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype,progress_callback:pc});
+    clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype,progress_callback:pc});
+    err=null;break;
+  }catch(e){err=e;console.warn('CLIP dtype',dtype,'eșuat',e.message);}}
+  if(err)throw err;
+  clipReady=true;showProgress(null);
+  // warm-up: precompilează shaderele GPU pe un cadru minuscul, ca prima detecție reală să fie rapidă
+  try{const c=document.createElement('canvas');c.width=c.height=224;const x=c.getContext('2d');x.fillStyle='#888';x.fillRect(0,0,224,224);await clipImageEmbed(c.toDataURL('image/jpeg',0.5));}catch(e){console.warn('warmup',e);}
 }
 function l2norm(a,off,len){let s=0;for(let i=0;i<len;i++){const v=a[off+i];s+=v*v;}s=Math.sqrt(s)||1;for(let i=0;i<len;i++)a[off+i]/=s;}
 async function clipTextMatrix(key,labels){
   if(clipTextCache[key])return clipTextCache[key];
+  // cache persistent pentru specii: calculat o singură dată, reîncărcat instant
+  const ck='emb:'+key+':'+CLIP_ID+':'+labels.length;
+  if(key==='species'){const c=await embGet(ck);if(c&&c.D&&c.buf){const mat=new Float32Array(c.buf);const obj={mat,n:c.n,D:c.D};clipTextCache[key]=obj;return obj;}}
   await ensureClip();
-  const N=labels.length; let D=0,mat=null; const B=48;
+  const N=labels.length;let D=0,mat=null;const B=48;
   for(let i=0;i<N;i+=B){
-    const batch=labels.slice(i,i+B);
-    const inp=clipTok(batch,{padding:true,truncation:true});
-    const {text_embeds}=await clipText(inp);
-    D=text_embeds.dims[1]; const data=text_embeds.data;
+    const batch=labels.slice(i,i+B);const inp=clipTok(batch,{padding:true,truncation:true});
+    const te=await clipText(inp);const text_embeds=te.text_embeds;D=text_embeds.dims[1];const data=text_embeds.data;
     if(!mat)mat=new Float32Array(N*D);
     for(let r=0;r<batch.length;r++){const dst=(i+r)*D,src=r*D;for(let j=0;j<D;j++)mat[dst+j]=data[src+j];l2norm(mat,dst,D);}
-    if(key==='species')setStatus(`Pregătesc amprentele speciilor… ${Math.min(i+B,N)}/${N} (o singură dată)`,'loading');
+    try{text_embeds.dispose&&text_embeds.dispose();}catch(e){}
+    if(key==='species'){const done=Math.min(i+B,N);setStatus(`Pregătesc amprentele speciilor… ${done}/${N} (o singură dată)`,'loading');showProgress(done/N*100);}
   }
-  const obj={mat,n:N,D}; clipTextCache[key]=obj; setStatus('Gata · rulează local','ready'); return obj;
+  const obj={mat,n:N,D};clipTextCache[key]=obj;
+  if(key==='species'){try{await embPut({k:ck,n:N,D,buf:mat.buffer});}catch(e){console.warn('emb cache',e);}}
+  setStatus('Gata · rulează local','ready');showProgress(null);return obj;
 }
 async function clipImageEmbed(dataURL){
-  await ensureClip();
-  const image=await RawImage.read(dataURL);
-  const inp=await clipProc(image);
-  const {image_embeds}=await clipVis(inp);
-  const v=Float32Array.from(image_embeds.data); l2norm(v,0,v.length); return v;
+  await ensureClip();const image=await RawImage.read(dataURL);const inp=await clipProc(image);
+  const out=await clipVis(inp);const v=Float32Array.from(out.image_embeds.data);l2norm(v,0,v.length);
+  try{out.image_embeds.dispose&&out.image_embeds.dispose();if(inp.pixel_values&&inp.pixel_values.dispose)inp.pixel_values.dispose();}catch(e){}
+  return v;
 }
 async function clipClassify(dataURL,key,labels,k){
-  const {mat,n,D}=await clipTextMatrix(key,labels);
-  const v=await clipImageEmbed(dataURL);
-  const sc=new Float32Array(n); let max=-1e9;
-  for(let i=0;i<n;i++){let dot=0;const off=i*D;for(let j=0;j<D;j++)dot+=mat[off+j]*v[j];const s=dot*100;sc[i]=s;if(s>max)max=s;}
-  let sum=0;for(let i=0;i<n;i++){sc[i]=Math.exp(sc[i]-max);sum+=sc[i];}
-  return [...sc.keys()].sort((a,b)=>sc[b]-sc[a]).slice(0,k).map(i=>({i,score:sc[i]/sum}));
+  const {mat,n,D}=await clipTextMatrix(key,labels);const v=await clipImageEmbed(dataURL);
+  const cos=new Float32Array(n);let max=-1e9;
+  for(let i=0;i<n;i++){let dot=0;const off=i*D;for(let j=0;j<D;j++)dot+=mat[off+j]*v[j];cos[i]=dot;if(dot>max)max=dot;}
+  let sum=0;const sm=new Float32Array(n);for(let i=0;i<n;i++){sm[i]=Math.exp((cos[i]-max)*100);sum+=sm[i];}
+  return [...cos.keys()].sort((a,b)=>cos[b]-cos[a]).slice(0,k).map(i=>({i,score:sm[i]/sum,cos:cos[i]}));
 }
 
 /* ===== randare ===== */
+let lastResult=null;
+function dangerBanner(){return `<div class="danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Nu consuma și nu atinge pe baza acestei identificări. Unele plante și ciuperci sunt toxice sau mortale, iar recunoașterea automată poate greși. Confirmă cu un specialist.</span></div>`;}
+function scoreText(it){ // ciuperci: fără procent (nu sugerăm comestibilitate)
+  if(it.kindkey==='fungus')return '<span style="color:var(--terracotta);font-weight:700">orientativ</span>';
+  if(it.cos!=null){const c=it.cos;const q=c>=0.28?'potrivire bună':c>=0.22?'potrivire medie':'potrivire slabă';const col=c>=0.28?'var(--moss)':c>=0.22?'var(--gold)':'var(--terracotta)';return `<span style="color:${col};font-weight:700">${q}</span>`;}
+  return (it.score*100).toFixed(0)+'%';
+}
 function renderRanked(items,note,leadFiltered){
-  if(!items||!items.length){results.innerHTML='<div class="empty">Nimic clar identificat. Încearcă o imagine/sunet mai clar.</div>';return;}
-  const t=items[0];
-  let html=`<div class="hero ${leadFiltered?'filtered':''}"><div class="ro">${t.ro}</div>${t.sci?`<div class="sci">${t.sci}</div>`:''}<div class="meta"><span class="kind">${t.kind}</span><span class="conf">${(t.score*100).toFixed(1)}%</span></div>${t.desc?`<div class="desc">${t.desc}</div>`:''}</div>`;
+  if(!items||!items.length){results.innerHTML='<div class="empty">Nimic clar identificat. Încearcă o imagine/sunet mai clar.</div>';lastResult=null;return;}
+  const t=items[0];lastResult=t;
+  // incertitudine pe MARGINEA dintre #1 și #2 (cosinus), nu pe softmax absolut
+  let uncertain=false;
+  if(!leadFiltered){
+    if(t.cos!=null){const m=items.length>1?(t.cos-items[1].cos):1;uncertain=(t.cos<0.22||m<0.015);}
+    else{const gap=items.length>1?(t.score-items[1].score):1;uncertain=(t.score<0.32||gap<0.06);}
+  }
+  const grp=isGroup(t.sci)?' <span class="uncertain" style="margin:0">grup, nu specie</span>':'';
+  let html=`<div class="hero ${leadFiltered?'filtered':''}"><div class="ro">${t.ro}${grp}</div>${t.sci?`<div class="sci">${t.sci}</div>`:''}<div class="meta"><span class="kind">${t.kind}</span><span class="conf">${scoreText(t)}</span></div>${t.desc?`<div class="desc">${t.desc}</div>`:''}${uncertain?'<div class="uncertain">⚠ potrivire incertă — verifică detaliile sau folosește AI online</div>':''}</div>`;
+  if(!leadFiltered&&isToxic(t.ro,t.sci,t.kindkey))html+=dangerBanner();
   if(note)html+=`<p class="res-note">${note}</p>`;
-  items.slice(1).forEach((it,i)=>{html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${it.ro}</div>${it.sci?`<div class="en">${it.sci}</div>`:''}</div><div class="score">${(it.score*100).toFixed(1)}%</div></div><div class="bar"><i data-w="${it.score*100}"></i></div></div>`;});
+  items.slice(1).forEach((it,i)=>{const g=isGroup(it.sci)?' <span style="font-size:.6rem;color:var(--muted)">(grup)</span>':'';html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${it.ro}${g}</div>${it.sci?`<div class="en">${it.sci}</div>`:''}</div><div class="score">${scoreText(it)}</div></div><div class="bar"><i data-w="${it.cos!=null?Math.max(0,it.cos*100):it.score*100}"></i></div></div>`;});
+  if(!leadFiltered)html+=resultActions();
+  html+=`<span class="sr-only" role="status">Identificat: ${t.ro}${t.sci?', '+t.sci:''}.</span>`;
   results.innerHTML=html;
   requestAnimationFrame(()=>results.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
+  wireResultActions();
 }
 function renderOnline(d){
   const conf=Number(d.incredere)||0;
+  lastResult={ro:d.nume_ro,sci:d.nume_stiintific,kind:d.categorie,score:conf/100};
   let html=`<div class="hero"><div class="ro">${d.nume_ro||'Nedeterminat'}</div>${d.nume_stiintific?`<div class="sci">${d.nume_stiintific}</div>`:''}<div class="meta"><span class="kind">${d.categorie||'—'}</span><span class="conf">${conf?conf+'% încredere':''}</span></div>${d.descriere?`<div class="desc">${d.descriere}</div>`:''}</div>`;
+  if(/ciup|toxic|plant|flor/i.test(d.categorie||'')||TOXIC.test(d.nume_ro||''))html+=dangerBanner();
   if(Array.isArray(d.alternative)&&d.alternative.length){html+=`<p class="res-note">Alte posibilități</p>`;d.alternative.slice(0,4).forEach((a,i)=>{const p=Number(a.incredere)||0;html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${a.nume_ro||'—'}</div>${a.nume_stiintific?`<div class="en">${a.nume_stiintific}</div>`:''}</div><div class="score">${p?p+'%':''}</div></div><div class="bar"><i data-w="${p}"></i></div></div>`;});}
+  html+=resultActions();
   results.innerHTML=html;
   requestAnimationFrame(()=>results.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
+  wireResultActions();
   if(d.autenticitate)appendAuthCard({verdict:d.autenticitate.verdict,motiv:d.autenticitate.motiv,src:'Claude (AI)'});
 }
+function resultActions(){return `<div class="actbar"><button id="saveObs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Salvează în jurnal</button><button id="toINat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>iNaturalist</button></div>`;}
+function wireResultActions(){const s=$('saveObs'),n=$('toINat');if(s)s.onclick=()=>saveObservation();if(n)n.onclick=()=>window.open('https://www.inaturalist.org/observations/upload','_blank','noopener');}
 const showLoading=m=>results.innerHTML=`<div class="empty"><div class="spin"></div>${m||'Se analizează…'}</div>`;
 
-/* ===== AI online ===== */
+/* ===== AI online + consimțământ ===== */
 const PROMPT=`Ești un naturalist expert. Fotografia a fost făcută cel mai probabil în România (zona București), Europa — preferă specii comune regiunii.
-Identifică specia principală de faună/floră ȘI evaluează autenticitatea imaginii (semne de editare Photoshop, generare AI, sau dacă e o reprezentare/obiect: jucărie, statuie, desen, ecran).
+Identifică specia principală de faună/floră ȘI evaluează autenticitatea imaginii (editare Photoshop, generare AI, sau reprezentare: jucărie, statuie, desen, ecran).
 Răspunde DOAR cu JSON valid, fără text suplimentar:
 {"nume_ro":"","nume_stiintific":"","categorie":"faună|floră|ciupercă|altul","incredere":0-100,"descriere":"o frază scurtă RO","alternative":[{"nume_ro":"","nume_stiintific":"","incredere":0-100}],"autenticitate":{"verdict":"reală|editată|generată AI|reprezentare/obiect|nesigur","motiv":"scurtă explicație RO"}}
 Dacă nu poți identifica, pune "Nedeterminat" la nume_ro.`;
-const getCfg=()=>{try{return JSON.parse(localStorage.getItem('iff_cfg')||'{}');}catch(e){return {};}};
+let sessionCfg=null;
+const getCfg=()=>{if(sessionCfg)return sessionCfg;try{return JSON.parse(localStorage.getItem('iff_cfg')||'{}');}catch(e){return {};}};
 const parseJSON=t=>{const m=t.match(/\{[\s\S]*\}/);if(!m)throw new Error('Răspuns neașteptat');return JSON.parse(m[0]);};
-async function identifyOnline(dataURL){
+let pendingAI=null;
+function identifyOnline(dataURL){
   const cfg=getCfg();
-  if(!cfg.key){results.innerHTML='<div class="empty">Pentru AI online, deschide ⚙ și introdu o cheie API.</div>';openSettings();return;}
+  if(!cfg.key){results.innerHTML='<div class="empty">Pentru AI online, deschide ⚙ și introdu o cheie API.</div>';openModal('modal');return;}
+  if(localStorage.getItem('iff_consent')==='1'){return doOnline(dataURL,cfg);}
+  pendingAI={dataURL,cfg};openModal('consentModal');
+}
+async function doOnline(dataURL,cfg){
   showLoading('Trimit imaginea către AI…');
   const mt=(dataURL.match(/^data:(.*?);/)||[])[1]||'image/jpeg',b64=dataURL.split(',')[1];
+  const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),45000);
   try{
     let text;
     if(cfg.provider==='openai'){
-      const r=await fetch(cfg.endpoint||'https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+cfg.key,'content-type':'application/json'},body:JSON.stringify({model:cfg.model||'gpt-4o-mini',max_tokens:800,messages:[{role:'user',content:[{type:'text',text:PROMPT},{type:'image_url',image_url:{url:dataURL}}]}]})});
+      const r=await fetch(cfg.endpoint||'https://api.openai.com/v1/chat/completions',{method:'POST',signal:ctrl.signal,headers:{'Authorization':'Bearer '+cfg.key,'content-type':'application/json'},body:JSON.stringify({model:cfg.model||'gpt-4o-mini',max_tokens:800,messages:[{role:'user',content:[{type:'text',text:PROMPT},{type:'image_url',image_url:{url:dataURL}}]}]})});
       const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);text=j.choices[0].message.content;
     }else{
-      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model:cfg.model||'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:PROMPT}]}]})});
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:ctrl.signal,headers:{'x-api-key':cfg.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model:cfg.model||'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:PROMPT}]}]})});
       const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);text=j.content.filter(c=>c.type==='text').map(c=>c.text).join('');
     }
+    clearTimeout(timer);
     renderOnline(parseJSON(text));setStatus('Gata · AI','ready');
-    if(lastFile) runProvenance(lastFile);
-  }catch(e){console.error(e);results.innerHTML=`<div class="empty">Eroare AI: ${e.message}.<br>Verifică cheia/modelul (⚙).</div>`;setStatus('Eroare AI','err');}
+    if(lastFile)scanProvenance(lastFile).then(p=>{if(p)appendAuthCard({prov:p.text});}).catch(()=>{});
+  }catch(e){clearTimeout(timer);console.error(e);const msg=e.name==='AbortError'?'Timpul de așteptare a expirat (45s). Verifică conexiunea și reîncearcă.':'Eroare AI: '+e.message+'. Verifică cheia/modelul (⚙).';results.innerHTML=`<div class="empty">${msg}</div>`;setStatus('Eroare AI','err');}
 }
 
 /* ===== identificare imagine ===== */
 async function identify(dataURL,fromUpload){
-  lastImageURL=dataURL; const cfg=ENGINES[engine];
-  if(cfg.type==='online'){await identifyOnline(dataURL);return;}
+  lastImageURL=dataURL;const cfg=ENGINES[engine];
+  if(cfg.type==='online'){identifyOnline(dataURL);return;}
   showLoading(engine==='local'?'Compar cu specii din România…':'Se analizează local…');
   try{
     if(cfg.type==='zsc'){
       const top=await clipClassify(dataURL,'species',CLIP_SP,5);
-      const items=top.map(t=>{const s=SP[t.i];return{ro:s[1],sci:s[2],kind:CAT_RO[s[3]],score:t.score};});
-      renderRanked(items,`Top 5 din ${SP.length} specii din România (amprente precalculate o singură dată).`);
+      const items=top.map(t=>{const s=SP[t.i];return{ro:s[1],sci:s[2],kind:CAT_RO[s[3]],kindkey:s[3],score:t.score,cos:t.cos};});
+      renderRanked(items,`Top 5 din ${SP_LEN} specii din România. <i>Local e orientativ — potrivește aspectul vizual cu o listă, nu „cunoaște" specii rare; pentru certitudine folosește AI online.</i>`);
     }else{
-      const p=await getPipe(engine);
-      const out=await p(dataURL,{topk:5});
+      const p=await getPipe(engine);const out=await p(dataURL,{topk:5});
       const items=out.map(o=>{const ro=toRO(o.label);return{ro:ro||clean(o.label),sci:ro?clean(o.label):'',kind:kindGen(o.label),score:o.score};});
       renderRanked(items,`Top ${items.length} potriviri (model ${engine}).`);
     }
-    if(fromUpload) runAuthenticity(dataURL,lastFile,true);
+    if(fromUpload)runAuthenticity(dataURL,lastFile,true);
   }catch(e){console.error(e);if(engine!=='general'){results.innerHTML=`<div class="empty">Modelul «${engine}» nu s-a încărcat aici. Revin la General.</div>`;selectEngine('general');identify(dataURL,fromUpload);}else results.innerHTML='<div class="empty">Eroare la analiză.</div>';}
 }
 
-/* ===== AUTENTICITATE ===== */
+/* ===== AUTENTICITATE (C2PA + euristică) ===== */
 function appendAuthCard({verdict,motiv,src,prov,clip}){
-  let cls='v-warn';
-  const v=(verdict||'').toLowerCase();
+  let cls='v-warn';const v=(verdict||'').toLowerCase();
   if(/real|autent|cameră/.test(v))cls='v-ok';
   if(/generat|ai|fals|editat|reprezent|obiect/.test(v))cls='v-bad';
   let html=`<div class="auth"><h3>🛡 Autenticitate</h3>`;
   if(verdict)html+=`<span class="verdict ${cls}">${verdict}</span>`;
   if(motiv)html+=`<div class="line">${motiv}${src?` <i style="opacity:.7">— ${src}</i>`:''}</div>`;
-  if(prov)html+=`<div class="line"><b>Proveniență (metadate):</b> ${prov}</div>`;
+  if(prov)html+=`<div class="line"><b>Proveniență:</b> ${prov}</div>`;
   if(clip)html+=`<div class="line"><b>Euristică vizuală:</b> ${clip}</div>`;
-  html+=`<div class="disc">Semnale orientative, nu dovadă. Absența marcajelor ≠ autentic (metadatele se pierd la descărcare/redimensionare/screenshot). Pentru verificare semnată: contentcredentials.org/verify.</div></div>`;
-  const card=document.createElement('div'); card.innerHTML=html; results.appendChild(card.firstChild);
+  html+=`<div class="disc">Semnale orientative, nu dovadă. Absența marcajelor ≠ autentic (se pierd la screenshot/redimensionare). Verificare semnată: <a href="https://contentcredentials.org/verify" target="_blank" rel="noopener">contentcredentials.org/verify</a>.</div></div>`;
+  const card=document.createElement('div');card.innerHTML=html;results.appendChild(card.firstChild);
 }
 async function runAuthenticity(dataURL,file,doClip){
   let prov=null,clip=null;
-  if(file){ try{prov=await scanProvenance(file);}catch(e){} }
-  if(doClip && engine!=='ai'){ try{clip=await clipAuthenticity(dataURL);}catch(e){} }
-  if(prov||clip) appendAuthCard({prov:prov?prov.text:null,clip});
+  if(file){
+    if(navigator.onLine){try{prov=await c2paProvenance(file);}catch(e){console.warn('c2pa lib indisponibilă:',e.message);}}
+    if(!prov){try{prov=await scanProvenance(file);const pre=navigator.onLine?'(bibliotecă C2PA indisponibilă — doar scanare metadate) ':'(offline — verificarea C2PA semnată necesită conexiune; doar scanare metadate) ';prov.text=pre+prov.text;}catch(e){console.warn('scanProvenance:',e);}}
+  }
+  if(doClip&&engine!=='ai'){try{clip=await clipAuthenticity(dataURL);}catch(e){console.warn('clipAuthenticity:',e);}}
+  if(prov||clip)appendAuthCard({prov:prov?prov.text:null,clip});
 }
-function runProvenance(file){ scanProvenance(file).then(p=>{if(p)appendAuthCard({prov:p.text});}).catch(()=>{}); }
-
+async function c2paProvenance(file){
+  // întâi biblioteca nouă @contentauth/c2pa-web, apoi c2pa clasic; ambele etichetate ca "verificat C2PA"
+  let manifestStore=null;
+  try{
+    const m=await import('https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web/+esm');
+    if(m&&m.createC2pa){const c2pa=await m.createC2pa({wasmSrc:'https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web/dist/resources/c2pa_bg.wasm'});const res=await c2pa.read(file);manifestStore=res&&(res.manifestStore||res);}
+  }catch(e){console.warn('c2pa-web:',e.message);}
+  if(!manifestStore){
+    const ver='0.30.17';
+    const {createC2pa}=await import(`https://cdn.jsdelivr.net/npm/c2pa@${ver}/+esm`);
+    const c2pa=await createC2pa({wasmSrc:`https://cdn.jsdelivr.net/npm/c2pa@${ver}/dist/assets/wasm/toolkit_bg.wasm`,workerSrc:`https://cdn.jsdelivr.net/npm/c2pa@${ver}/dist/c2pa.worker.min.js`});
+    const res=await c2pa.read(file);manifestStore=res&&res.manifestStore;
+  }
+  const am=manifestStore&&(manifestStore.activeManifest||manifestStore.active_manifest);
+  if(!am)return {text:'(verificat C2PA) fără acte de proveniență semnate în fișier.',c2pa:true};
+  const gen=((am.claimGenerator||am.claim_generator||'')+'').split('(')[0].trim();
+  const aiGen=/trainedAlgorithmicMedia|compositeWithTrainedAlgorithmicMedia|algorithmicMedia/i.test(JSON.stringify(am));
+  const text=aiGen?`✓ verificat C2PA · ⚠ marcaj de conținut generat AI (generator: ${gen||'necunoscut'}).`:`✓ verificat C2PA · acte semnate (generator: ${gen||'necunoscut'}). Editare declarată, nu neapărat falsificare.`;
+  return {text,c2pa:true};
+}
 async function scanProvenance(file){
-  const buf=new Uint8Array(await file.arrayBuffer());
-  let s=''; const N=Math.min(buf.length,4*1024*1024);
-  for(let i=0;i<N;i++) s+=String.fromCharCode(buf[i]);
+  const buf=new Uint8Array(await file.arrayBuffer());let s='';const N=Math.min(buf.length,4*1024*1024);
+  for(let i=0;i<N;i++)s+=String.fromCharCode(buf[i]);
   const has=re=>re.test(s);
-  const ai=has(/trainedAlgorithmicMedia|algorithmicMedia|DigitalSourceType|GenAI|firefly|dall[\s-]?e|midjourney|stable\s?diffusion|stability\.ai|imagen|"?OpenAI"?|c2pa\.ai/i);
-  const c2pa=has(/jumbf|c2pa|contentauth|urn:uuid:|claim_generator/i);
-  const editor=has(/Adobe Photoshop|Photoshop|Lightroom|GIMP|Affinity Photo|Pixlr|Snapseed|Topaz|Luminar|Canva/i);
-  const hist=has(/xmpMM:History|stEvt:action/i);
-  let soft='';
-  const m=s.match(/(Adobe Photoshop[^"<\x00]{0,18}|Adobe Lightroom[^"<\x00]{0,14}|GIMP\s?[0-9.]*|Affinity Photo|Snapseed|Canva|Adobe Firefly|DALL[\s·-]?E[\s0-9]*|Midjourney)/i);
-  if(m)soft=m[0].trim();
+  // markeri structurali, nu doar nume de brand (evită fals-pozitive pe „Adobe" în EXIF)
+  const ai=has(/trainedAlgorithmicMedia|compositeWithTrainedAlgorithmicMedia|c2pa\.ai|GenAI|"software":\s*"(DALL|Midjourney|Stable Diffusion|Firefly)/i);
+  const editHist=has(/xmpMM:History|stEvt:action\s*=\s*"(saved|edited|produced)|photoshop:History/i);
+  const editorSoft=has(/CreatorTool[^>]{0,40}(Photoshop|Lightroom|GIMP|Affinity|Pixlr|Snapseed|Topaz|Luminar)|Software[^>]{0,30}(Photoshop|GIMP)/i);
+  const m=s.match(/(Adobe Photoshop[^"<\x00]{0,16}|GIMP\s?[0-9.]*|Affinity Photo|Snapseed|Adobe Firefly|DALL[\s·-]?E[\s0-9]*|Midjourney)/i);
+  const soft=m?m[0].trim():'';
   let text;
-  if(ai)text=`⚠ Marcaj de generare/sinteză AI prezent în metadate (C2PA/IPTC${soft?` · ${soft}`:''}). Foarte probabil generată sau prelucrată cu AI.`;
-  else if(editor||hist)text=`Editată într-un program de imagine${soft?` (${soft})`:''}${hist?', cu istoric de modificări':''}. Editare ≠ falsificare, dar nu e cadru brut de cameră.`;
-  else if(c2pa)text=`Conține acte de proveniență C2PA. Verifică pe contentcredentials.org/verify pentru detalii semnate.`;
-  else text=`Fără marcaje de proveniență detectabile — neconcludent (metadatele se pierd des).`;
-  return {text,ai,editor,c2pa,hist};
+  if(ai)text=`⚠ Marcaj de generare/sinteză AI în metadate${soft?` · ${soft}`:''}.`;
+  else if(editHist||editorSoft)text=`Semne de editare într-un program de imagine${soft?` (${soft})`:''}. Editare ≠ falsificare. <i>(încredere joasă — doar metadate)</i>`;
+  else text=`Fără marcaje de proveniență detectabile — neconcludent (se pierd des la screenshot/redimensionare). <i>(încredere joasă)</i>`;
+  return {text,ai,editor:editHist||editorSoft};
 }
 const AUTH_LABELS=['a real photograph captured by a camera','an AI-generated or computer-synthesized image','a drawing, painting or digital illustration','a toy, statue or replica of an animal or plant'];
 const AUTH_RO=['pare fotografie reală','⚠ posibil generată AI','pare desen/ilustrație','⚠ pare obiect/reprezentare, nu vietate reală'];
-async function clipAuthenticity(dataURL){
-  const top=await clipClassify(dataURL,'auth',AUTH_LABELS,1);
-  const t=top[0]; return `${AUTH_RO[t.i]} (${(t.score*100).toFixed(0)}%)`;
-}
+async function clipAuthenticity(dataURL){const top=await clipClassify(dataURL,'auth',AUTH_LABELS,1);const t=top[0];return `${AUTH_RO[t.i]} (${(t.score*100).toFixed(0)}%)`;}
 
-/* ===== AUDIO (AST / AudioSet) ===== */
-const AUDIO_RO=[['rooster','Cocoș (cucurigu)','bird'],['crowing','Cucurigu de cocoș','bird'],['chicken','Găină','bird'],['cluck','Cotcodăcit de găină','bird'],['turkey','Curcan','bird'],['duck','Rață (măcăit)','bird'],['quack','Măcăit de rață','bird'],['goose','Gâscă (gâgâit)','bird'],['honk','Gâgâit','bird'],['owl','Bufniță (huhurit)','bird'],['hoot','Huhurit de bufniță','bird'],['crow','Cioară (croncănit)','bird'],['caw','Croncănit','bird'],['pigeon','Porumbel','bird'],['coo','Uguit de porumbel','bird'],['chirp','Ciripit de pasăre','bird'],['tweet','Ciripit','bird'],['bird vocalization','Cântec de pasăre','bird'],['bird call','Chemare de pasăre','bird'],['bird song','Cântec de pasăre','bird'],['bird','Pasăre','bird'],['squawk','Țipăt de pasăre','bird'],['cuckoo','Cuc','bird'],
- ['dog','Câine','mammal'],['bark','Lătrat de câine','mammal'],['yip','Schelălăit','mammal'],['howl','Urlet (câine/lup)','mammal'],['bow-wow','Ham-ham','mammal'],['growling','Mârâit','mammal'],['whimper','Scâncet','mammal'],['cat','Pisică','mammal'],['meow','Mieunat de pisică','mammal'],['purr','Tors de pisică','mammal'],['caterwaul','Miorlăit','mammal'],['pig','Porc (grohăit)','mammal'],['oink','Grohăit de porc','mammal'],['cattle','Vită (muget)','mammal'],['moo','Muget de vacă','mammal'],['cowbell','Talangă','mammal'],['horse','Cal','mammal'],['neigh','Nechezat de cal','mammal'],['clip-clop','Tropot de copite','mammal'],['sheep','Oaie (behăit)','mammal'],['bleat','Behăit','mammal'],['goat','Capră','mammal'],['roaring cats','Răget de felină','mammal'],['roar','Răget','mammal'],['rodents','Rozătoare','mammal'],['mouse','Șoarece','mammal'],['rats','Șobolan','mammal'],['squeak','Chițăit','mammal'],['livestock','Animale de fermă','mammal'],['domestic animals','Animale domestice','mammal'],['canidae','Canide (câine/lup/vulpe)','mammal'],['fowl','Păsări de curte','bird'],['wild animals','Animale sălbatice','mammal'],['animal','Animal','mammal'],
- ['frog','Broască (orăcăit)','amphibian'],['croak','Orăcăit de broască','amphibian'],['snake','Șarpe','reptile'],['rattle','Zornăit (șarpe cu clopoței)','reptile'],['hiss','Sâsâit / șuierat','reptile'],
- ['cricket','Greier (țârâit)','insect'],['insect','Insectă','insect'],['mosquito','Țânțar (bâzâit)','insect'],['fly','Muscă (bâzâit)','insect'],['buzz','Bâzâit','insect'],['bee','Albină (bâzâit)','insect'],['wasp','Viespe (bâzâit)','insect']];
-const AUDIO_ARTIF=['speech','male speech','female speech','child speech','conversation','narration','monologue','babbling','shout','bellow','yell','children shouting','screaming','whispering','laughter','baby','crying','singing','choir','chant','humming','music','musical instrument','guitar','piano','drum','violin','trumpet','synthesizer','vehicle','car','engine','motorcycle','truck','bus','aircraft','helicopter','train','rail','traffic','tools','power tool','drill','hammer','sawing','jackhammer','alarm','siren','smoke detector','telephone','ringtone','cell phone','television','radio','machine','mechanisms','gears','door','sliding door','clapping','applause','footsteps','typing','keyboard','typewriter','clock','tick','beep','bleep','white noise','static','clicking','whistling','breathing','cough','sneeze','sniff','gasp','crowd','hubbub','hands','finger snapping','glass','shatter','explosion','gunshot','fireworks'];
+/* ===== AUDIO ===== */
 function mapAudio(label){const x=label.toLowerCase();for(const[k,ro,cat]of AUDIO_RO)if(x.includes(k))return{ro,cat};return null;}
 function isArtif(label){const x=label.toLowerCase();return AUDIO_ARTIF.some(k=>x.includes(k));}
-
 async function decodeMono16k(ab){
-  const AC=window.AudioContext||window.webkitAudioContext; const ac=new AC();
-  const buf=await ac.decodeAudioData(ab.slice(0)); try{ac.close();}catch(e){}
-  const len=Math.max(1,Math.ceil(buf.duration*16000));
-  const off=new OfflineAudioContext(1,Math.min(len,16000*10),16000);
-  const src=off.createBufferSource(); src.buffer=buf; src.connect(off.destination); src.start();
-  const r=await off.startRendering(); return r.getChannelData(0);
+  const AC=window.AudioContext||window.webkitAudioContext;
+  // iOS Safari acceptă decodeAudioData cu callback-uri, nu mereu Promise
+  const ac=new AC();
+  const buf=await new Promise((res,rej)=>{const p=ac.decodeAudioData(ab.slice(0),res,rej);if(p&&p.then)p.then(res,rej);});
+  try{ac.close();}catch(e){console.warn('ac.close',e);}
+  const TARGET=16000, dur=Math.min(buf.duration,12);
+  const frames=Math.max(1,Math.ceil(dur*TARGET));
+  // OfflineAudioContext la 16kHz NU e acceptat de iOS Safari → reeșantionăm manual din canalul nativ
+  const supports16k=(()=>{try{const t=new OfflineAudioContext(1,16000,16000);return !!t;}catch(e){return false;}})();
+  if(supports16k){
+    try{
+      const off=new OfflineAudioContext(1,frames,TARGET);
+      const src=off.createBufferSource();src.buffer=buf;src.connect(off.destination);src.start();
+      const r=await off.startRendering();return r.getChannelData(0);
+    }catch(e){console.warn('OfflineAudioContext 16k eșuat, reeșantionez manual',e);}
+  }
+  // fallback universal: mediez canalele și reeșantionez liniar la 16kHz
+  const ch=buf.numberOfChannels,sr=buf.sampleRate,n=buf.length;
+  const mono=new Float32Array(n);
+  for(let c=0;c<ch;c++){const d=buf.getChannelData(c);for(let i=0;i<n;i++)mono[i]+=d[i]/ch;}
+  const out=new Float32Array(frames),ratio=sr/TARGET;
+  for(let i=0;i<frames;i++){const idx=i*ratio,i0=Math.floor(idx),i1=Math.min(n-1,i0+1),f=idx-i0;out[i]=mono[i0]*(1-f)+mono[i1]*f;}
+  return out;
 }
 async function classifyAudio(ab){
   showLoading('Analizez sunetul…');
+  if(!ab||ab.byteLength<100){results.innerHTML='<div class="danger" style="display:flex"><span>Fișier audio gol sau invalid.</span></div>';setStatus('Eroare audio','err');return;}
+  if(ab.byteLength>MAX_BYTES){results.innerHTML='<div class="danger" style="display:flex"><span>Fișier audio prea mare (max 25MB).</span></div>';setStatus('Eroare audio','err');return;}
+  let data;
+  try{data=await decodeMono16k(ab);}catch(e){console.warn('decode audio',e);results.innerHTML='<div class="danger" style="display:flex"><span>Format audio neacceptat sau fișier corupt. Încearcă WAV/MP3/M4A.</span></div>';setStatus('Eroare audio','err');return;}
   try{
-    const data=await decodeMono16k(ab);
-    const ast=await getAst();
-    const out=await ast(data,{topk:12});
+    let rms=0;for(let i=0;i<data.length;i++)rms+=data[i]*data[i];rms=Math.sqrt(rms/data.length);
+    const lowSignal=rms<0.008;
+    const ast=await getAst();const out=await ast(data,{topk:12});
     let animalScore=0,artifScore=0,topAnimal=null,topArtif=null;
     out.forEach(o=>{const a=mapAudio(o.label),art=isArtif(o.label);if(a){animalScore+=o.score;if(!topAnimal)topAnimal={...a,en:o.label,score:o.score};}else if(art){artifScore+=o.score;if(!topArtif)topArtif={en:o.label,score:o.score};}});
-    if(artifScore>animalScore*1.15 && (!topAnimal || topArtif && topArtif.score>topAnimal.score)){
-      renderRanked([{ro:'Sunet artificial / uman — filtrat',sci:topArtif?topArtif.en:'',kind:'Filtrat',score:topArtif?topArtif.score:artifScore,desc:'Nu pare vocalizare de animal (voce, muzică, mașini, dispozitive). AST clasifică tipul de sunet, dar nu poate ști dacă un om imită intenționat un animal.'}],null,true);
-      setStatus('Sunet artificial — filtrat','ready'); return;
+    const warn=lowSignal?' Semnal slab/zgomotos — apropie-te de sursă și reia.':'';
+    if(artifScore>animalScore*1.15&&(!topAnimal||topArtif&&topArtif.score>topAnimal.score)){
+      renderRanked([{ro:'Sunet artificial / uman — filtrat',sci:topArtif?topArtif.en:'',kind:'Filtrat',score:topArtif?topArtif.score:artifScore,desc:'Nu pare vocalizare de animal (voce, muzică, mașini, dispozitive).'+warn}],null,true);
+      setStatus('Sunet artificial — filtrat','ready');return;
     }
     if(topAnimal){
       const items=out.filter(o=>mapAudio(o.label)).slice(0,5).map(o=>{const a=mapAudio(o.label);return{ro:a.ro,sci:o.label,kind:CAT_RO[a.cat]||'Animal',score:o.score};});
-      const note=artifScore>0.15?`Fundal artificial detectat (${(artifScore*100).toFixed(0)}%) și filtrat. Top sunete de animal:`:'Top sunete de animal recunoscute:';
-      renderRanked(items,note); setStatus('Gata · sunet','ready');
+      const note=(artifScore>0.15?`Fundal artificial filtrat (${(artifScore*100).toFixed(0)}%). `:'')+'Top sunete de animal:'+warn;
+      renderRanked(items,note);setStatus('Gata · sunet','ready');
     }else{
-      renderRanked([{ro:'Sunet neclasificat ca animal',sci:out[0]?out[0].label:'',kind:'Necunoscut',score:out[0]?out[0].score:0,desc:'Încearcă o înregistrare mai curată și mai aproape de sursă.'}],null,true);
-      setStatus('Gata','ready');
+      renderRanked([{ro:'Sunet neclasificat ca animal',sci:out[0]?out[0].label:'',kind:'Necunoscut',score:out[0]?out[0].score:0,desc:'Încearcă o înregistrare mai curată.'+warn}],null,true);setStatus('Gata','ready');
     }
-  }catch(e){console.error(e);results.innerHTML=`<div class="empty">Nu am putut analiza sunetul: ${e.message}</div>`;setStatus('Eroare audio','err');}
+  }catch(e){console.error(e);results.innerHTML=`<div class="danger" style="display:flex"><span>Nu am putut analiza sunetul: ${e.message}</span></div>`;setStatus('Eroare audio','err');}
 }
-
-let mediaRec=null,chunks=[],recTimer=null;
-async function recordAudio(sec){
-  $('audioErr').style.display='none';
+let mediaRec=null,chunks=[],recTimer=null,recDur=5,vuRAF=null,vuCtx=null;
+function setDur(s){recDur=s;document.querySelectorAll('#dursel button').forEach(b=>b.classList.toggle('on',+b.dataset.sec===s));}
+document.querySelectorAll('#dursel button').forEach(b=>b.onclick=()=>setDur(+b.dataset.sec));
+async function recordAudio(){
+  camErrHide($('audioErr'));
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){showErr($('audioErr'),'Înregistrarea audio nu e disponibilă în acest browser. Poți încărca un fișier audio.');return;}
+  if(!window.isSecureContext){showErr($('audioErr'),'Microfonul necesită HTTPS (sau localhost).');return;}
   try{
     const s=await navigator.mediaDevices.getUserMedia({audio:true});
-    mediaRec=new MediaRecorder(s); chunks=[];
+    startVU(s);
+    let mime='';try{const cands=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/aac'];mime=cands.find(c=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(c))||'';}catch(e){}
+    mediaRec=mime?new MediaRecorder(s,{mimeType:mime}):new MediaRecorder(s);chunks=[];
     mediaRec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
-    mediaRec.onstop=async()=>{s.getTracks().forEach(t=>t.stop());$('mic').classList.remove('rec');$('btnRec').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>Înregistrează 5s';const ab=await new Blob(chunks).arrayBuffer();classifyAudio(ab);};
-    mediaRec.start(); $('mic').classList.add('rec'); $('btnRec').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>Oprește';
-    let left=sec; $('audioTitle').textContent=`Înregistrez… ${left}s`;
+    mediaRec.onstop=async()=>{stopVU();s.getTracks().forEach(t=>t.stop());$('mic').classList.remove('rec');$('btnRec').innerHTML=recIcon()+'Înregistrează';const ab=await new Blob(chunks).arrayBuffer();classifyAudio(ab);};
+    mediaRec.start();$('mic').classList.add('rec');$('btnRec').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>Oprește';
+    let left=recDur;$('audioTitle').textContent=`Înregistrez… ${left}s`;
     recTimer=setInterval(()=>{left--;$('audioTitle').textContent=left>0?`Înregistrez… ${left}s`:'Procesez…';if(left<=0)stopRec();},1000);
-  }catch(e){$('audioErr').textContent='Nu pot accesa microfonul. Permite accesul și folosește HTTPS/localhost.';$('audioErr').style.display='block';}
+  }catch(e){showErr($('audioErr'),'Nu pot accesa microfonul. Permite accesul și folosește HTTPS sau localhost.');}
 }
+function recIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>';}
 function stopRec(){if(recTimer){clearInterval(recTimer);recTimer=null;}if(mediaRec&&mediaRec.state!=='inactive')mediaRec.stop();$('audioTitle').textContent='Identifică după sunet';}
-$('btnRec').onclick=()=>{if(mediaRec&&mediaRec.state==='recording')stopRec();else recordAudio(5);};
+function startVU(stream){try{const AC=window.AudioContext||window.webkitAudioContext;vuCtx=new AC();const src=vuCtx.createMediaStreamSource(stream);const an=vuCtx.createAnalyser();an.fftSize=512;src.connect(an);const buf=new Uint8Array(an.frequencyBinCount);$('vu').classList.add('show');const loop=()=>{an.getByteTimeDomainData(buf);let peak=0;for(let i=0;i<buf.length;i++){const d=Math.abs(buf[i]-128);if(d>peak)peak=d;}$('vuBar').style.width=Math.min(100,peak/128*180)+'%';vuRAF=requestAnimationFrame(loop);};loop();}catch(e){console.warn('VU indisponibil',e);}}
+function stopVU(){if(vuRAF)cancelAnimationFrame(vuRAF);vuRAF=null;$('vu').classList.remove('show');$('vuBar').style.width='0';if(vuCtx){try{vuCtx.close();}catch(e){}vuCtx=null;}}
+$('btnRec').onclick=()=>{if(mediaRec&&mediaRec.state==='recording')stopRec();else recordAudio();};
 $('btnAudioFile').onclick=()=>$('audioInput').click();
-$('audioInput').onchange=async e=>{const f=e.target.files[0];if(f)classifyAudio(await f.arrayBuffer());};
+$('audioInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;if(f.size>MAX_BYTES){toast('Fișier audio prea mare (max 25MB).');return;}classifyAudio(await f.arrayBuffer());};
 
-/* ===== scop detecție pe categorii (rând informativ sub selector) ===== */
-function localScopeText(){
-  const c={}; SP.forEach(s=>c[s[3]]=(c[s[3]]||0)+1);
-  const order=['bird','mammal','insect','spider','reptile','amphibian','tree','plant','flower','fungus','mollusc'];
-  return `<b>Detectează ${SP.length} specii din România</b> · `+order.filter(k=>c[k]).map(k=>`${c[k]} ${CAT_PL[k]}`).join(' · ');
+/* ===== JURNAL (IndexedDB) ===== */
+let _db=null;
+function idb(){return new Promise((res,rej)=>{if(_db)return res(_db);if(!window.indexedDB){rej(new Error('IndexedDB indisponibil'));return;}const r=indexedDB.open('vietar',2);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains('obs'))db.createObjectStore('obs',{keyPath:'t'});if(!db.objectStoreNames.contains('emb'))db.createObjectStore('emb',{keyPath:'k'});};r.onsuccess=()=>{_db=r.result;res(_db);};r.onerror=()=>rej(r.error);});}
+async function embGet(k){try{const db=await idb();return await new Promise((res)=>{const t=db.transaction('emb').objectStore('emb').get(k);t.onsuccess=()=>res(t.result||null);t.onerror=()=>res(null);});}catch(e){return null;}}
+async function embPut(o){try{const db=await idb();return await new Promise((res)=>{const t=db.transaction('emb','readwrite').objectStore('emb').put(o);t.onsuccess=()=>res();t.onerror=()=>res();});}catch(e){}}
+async function jAll(){try{const db=await idb();return await new Promise((res,rej)=>{const t=db.transaction('obs').objectStore('obs').getAll();t.onsuccess=()=>res((t.result||[]).sort((a,b)=>b.t-a.t));t.onerror=()=>rej(t.error);});}catch(e){console.warn('idb getAll',e);return [];}}
+async function jPut(o){try{const db=await idb();return await new Promise((res,rej)=>{const t=db.transaction('obs','readwrite').objectStore('obs').put(o);t.onsuccess=()=>res();t.onerror=()=>rej(t.error);});}catch(e){console.warn('jPut',e);throw e;}}
+async function jDel(key){try{const db=await idb();return await new Promise((res)=>{const t=db.transaction('obs','readwrite').objectStore('obs').delete(key);t.onsuccess=()=>res();t.onerror=()=>res();});}catch(e){console.warn('jDel',e);}}
+async function jClear(){try{const db=await idb();return await new Promise((res)=>{const t=db.transaction('obs','readwrite').objectStore('obs').clear();t.onsuccess=()=>res();t.onerror=()=>res();});}catch(e){console.warn('jClear',e);}}
+
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2600);}
+function thumbFromCurrent(){return new Promise(res=>{try{if(!lastImageURL)return res('');const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=c.height=80;const x=c.getContext('2d');const s=Math.min(img.width,img.height);x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,80,80);res(c.toDataURL('image/jpeg',0.45));};img.onerror=()=>res('');img.src=lastImageURL;}catch(e){res('');}});}
+const wantLoc=()=>localStorage.getItem('iff_loc')==='1';
+async function saveObservation(){
+  if(!lastResult){toast('Nimic de salvat încă.');return;}
+  let loc=null;
+  if(wantLoc()&&navigator.geolocation){loc=await new Promise(r=>navigator.geolocation.getCurrentPosition(p=>r({lat:+p.coords.latitude.toFixed(5),lon:+p.coords.longitude.toFixed(5)}),()=>r(null),{timeout:8000,enableHighAccuracy:true}));}
+  const thumb=await thumbFromCurrent();
+  try{await jPut({t:Date.now(),ro:lastResult.ro||'',sci:lastResult.sci||'',kind:lastResult.kind||'',score:lastResult.score||0,engine,loc,thumb:thumb||''});
+    toast(loc?'✓ Salvat în jurnal (cu locație)':'✓ Salvat în jurnal');renderJournal();
+  }catch(e){console.warn('save obs',e);toast('Nu am putut salva (stocare?).');}
 }
-const SCOPE={
-  general:'Detectează ~1000 de categorii ImageNet: animale (mamifere, păsări, pești, insecte), unele plante și multe obiecte.',
-  birds:'Detectează ~525 de specii de păsări din lume (model dedicat) — afișează top 5 candidați.',
-  ai:'Detectează orice — faună, floră, ciuperci — cu denumire în română, alternative și verdict de autenticitate.'
-};
-function setScope(eng){const el=document.getElementById('scope');if(!el)return;el.innerHTML=(eng==='local')?localScopeText():SCOPE[eng];}
+async function renderJournal(){
+  const arr=await jAll();const list=$('jrnlList');
+  $('jrnlActions').style.display=arr.length?'flex':'none';
+  const loctoggle=`<label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="locToggle" ${wantLoc()?'checked':''} style="width:18px;height:18px"> Atașează locația la observații (GPS)</label>`;
+  if(!arr.length){list.innerHTML=loctoggle+'<div class="empty">Jurnalul e gol. Identifică ceva și apasă „Salvează în jurnal".</div>';wireLocToggle();return;}
+  list.innerHTML=loctoggle+arr.map(o=>{const d=new Date(o.t);const dt=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const loc=o.loc?` · ${o.loc.lat}, ${o.loc.lon}`:'';return `<div class="jrnl-item">${o.thumb?`<img src="${o.thumb}" alt="">`:'<img alt="">'}<div class="meta"><div class="ro">${o.ro||'—'}</div><div class="sub2">${o.sci?o.sci+' · ':''}${dt}${loc}</div></div><button class="del" data-k="${o.t}" aria-label="Șterge observația">✕</button></div>`;}).join('');
+  list.querySelectorAll('.del').forEach(b=>b.onclick=async()=>{await jDel(+b.dataset.k);renderJournal();});
+  wireLocToggle();
+}
+function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>localStorage.setItem('iff_loc',c.checked?'1':'0');}
+async function exportCSV(){const a=await jAll();if(!a.length)return;const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(v=>`"${(v+'').replace(/"/g,'""')}"`).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);}
+async function exportGeo(){const a=(await jAll()).filter(o=>o.loc);const fc={type:'FeatureCollection',features:a.map(o=>({type:'Feature',geometry:{type:'Point',coordinates:[o.loc.lon,o.loc.lat]},properties:{nume_ro:o.ro,nume_stiintific:o.sci,categorie:o.kind,data:new Date(o.t).toISOString(),scor:o.score}}))};download('vietar-jurnal.geojson','application/geo+json',JSON.stringify(fc,null,2));}
+function download(name,type,data){const b=new Blob([data],{type});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
+$('btnExportCsv').onclick=exportCSV;$('btnExportGeo').onclick=exportGeo;
+$('btnClearJrnl').onclick=async()=>{if(confirm('Ștergi tot jurnalul? Acțiunea nu poate fi anulată.')){await jClear();renderJournal();toast('Jurnal golit.');}};
+
+/* ===== scop ===== */
+function localScopeText(){const c={};SP.forEach(s=>c[s[3]]=(c[s[3]]||0)+1);const order=['bird','mammal','insect','spider','reptile','amphibian','tree','plant','flower','fungus','mollusc'];return `<b>Detectează ${SP_LEN} specii din România</b> · `+order.filter(k=>c[k]).map(k=>`${c[k]} ${CAT_PL[k]}`).join(' · ');}
+const SCOPE={general:'Detectează ~1000 de categorii ImageNet: animale (mamifere, păsări, pești, insecte), unele plante și multe obiecte.',birds:'Detectează ~525 de specii de păsări din lume (model dedicat) — top 5 candidați.',ai:'Detectează orice — faună, floră, ciuperci — cu denumire RO, alternative și verdict de autenticitate.'};
+function setScope(eng){const el=$('scope');if(!el)return;el.innerHTML=(eng==='local')?localScopeText():SCOPE[eng];}
 
 /* ===== selector motor + tab-uri ===== */
-function selectEngine(eng){engine=eng;setScope(eng);document.querySelectorAll('.eng-btn').forEach(b=>b.classList.toggle('active',b.dataset.engine===eng));
-  if(!ENGINES[eng].live){stopLiveLoop();if(stream){liveTag.textContent=ENGINES[eng].type==='online'?'AI · pe cerere':'Local · pe cerere';liveName.textContent='Apasă „Identifică cadrul"';livePct.textContent='';}}
-  else{liveTag.textContent='Identificare live';if(stream)startLiveLoop();}}
-document.querySelectorAll('.eng-btn').forEach(b=>{b.onclick=()=>{selectEngine(b.dataset.engine);if(lastImageURL&&document.querySelector('.tab.active').dataset.tab==='upload')identify(lastImageURL,true);};});
-document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');$('panel-'+t.dataset.tab).classList.add('active');const sunet=t.dataset.tab==='sunet';engineBar.classList.toggle('dim',sunet);if(t.dataset.tab!=='camera')stopCamera();if(sunet){results.innerHTML='<div class="empty">Înregistrează sau încarcă un sunet.</div>';const sc=document.getElementById('scope');if(sc)sc.innerHTML='<b>Sunet</b> · recunoaște vocalizări de animale (ciripit, lătrat, mieunat, grohăit, sâsâit, orăcăit, bâzâit…) și filtrează sunetele umane/artificiale.';}else setScope(engine);};});
+function selectEngine(eng){engine=eng;setScope(eng);document.querySelectorAll('.eng-btn').forEach(b=>{const on=b.dataset.engine===eng;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on?'true':'false');});
+  if(!ENGINES[eng].live){stopLiveLoop();if(stream){arTag.textContent=ENGINES[eng].type==='online'?'AI · pe cerere':'Pe cerere';arName.textContent='Apasă „Salvează cadrul" / analizează';arPct.textContent='';arSci.textContent='';}}
+  else{arTag.textContent='AR live';if(stream)startLiveLoop();}}
+document.querySelectorAll('.eng-btn').forEach(b=>{b.onclick=()=>{const eng=b.dataset.engine;if(eng==='birds'&&!pipes[ENGINES.birds.model]&&!localStorage.getItem('iff_birds_ok')){if(!confirm('Modelul „Păsări" e mare (sute de MB) și se descarcă o singură dată. Pe date mobile poate fi costisitor. Continui?')){return;}localStorage.setItem('iff_birds_ok','1');}selectEngine(eng);if(lastImageURL&&document.querySelector('.tab.active').dataset.tab==='upload')identify(lastImageURL,true);};});
+document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');const tab=t.dataset.tab;$('panel-'+tab).classList.add('active');if(tab!=='camera')stopCamera();
+  if(tab==='sunet'){results.innerHTML='<div class="empty">Înregistrează sau încarcă un sunet.</div>';$('scope').innerHTML='<b>Sunet</b> · vocalizări de animale (ciripit, lătrat, mieunat, grohăit, sâsâit, orăcăit, bâzâit…); filtrează sunetele umane/artificiale.';}
+  else if(tab==='jurnal'){renderJournal();$('scope').innerHTML='<b>Jurnal</b> · observațiile tale salvate local; export CSV/GeoJSON pentru iNaturalist sau hărți.';results.innerHTML='<div class="empty">Observațiile salvate apar în fila Jurnal de mai sus.</div>';}
+  else setScope(engine);};});
 
-/* ===== cameră ===== */
-let stream=null,facing='environment',liveTimer=null;
-async function startCamera(){camErr.style.display='none';try{stopCamera();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});video.srcObject=stream;await video.play();camHint.style.display='none';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg> Oprește';btnStart.dataset.on='1';btnFlip.disabled=false;btnCapture.disabled=false;liveBadge.classList.add('show');if(ENGINES[engine].live){liveTag.textContent='Identificare live';startLiveLoop();}else{liveTag.textContent=ENGINES[engine].type==='online'?'AI · pe cerere':'Local · pe cerere';liveName.textContent='Apasă „Identifică cadrul"';livePct.textContent='';}}catch(e){camErr.textContent='Nu pot accesa camera. Permite accesul și folosește HTTPS/localhost.';camErr.style.display='block';}}
-function stopCamera(){stopLiveLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}liveBadge.classList.remove('show');camHint.style.display='flex';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Pornește camera';btnStart.dataset.on='';btnFlip.disabled=true;btnCapture.disabled=true;}
-function grabFrame(){if(video.readyState<2||!video.videoWidth)return null;const S=320,vw=video.videoWidth,vh=video.videoHeight,side=Math.min(vw,vh);grab.width=S;grab.height=S;gctx.drawImage(video,(vw-side)/2,(vh-side)/2,side,side,0,0,S,S);return grab.toDataURL('image/jpeg',0.85);}
-function startLiveLoop(){stopLiveLoop();liveName.textContent='se inițializează…';livePct.textContent='';liveTimer=setInterval(async()=>{if(busy||!ENGINES[engine].live||!stream)return;const url=grabFrame();if(!url)return;busy=true;try{const p=await getPipe(engine);const out=await p(url,{topk:5});if(out&&out[0]){const ro=toRO(out[0].label);liveName.textContent=ro||clean(out[0].label);livePct.textContent=(out[0].score*100).toFixed(0)+'%';const items=out.map(o=>{const r=toRO(o.label);return{ro:r||clean(o.label),sci:r?clean(o.label):'',kind:kindGen(o.label),score:o.score};});renderRanked(items,`Top ${items.length} potriviri (model ${engine}).`);}}catch(e){}busy=false;},1700);}
-function stopLiveLoop(){if(liveTimer){clearInterval(liveTimer);liveTimer=null;}}
+/* ===== cameră + AR ===== */
+let stream=null,facing='environment',liveTimer=null,liveActive=false,arLast=null;
+async function startCamera(){camErrHide(camErr);
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showErr(camErr,'Camera nu e disponibilă în acest browser. Folosește fila „Imagine" pentru a încărca o poză.');return;}
+  if(!window.isSecureContext){showErr(camErr,'Camera necesită HTTPS. Deschide pagina pe https:// (sau localhost).');return;}
+  try{stopCamera();
+    try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing}},audio:false});}
+    catch(e1){console.warn('facingMode ideal eșuat, încerc generic',e1);stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}
+    video.srcObject=stream;try{await video.play();}catch(e2){console.warn('video.play() amânat',e2);}
+    camHint.style.display='none';reticle.classList.add('show');arLabel.classList.add('show');btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg> Oprește';btnStart.dataset.on='1';btnFlip.disabled=false;btnCapture.disabled=false;
+  if(ENGINES[engine].live){arTag.textContent='AR live';startLiveLoop();}else{arTag.textContent=ENGINES[engine].type==='online'?'AI · pe cerere':'Pe cerere';arName.textContent='Salvează cadrul pentru analiză';arPct.textContent='';}}
+  catch(e){showErr(camErr,'Nu pot accesa camera. Permite accesul și folosește HTTPS sau localhost.');}}
+function stopCamera(){stopLiveLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}reticle.classList.remove('show');arLabel.classList.remove('show');camHint.style.display='flex';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Pornește camera';btnStart.dataset.on='';btnFlip.disabled=true;btnCapture.disabled=true;}
+function grabFrame(reticleOnly){if(video.readyState<2||!video.videoWidth)return null;const S=320,vw=video.videoWidth,vh=video.videoHeight;let side=Math.min(vw,vh);if(reticleOnly)side=Math.round(side*0.64);grab.width=S;grab.height=S;gctx.drawImage(video,(vw-side)/2,(vh-side)/2,side,side,0,0,S,S);return grab.toDataURL('image/jpeg',0.85);}
+const isGroup=sci=>!!sci&&!/\s/.test(sci.trim()); // gen/familie = un singur cuvânt
+function startLiveLoop(){stopLiveLoop();arName.textContent='se inițializează…';arPct.textContent='';arSci.textContent='';
+  if(!('gpu' in navigator)){toast('Fără WebGPU: AR live e mai lent. Poți folosi „Salvează cadrul" pentru analiză la cerere.');}
+  let interval=1500;
+  const tick=async()=>{
+    if(!liveActive)return;
+    if(document.hidden||busy||!ENGINES[engine].live||!stream){liveTimer=setTimeout(tick,600);return;}
+    const url=grabFrame(true); // doar zona din reticul
+    if(!url){liveTimer=setTimeout(tick,400);return;}
+    busy=true;const t0=performance.now();
+    try{
+      if(ENGINES[engine].type==='zsc'){
+        const top=await clipClassify(url,'species',CLIP_SP,1);const s=SP[top[0].i];
+        arName.textContent=s[1]+(isGroup(s[2])?' (grup)':'');arSci.textContent=s[2]||'';
+        arPct.textContent=(top[0].cos*100).toFixed(0)+'%';arLast=url;
+      }else{
+        const p=await getPipe(engine);const out=await p(url,{topk:1});if(out&&out[0]){const ro=toRO(out[0].label);arName.textContent=ro||clean(out[0].label);arSci.textContent=ro?clean(out[0].label):'';arPct.textContent=(out[0].score*100).toFixed(0)+'%';arLast=url;}
+      }
+    }catch(e){console.warn('AR frame',e);}
+    const dt=performance.now()-t0;
+    interval=Math.min(4000,Math.max(1200,Math.round(dt*2.2))); // throttling adaptiv
+    busy=false;liveTimer=setTimeout(tick,interval);
+  };
+  liveActive=true;tick();
+}
+function stopLiveLoop(){liveActive=false;if(liveTimer){clearTimeout(liveTimer);liveTimer=null;}}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopLiveLoop();else if(stream&&ENGINES[engine].live&&document.querySelector('.tab.active').dataset.tab==='camera')startLiveLoop();});
 btnStart.onclick=()=>{btnStart.dataset.on?stopCamera():startCamera();};
 btnFlip.onclick=()=>{facing=facing==='environment'?'user':'environment';startCamera();};
-btnCapture.onclick=()=>{const url=grabFrame();if(url)identify(url,false);};
+btnCapture.onclick=async()=>{const url=grabFrame(true)||arLast;if(!url)return;lastImageURL=url;lastFile=null;
+  // îngheață: rulează o identificare completă (top 5) pe cadrul capturat, apoi salvează
+  await identify(url,false);await saveObservation();};
 
 /* ===== upload ===== */
-function handleFile(file){if(!file||!file.type.startsWith('image/'))return;lastFile=file;const r=new FileReader();r.onload=e=>{preview.src=e.target.result;previewStage.style.display='flex';drop.style.display='none';identify(e.target.result,true);};r.readAsDataURL(file);}
+const MAX_BYTES=25*1024*1024;
+// Normalizează orientarea EXIF (pozele de pe telefon vin adesea rotite) și redimensionează
+async function normalizeImage(file){
+  // cale modernă: createImageBitmap aplică orientarea EXIF
+  if(window.createImageBitmap){
+    try{
+      const bmp=await createImageBitmap(file,{imageOrientation:'from-image'});
+      const max=1280;let w=bmp.width,hh=bmp.height;const sc=Math.min(1,max/Math.max(w,hh));w=Math.round(w*sc);hh=Math.round(hh*sc);
+      const c=document.createElement('canvas');c.width=w;c.height=hh;c.getContext('2d').drawImage(bmp,0,0,w,hh);
+      if(bmp.close)bmp.close();
+      return c.toDataURL('image/jpeg',0.9);
+    }catch(e){console.warn('createImageBitmap orient eșuat, fallback',e);}
+  }
+  // fallback: FileReader simplu (fără corecție de orientare)
+  return await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('citire eșuată'));r.readAsDataURL(file);});
+}
+function handleFile(file){
+  if(!file)return;
+  if(!file.type.startsWith('image/')){showErr(camErr,'Fișierul nu pare o imagine.');return;}
+  if(file.size>MAX_BYTES){toast('Imagine prea mare ('+(file.size/1048576).toFixed(1)+'MB). Maxim 25MB.');return;}
+  lastFile=file;
+  normalizeImage(file).then(url=>{
+    const img=new Image();
+    img.onerror=()=>{results.innerHTML='<div class="danger" style="display:flex"><span>Imagine coruptă sau format neacceptat.</span></div>';};
+    img.onload=()=>{preview.src=url;previewStage.style.display='flex';drop.style.display='none';identify(url,true);};
+    img.src=url;
+  }).catch(e=>{console.warn('normalizeImage',e);results.innerHTML='<div class="danger" style="display:flex"><span>Nu am putut citi fișierul.</span></div>';});
+}
 btnChoose.onclick=()=>fileInput.click();
 drop.onclick=e=>{if(e.target.tagName!=='INPUT')fileInput.click();};
 fileInput.onchange=e=>handleFile(e.target.files[0]);
@@ -631,27 +905,75 @@ fileInput.onchange=e=>handleFile(e.target.files[0]);
 drop.addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
 previewStage.onclick=()=>{drop.style.display='flex';previewStage.style.display='none';};
 
-/* ===== setări ===== */
-const modal=$('modal'),provider=$('provider'),apiKey=$('apiKey'),modelInp=$('model'),endpoint=$('endpoint'),endpointField=$('endpointField');
-function openSettings(){const c=getCfg();provider.value=c.provider||'anthropic';apiKey.value=c.key||'';modelInp.value=c.model||'';endpoint.value=c.endpoint||'';modelInp.placeholder=provider.value==='openai'?'gpt-4o-mini':'claude-sonnet-4-6';endpointField.style.display=provider.value==='openai'?'block':'none';modal.classList.add('show');}
-provider.onchange=()=>{endpointField.style.display=provider.value==='openai'?'block':'none';modelInp.placeholder=provider.value==='openai'?'gpt-4o-mini':'claude-sonnet-4-6';};
-$('gear').onclick=openSettings;$('btnCloseSettings').onclick=()=>modal.classList.remove('show');
-modal.onclick=e=>{if(e.target===modal)modal.classList.remove('show');};
-$('btnSaveSettings').onclick=()=>{const cfg={provider:provider.value,key:apiKey.value.trim(),model:modelInp.value.trim(),endpoint:endpoint.value.trim()};try{localStorage.setItem('iff_cfg',JSON.stringify(cfg));}catch(e){alert('Nu pot salva aici (stocare blocată). Funcționează pe domeniul tău.');}modal.classList.remove('show');if(engine==='ai')setStatus('AI online configurat','ready');};
+/* ===== helpers eroare ===== */
+function showErr(el,msg){el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>'+msg+'</span>';el.style.display='flex';}
+function camErrHide(el){el.style.display='none';}
 
-/* ===== PWA: instalare + service worker ===== */
-let deferredPrompt=null;
-const installBtn=$('installBtn');
+/* ===== modale ===== */
+/* ===== modale (focus trap + Escape) ===== */
+let _lastFocus=null,_openModalId=null;
+function trapTab(e){if(e.key!=='Tab'||!_openModalId)return;const sheet=$(_openModalId);const f=sheet.querySelectorAll('button,input,select,a[href],[tabindex]:not([tabindex="-1"])');if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
+function openModal(id){_lastFocus=document.activeElement;_openModalId=id;const m=$(id);m.classList.add('show');const f=m.querySelector('button,input,select,a[href]');if(f)setTimeout(()=>f.focus(),30);}
+function closeModal(id){$(id).classList.remove('show');_openModalId=null;if(_lastFocus&&_lastFocus.focus)try{_lastFocus.focus();}catch(e){}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&_openModalId){const id=_openModalId;if(id==='consentModal'){pendingAI=null;}closeModal(id);}else trapTab(e);});
+document.querySelectorAll('.modal').forEach(m=>m.onclick=e=>{if(e.target===m){if(m.id==='consentModal')pendingAI=null;closeModal(m.id);}});
+const modal=$('modal'),provider=$('provider'),apiKey=$('apiKey'),modelInp=$('model'),endpoint=$('endpoint'),endpointField=$('endpointField');
+function openSettings(){const c=getCfg();provider.value=c.provider||'anthropic';apiKey.value=c.key||'';modelInp.value=c.model||'';endpoint.value=c.endpoint||'';$('sessionOnly').checked=!!sessionCfg;modelInp.placeholder=provider.value==='openai'?'gpt-4o-mini':'claude-sonnet-4-6';endpointField.style.display=provider.value==='openai'?'block':'none';openModal('modal');}
+provider.onchange=()=>{endpointField.style.display=provider.value==='openai'?'block':'none';modelInp.placeholder=provider.value==='openai'?'gpt-4o-mini':'claude-sonnet-4-6';};
+$('gear').onclick=openSettings;
+$('btnCloseSettings').onclick=()=>closeModal('modal');
+$('btnSaveSettings').onclick=()=>{const cfg={provider:provider.value,key:apiKey.value.trim(),model:modelInp.value.trim(),endpoint:endpoint.value.trim()};const sess=$('sessionOnly').checked;if(sess){sessionCfg=cfg;try{localStorage.removeItem('iff_cfg');}catch(e){}}else{sessionCfg=null;try{localStorage.setItem('iff_cfg',JSON.stringify(cfg));}catch(e){alert('Nu pot salva aici (stocare blocată).');}}closeModal('modal');if(engine==='ai')setStatus('AI online configurat','ready');};
+$('help').onclick=()=>openModal('helpModal');
+$('btnCloseHelp').onclick=()=>closeModal('helpModal');
+async function prefetchOffline(){
+  const note=$('prefetchNote');note.style.display='block';
+  try{
+    note.textContent='Descarc CLIP (motorul Local)…';
+    await ensureClip();
+    note.textContent='Pregătesc amprentele celor '+SP_LEN+' specii…';
+    await clipTextMatrix('species',CLIP_SP);
+    await clipTextMatrix('auth',AUTH_LABELS);
+    note.textContent='Descarc modelul de sunet (AudioSet)…';
+    await getAst();
+    note.innerHTML='✓ Gata. Local + Sunet funcționează acum offline.';
+    if(confirm('Descarc și modelele mari opționale (General + Păsări, sute de MB)? Pe date mobile poate fi costisitor.')){
+      note.textContent='Descarc modelul General…';await getPipe('general');
+      note.textContent='Descarc modelul Păsări (mare)…';localStorage.setItem('iff_birds_ok','1');await getPipe('birds');
+      note.innerHTML='✓ Gata complet. Toate motoarele offline funcționează offline.';
+    }
+    toast('Pregătit pentru offline.');
+  }catch(e){console.warn('prefetch',e);note.innerHTML='⚠ Descărcare incompletă: '+e.message+'. Reîncearcă cu conexiune stabilă.';}
+}
+$('btnPrefetch').onclick=()=>prefetchOffline();
+$('privacyLink').onclick=e=>{e.preventDefault();openModal('privacyModal');};
+$('clearCache').onclick=async e=>{e.preventDefault();if(!confirm('Ștergi modelele descărcate și resetezi aplicația? Se vor redescărca la următoarea folosire.'))return;try{if('caches' in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}toast('Resetat. Reîncarc…');setTimeout(()=>location.reload(true),1000);}catch(err){console.warn('clear cache',err);toast('Nu am putut goli cache-ul.');}};
+$('btnClosePrivacy').onclick=()=>closeModal('privacyModal');
+$('consentNo').onclick=()=>{closeModal('consentModal');pendingAI=null;};
+$('consentYes').onclick=()=>{localStorage.setItem('iff_consent','1');closeModal('consentModal');if(pendingAI){doOnline(pendingAI.dataURL,pendingAI.cfg);pendingAI=null;}};
+
+/* ===== PWA ===== */
+let deferredPrompt=null;const installBtn=$('installBtn');
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(installBtn)installBtn.style.display='flex';});
 if(installBtn)installBtn.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();try{await deferredPrompt.userChoice;}catch(e){}deferredPrompt=null;installBtn.style.display='none';};
 window.addEventListener('appinstalled',()=>{if(installBtn)installBtn.style.display='none';});
-const swEligible=('serviceWorker' in navigator)
-  && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')
-  && !/claudeusercontent\.com|usercontent|webcontainer|stackblitz|csb\.app/.test(location.hostname);
-if(swEligible){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')&&!/claudeusercontent\.com|usercontent|webcontainer|stackblitz|csb\.app/.test(location.hostname);
+if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
+if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
+const APP_VER='v10';
+fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
+  if(v&&v.version&&v.version!==APP_VER){
+    // pagina e mai veche decât serverul → aproape sigur cache zombi. Curăță forțat.
+    toast('Versiune nouă pe server ('+v.version+'). Actualizez…');
+    Promise.resolve()
+      .then(()=>('caches' in window)?caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))):null)
+      .then(()=>('serviceWorker' in navigator)?navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))):null)
+      .then(()=>setTimeout(()=>location.reload(true),1200));
+  }
+}).catch(()=>{});
 setScope(engine);
 window.addEventListener('beforeunload',()=>{stopCamera();stopRec();});
 </script>
 </body>
 </html>
+
