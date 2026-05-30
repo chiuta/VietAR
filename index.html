@@ -43,8 +43,8 @@
   .divider{margin:14px auto 0;width:120px;height:18px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%23b9923a' stroke-width='1.4'/%3E%3Cpath d='M60 2c-4 3-9 4-9 7s5 4 9 7c4-3 9-4 9-7s-5-4-9-7z' fill='none' stroke='%2336533a' stroke-width='1.4'/%3E%3C/svg%3E");}
 
   .eng-row{display:flex;align-items:stretch;gap:8px;margin:18px 0 8px;}
-  .engine{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:var(--parchment-deep);padding:5px;border-radius:14px;border:1px solid var(--line);transition:opacity .2s;}
-  @media(min-width:580px){.engine{grid-template-columns:repeat(4,1fr);}}
+  .engine{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--parchment-deep);padding:5px;border-radius:14px;border:1px solid var(--line);transition:opacity .2s;}
+  @media(min-width:580px){.engine{grid-template-columns:repeat(3,1fr);}}
   .engine.dim{opacity:.4;pointer-events:none;}
   .eng-btn{border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.84rem;color:var(--muted);padding:10px 6px;border-radius:10px;transition:.22s;display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.15;}
   .eng-btn small{font-size:.6rem;font-weight:500;opacity:.78;}
@@ -218,7 +218,6 @@
     <div class="engine" id="engineBar" role="group" aria-label="Motor de identificare">
       <button class="eng-btn active" data-engine="local" aria-pressed="true">Local · RO<small>specii din România</small></button>
       <button class="eng-btn" data-engine="general" aria-pressed="false">General<small>rapid · offline</small></button>
-      <button class="eng-btn" data-engine="birds" aria-pressed="false">Păsări<small>specii de păsări</small></button>
       <button class="eng-btn" data-engine="ai" aria-pressed="false">AI online<small>cea mai precisă</small></button>
     </div>
     <div class="topbtns">
@@ -293,9 +292,9 @@
       <a class="coffee" href="https://buymeacoffee.com/echo.of.the.strings" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Buy me a coffee</a>
       <a class="patreon" href="https://www.patreon.com/c/alexio_tf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><circle cx="15" cy="8.5" r="5.5"/><rect x="2.5" y="2.5" width="3.4" height="19"/></svg>Patreon</a>
     </div>
-    <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
+    <span class="leaf">❧</span> Identificarea (Local/General) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v15 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v16 · 2026-05-31</span>
   </footer>
 </div>
 
@@ -318,11 +317,10 @@
 <!-- Help / guide -->
 <div class="modal" id="helpModal" role="dialog" aria-modal="true" aria-label="Ghid"><div class="sheet">
   <h3>Ghid rapid</h3>
-  <p class="hint">VietAR are patru motoare. Dacă nu știi care, lasă <b>Local · RO</b> — e potrivit pentru ce vezi în România.</p>
+  <p class="hint">VietAR are trei motoare. Dacă nu știi care, lasă <b>Local · RO</b> — e potrivit pentru ce vezi în România.</p>
   <ul>
     <li><b>Local · RO</b> — 519 specii românești, complet offline. AR live peste cameră.</li>
     <li><b>General</b> — categorii largi (animale, obiecte), foarte rapid.</li>
-    <li><b>Păsări</b> — model dedicat, ~525 specii de păsări.</li>
     <li><b>AI online</b> — cel mai precis, cu denumiri RO + autenticitate; necesită cheie proprie (⚙).</li>
   </ul>
   <p class="hint"><b>AR live:</b> tab-ul „AR live" pornește camera și suprapune numele speciei pe imagine, în timp real. <b>Salvează cadrul</b> adaugă observația în Jurnal (cu dată și, opțional, locație).</p>
@@ -467,7 +465,6 @@ const isToxic=(ro,sci,kind)=>kind==='fungus'||TOXIC.test(ro)||TOXIC.test(sci||''
 const ENGINES={
   local:{type:'zsc',live:true},
   general:{type:'cls',task:'image-classification',model:'Xenova/vit-base-patch16-224',dt:{wasm:'q8',webgpu:'fp32'},live:true},
-  birds:{type:'cls',task:'image-classification',model:'chriamue/bird-species-classifier',dt:{wasm:'fp32',webgpu:'fp32'},opts:{model_file_name:'model'},subfolder:'',live:true},
   ai:{type:'online',live:false}
 };
 const AST={model:'Xenova/ast-finetuned-audioset-10-10-0.4593',dt:{wasm:'q8',webgpu:'fp32'}};
@@ -842,14 +839,14 @@ $('btnClearJrnl').onclick=async()=>{if(confirm('Ștergi tot jurnalul? Acțiunea 
 
 /* ===== scop ===== */
 function localScopeText(){const c={};SP.forEach(s=>c[s[3]]=(c[s[3]]||0)+1);const order=['bird','mammal','insect','spider','reptile','amphibian','tree','plant','flower','fungus','mollusc'];return `<b>Detectează ${SP_LEN} taxoni din România</b> (specii și grupuri) · `+order.filter(k=>c[k]).map(k=>`${c[k]} ${CAT_PL[k]}`).join(' · ');}
-const SCOPE={general:'Detectează ~1000 de categorii ImageNet: animale (mamifere, păsări, pești, insecte), unele plante și multe obiecte.',birds:'Detectează ~525 de specii de păsări din lume (model dedicat) — top 5 candidați.',ai:'Detectează orice — faună, floră, ciuperci — cu denumire RO, alternative și verdict de autenticitate.'};
+const SCOPE={general:'Detectează ~1000 de categorii ImageNet: animale (mamifere, păsări, pești, insecte), unele plante și multe obiecte.',ai:'Detectează orice — faună, floră, ciuperci — cu denumire RO, alternative și verdict de autenticitate.'};
 function setScope(eng){const el=$('scope');if(!el)return;el.innerHTML=(eng==='local')?localScopeText():SCOPE[eng];}
 
 /* ===== selector motor + tab-uri ===== */
 function selectEngine(eng){engine=eng;setScope(eng);document.querySelectorAll('.eng-btn').forEach(b=>{const on=b.dataset.engine===eng;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on?'true':'false');});
   if(!ENGINES[eng].live){stopLiveLoop();if(stream){arTag.textContent=ENGINES[eng].type==='online'?'AI · pe cerere':'Pe cerere';arName.textContent='Apasă „Salvează cadrul" / analizează';arPct.textContent='';arSci.textContent='';}}
   else{arTag.textContent='AR live';if(stream)startLiveLoop();}}
-document.querySelectorAll('.eng-btn').forEach(b=>{b.onclick=()=>{const eng=b.dataset.engine;if(eng==='birds'&&!pipes[ENGINES.birds.model]&&!localStorage.getItem('iff_birds_ok')){if(!confirm('Modelul „Păsări" e mare (sute de MB) și se descarcă o singură dată. Pe date mobile poate fi costisitor. Continui?')){return;}localStorage.setItem('iff_birds_ok','1');}selectEngine(eng);if(lastImageURL&&document.querySelector('.tab.active').dataset.tab==='upload')identify(lastImageURL,true);};});
+document.querySelectorAll('.eng-btn').forEach(b=>{b.onclick=()=>{selectEngine(b.dataset.engine);if(lastImageURL&&document.querySelector('.tab.active').dataset.tab==='upload')identify(lastImageURL,true);};});
 document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>{x.classList.remove('active');x.removeAttribute('aria-current');});document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');t.setAttribute('aria-current','page');const tab=t.dataset.tab;$('panel-'+tab).classList.add('active');if(tab!=='camera')stopCamera();
   if(tab==='sunet'){results.innerHTML='<div class="empty">Înregistrează sau încarcă un sunet.</div>';$('scope').innerHTML='<b>Sunet</b> · vocalizări de animale (ciripit, lătrat, mieunat, grohăit, sâsâit, orăcăit, bâzâit…); filtrează sunetele umane/artificiale.';}
   else if(tab==='jurnal'){renderJournal();$('scope').innerHTML='<b>Jurnal</b> · observațiile tale salvate local; export CSV/GeoJSON pentru iNaturalist sau hărți.';results.innerHTML='<div class="empty">Observațiile salvate apar în fila Jurnal de mai sus.</div>';}
@@ -976,12 +973,10 @@ async function prefetchOffline(){
     note.textContent='Descarc modelul de sunet (AudioSet)…';
     try{await getAst();}catch(e){console.warn('AST prefetch',e);}
     note.innerHTML='✓ Gata. Local + Sunet funcționează acum offline.';
-    if(confirm('Descarc și modelele mari opționale (General + Păsări, sute de MB)? Pe date mobile poate fi costisitor. Dacă unul nu e disponibil, restul rămân instalate.')){
+    if(confirm('Descarc și modelul General opțional (~zeci de MB) pentru offline complet? Pe date mobile poate fi costisitor.')){
       let ok=[],fail=[];
       note.textContent='Descarc modelul General…';
       try{await getPipe('general');ok.push('General');}catch(e){console.warn('General prefetch',e);fail.push('General');}
-      note.textContent='Descarc modelul Păsări…';localStorage.setItem('iff_birds_ok','1');
-      try{await getPipe('birds');ok.push('Păsări');}catch(e){console.warn('Birds prefetch',e);fail.push('Păsări');}
       note.innerHTML='✓ Gata. Instalat offline: Local, Sunet'+(ok.length?', '+ok.join(', '):'')+'.'+(fail.length?` <span style="color:var(--terracotta)">Indisponibil acum: ${fail.join(', ')} (poți reîncerca mai târziu).</span>`:'');
     }
     toast('Pregătit pentru offline.');
@@ -1003,7 +998,7 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
 if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
-const APP_VER='v15';
+const APP_VER='v16';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // Desincronizare pagină↔server. Curățăm cache O SINGURĂ DATĂ ca să evităm bucla de reload
