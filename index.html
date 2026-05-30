@@ -6,6 +6,13 @@
 <title>VietAR · faună &amp; floră din România</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#2a3f2c" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob:; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+<meta name="description" content="VietAR — identifică faună și floră din România din imagine, cameră (AR live) sau sunet, direct în browser. 519 specii locale, offline după prima descărcare." />
+<meta property="og:title" content="VietAR · faună & floră din România" />
+<meta property="og:description" content="Identifică vietăți și plante din România — imagine, cameră AR live sau sunet. Rulează local, în browser." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="icon-512.png" />
+<meta name="twitter:card" content="summary" />
 <link rel="icon" type="image/png" href="icon-192.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,6 +191,15 @@
   .sheet ul{margin:8px 0 16px 18px;font-size:.84rem;color:#4a4334;}.sheet li{margin-bottom:5px;}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
   @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}.ar-reticle .scan{display:none;}}
+  @media (prefers-color-scheme: dark){
+    :root{--parchment:#1c2119;--parchment-deep:#262d22;--ink:#e8e2d4;--moss:#7fae84;--moss-deep:#c9dcc9;--terracotta:#e08a63;--terracotta-soft:#e8a585;--gold:#d8b25e;--line:#3d4636;--muted:#a39c8a;--shadow:rgba(0,0,0,.4);}
+    body{background-color:#1c2119;background-image:radial-gradient(ellipse at 12% -10%,rgba(127,174,132,.08),transparent 45%),radial-gradient(ellipse at 110% 8%,rgba(224,138,99,.08),transparent 50%);}
+    .field input,.field select{background:#262d22;color:var(--ink);}
+    .eng-btn.active,.tab.active{color:#1c2119;}
+    .donate a.coffee{color:#1c2119;}
+    .hero .desc{color:#c9c2b0;}
+    .jrnl-item img,.bar,.progress{background:#2c3327;}
+  }
 </style>
 </head>
 
@@ -277,7 +293,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General/Păsări) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v10 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v11 · 2026-05-31</span>
   </footer>
 </div>
 
@@ -340,7 +356,7 @@
 <canvas id="grab" hidden></canvas>
 
 <script type="module">
-import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers';
+import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
 env.allowLocalModels=false; env.useBrowserCache=true;
 
 const $=id=>document.getElementById(id);
@@ -460,11 +476,11 @@ async function loadPipe(task,model,dt){
   if(pipes[model])return pipes[model];
   const device=('gpu' in navigator)?'webgpu':'wasm';
   let dtypes=[...new Set(device==='webgpu'?['fp16',dt.webgpu,'fp32']:[dt.wasm,'fp32'])]; let err;
-  for(const dtype of dtypes){try{
-    setStatus(`Prima rulare: descarc modelul (${device.toUpperCase()}, ~zeci de MB, o singură dată)…`,'loading');showProgress(3);
+  for(const dtype of dtypes){for(let attempt=0;attempt<2;attempt++){try{
+    setStatus(attempt?`Reîncerc descărcarea (${device.toUpperCase()})…`:`Prima rulare: descarc modelul (${device.toUpperCase()}, ~zeci de MB, o singură dată)…`,'loading');showProgress(3);
     const p=await pipeline(task,model,{device,dtype,progress_callback:x=>{if(x.status==='progress'&&x.file&&/\.(onnx|bin)/.test(x.file)){const pc=Math.round(x.progress||0);const mb=x.total?` · ${(x.loaded/1048576).toFixed(0)}/${(x.total/1048576).toFixed(0)} MB`:'';setStatus(`Descarc modelul… ${pc}%${mb} (o singură dată)`,'loading');showProgress(pc);}}});
     pipes[model]=p; setStatus('Gata · rulează local','ready');showProgress(null); return p;
-  }catch(e){err=e;console.warn('dtype',dtype,e);}}
+  }catch(e){err=e;console.warn('dtype',dtype,'attempt',attempt,e);if(attempt===0)await new Promise(r=>setTimeout(r,1200));}}}
   showProgress(null); throw err;
 }
 const getPipe=eng=>loadPipe(ENGINES[eng].task,ENGINES[eng].model,ENGINES[eng].dt);
@@ -651,7 +667,7 @@ async function c2paProvenance(file){
   // întâi biblioteca nouă @contentauth/c2pa-web, apoi c2pa clasic; ambele etichetate ca "verificat C2PA"
   let manifestStore=null;
   try{
-    const m=await import('https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web/+esm');
+    const m=await import('https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web@0/+esm');
     if(m&&m.createC2pa){const c2pa=await m.createC2pa({wasmSrc:'https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web/dist/resources/c2pa_bg.wasm'});const res=await c2pa.read(file);manifestStore=res&&(res.manifestStore||res);}
   }catch(e){console.warn('c2pa-web:',e.message);}
   if(!manifestStore){
@@ -800,7 +816,8 @@ async function renderJournal(){
   wireLocToggle();
 }
 function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>localStorage.setItem('iff_loc',c.checked?'1':'0');}
-async function exportCSV(){const a=await jAll();if(!a.length)return;const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(v=>`"${(v+'').replace(/"/g,'""')}"`).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);}
+function csvCell(v){let x=(v==null?'':v+'');if(/^[=+\-@\t\r]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"';}
+async function exportCSV(){const a=await jAll();if(!a.length)return;const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);}
 async function exportGeo(){const a=(await jAll()).filter(o=>o.loc);const fc={type:'FeatureCollection',features:a.map(o=>({type:'Feature',geometry:{type:'Point',coordinates:[o.loc.lon,o.loc.lat]},properties:{nume_ro:o.ro,nume_stiintific:o.sci,categorie:o.kind,data:new Date(o.t).toISOString(),scor:o.score}}))};download('vietar-jurnal.geojson','application/geo+json',JSON.stringify(fc,null,2));}
 function download(name,type,data){const b=new Blob([data],{type});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
 $('btnExportCsv').onclick=exportCSV;$('btnExportGeo').onclick=exportGeo;
@@ -844,7 +861,7 @@ function startLiveLoop(){stopLiveLoop();arName.textContent='se inițializează�
     if(document.hidden||busy||!ENGINES[engine].live||!stream){liveTimer=setTimeout(tick,600);return;}
     const url=grabFrame(true); // doar zona din reticul
     if(!url){liveTimer=setTimeout(tick,400);return;}
-    busy=true;const t0=performance.now();
+    busy=true;const t0=performance.now();arTag.textContent='AR live · caut •••';
     try{
       if(ENGINES[engine].type==='zsc'){
         const top=await clipClassify(url,'species',CLIP_SP,1);const s=SP[top[0].i];
@@ -854,6 +871,7 @@ function startLiveLoop(){stopLiveLoop();arName.textContent='se inițializează�
         const p=await getPipe(engine);const out=await p(url,{topk:1});if(out&&out[0]){const ro=toRO(out[0].label);arName.textContent=ro||clean(out[0].label);arSci.textContent=ro?clean(out[0].label):'';arPct.textContent=(out[0].score*100).toFixed(0)+'%';arLast=url;}
       }
     }catch(e){console.warn('AR frame',e);}
+    arTag.textContent='AR live';
     const dt=performance.now()-t0;
     interval=Math.min(4000,Math.max(1200,Math.round(dt*2.2))); // throttling adaptiv
     busy=false;liveTimer=setTimeout(tick,interval);
@@ -960,7 +978,7 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
 
 if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
-const APP_VER='v10';
+const APP_VER='v11';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // pagina e mai veche decât serverul → aproape sigur cache zombi. Curăță forțat.
