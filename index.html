@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>VietAR · faună &amp; floră din România</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="theme-color" content="#2a3f2c" />
+<link rel="icon" type="image/png" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="VietAR" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--parchment:#f4ecdd;--parchment-deep:#e9dec7;--ink:#26211a;--moss:#3d5a40;--moss-deep:#2a3f2c;--terracotta:#bf5b34;--terracotta-soft:#d97b54;--gold:#caa24b;--line:#cdbf9f;--shadow:rgba(42,33,20,.16);}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{font-family:'Spline Sans',sans-serif;color:var(--ink);background-color:var(--parchment);
+    background-image:radial-gradient(ellipse at 12% -10%,rgba(61,90,64,.10),transparent 45%),radial-gradient(ellipse at 110% 8%,rgba(191,91,52,.10),transparent 50%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    min-height:100%;line-height:1.5;overflow-x:hidden;}
+  .wrap{max-width:780px;margin:0 auto;padding:26px 18px 60px;}
+  header{text-align:center;margin-bottom:16px;}
+  .eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--moss);font-weight:600;margin-bottom:6px;}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.1rem,7vw,3.1rem);line-height:1.02;letter-spacing:-.01em;color:var(--moss-deep);}
+  h1 em{font-style:italic;font-weight:500;color:var(--terracotta);}
+  .sub{margin-top:10px;font-size:.95rem;color:#6a6253;max-width:48ch;margin-inline:auto;}
+  .divider{margin:16px auto 0;width:120px;height:18px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%23caa24b' stroke-width='1.4'/%3E%3Cpath d='M60 2c-4 3-9 4-9 7s5 4 9 7c4-3 9-4 9-7s-5-4-9-7z' fill='none' stroke='%233d5a40' stroke-width='1.4'/%3E%3C/svg%3E");}
+
+  .eng-row{display:flex;align-items:stretch;gap:8px;margin:18px 0 8px;}
+  .engine{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:var(--parchment-deep);padding:5px;border-radius:14px;border:1px solid var(--line);transition:opacity .2s;}
+  @media(min-width:580px){.engine{grid-template-columns:repeat(4,1fr);}}
+  .engine.dim{opacity:.4;pointer-events:none;}
+  .eng-btn{border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.84rem;color:#7a7160;padding:10px 6px;border-radius:10px;transition:.22s;display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.15;}
+  .eng-btn small{font-size:.6rem;font-weight:500;opacity:.7;}
+  .eng-btn.active{background:var(--moss-deep);color:var(--parchment);box-shadow:0 3px 10px var(--shadow);}
+  .eng-btn.active small{opacity:.85;}
+  .gear{flex:none;width:46px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--moss-deep);}
+  .gear svg{width:20px;height:20px;}
+  .scope{max-width:580px;margin:2px auto 0;text-align:center;font-size:.74rem;color:#6a6253;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:12px;padding:8px 14px;line-height:1.55;}
+  .scope b{color:var(--moss-deep);}
+
+  .status{display:flex;align-items:center;gap:9px;justify-content:center;font-size:.82rem;color:#6a6253;margin:8px auto 18px;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:40px;padding:7px 16px;width:fit-content;max-width:100%;text-align:center;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none;}
+  .dot.loading{animation:pulse 1.3s infinite;}.dot.ready{background:var(--moss);}.dot.err{background:var(--terracotta);}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(202,162,75,.55);}70%{box-shadow:0 0 0 8px rgba(202,162,75,0);}100%{box-shadow:0 0 0 0 rgba(202,162,75,0);}}
+
+  .tabs{display:flex;gap:6px;background:var(--parchment-deep);padding:5px;border-radius:14px;border:1px solid var(--line);margin-bottom:18px;}
+  .tab{flex:1;border:none;background:transparent;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:.92rem;color:#7a7160;padding:11px 6px;border-radius:10px;transition:.25s;display:flex;align-items:center;justify-content:center;gap:7px;}
+  .tab svg{width:17px;height:17px;}
+  .tab.active{background:var(--moss-deep);color:var(--parchment);box-shadow:0 3px 10px var(--shadow);}
+  .panel{display:none;animation:fade .35s ease;}.panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .stage{position:relative;width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:var(--moss-deep);border:1px solid var(--line);box-shadow:0 12px 30px var(--shadow);display:flex;align-items:center;justify-content:center;}
+  video,#preview{width:100%;height:100%;object-fit:cover;display:block;}#preview{display:none;}
+  .stage-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(244,236,221,.85);text-align:center;padding:24px;font-size:.92rem;}
+  .stage-hint svg{width:46px;height:46px;opacity:.8;}
+  .live-badge{position:absolute;left:12px;bottom:12px;right:12px;background:rgba(38,33,26,.78);backdrop-filter:blur(6px);border-radius:12px;padding:10px 14px;color:var(--parchment);display:none;align-items:center;gap:12px;}
+  .live-badge.show{display:flex;}.live-badge .lbl{flex:1;min-width:0;}
+  .live-badge .name{font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .live-badge .pct{font-weight:700;color:var(--gold);font-size:1.05rem;}
+  .live-tag{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta-soft);font-weight:700;}
+
+  .controls{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  button.act{flex:1;min-width:120px;border:none;cursor:pointer;border-radius:13px;padding:14px 16px;font-family:'Spline Sans';font-weight:700;font-size:.95rem;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  button.act svg{width:19px;height:19px;}
+  .primary{background:var(--terracotta);color:#fff;box-shadow:0 5px 14px rgba(191,91,52,.35);}.primary:active{transform:translateY(1px);}
+  .ghost{background:transparent;color:var(--moss-deep);border:1.5px solid var(--moss)!important;}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+
+  .drop{width:100%;aspect-ratio:4/3;border-radius:18px;border:2px dashed var(--line);background:rgba(255,255,255,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;text-align:center;padding:24px;transition:.2s;}
+  .drop:hover,.drop.over{border-color:var(--moss);background:rgba(61,90,64,.06);}
+  .drop svg{width:50px;height:50px;color:var(--moss);}.drop b{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--moss-deep);}.drop span{font-size:.85rem;color:#7a7160;}
+
+  /* audio */
+  .audio-stage{width:100%;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(61,90,64,.10),rgba(255,255,255,.4));padding:30px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 12px 30px var(--shadow);}
+  .mic{width:78px;height:78px;border-radius:50%;background:var(--moss-deep);display:flex;align-items:center;justify-content:center;color:var(--parchment);transition:.25s;}
+  .mic svg{width:34px;height:34px;}
+  .mic.rec{background:var(--terracotta);animation:micpulse 1.1s infinite;}
+  @keyframes micpulse{0%{box-shadow:0 0 0 0 rgba(191,91,52,.55);}70%{box-shadow:0 0 0 18px rgba(191,91,52,0);}100%{box-shadow:0 0 0 0 rgba(191,91,52,0);}}
+  .audio-stage b{font-family:'Fraunces',serif;font-size:1.2rem;color:var(--moss-deep);}
+  .audio-stage span{font-size:.86rem;color:#7a7160;}
+
+  .results{margin-top:22px;}
+  .results h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;color:var(--moss-deep);margin-bottom:4px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .kind{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-family:'Spline Sans';font-weight:700;color:var(--terracotta);border:1px solid var(--terracotta);border-radius:30px;padding:3px 10px;}
+  .res-note{font-size:.8rem;color:#8a8170;margin-bottom:14px;}
+  .row{background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin-bottom:9px;opacity:0;transform:translateY(8px);animation:rise .4s forwards;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+  .row .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px;}
+  .row .ro{font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--ink);}
+  .row .en{font-size:.74rem;color:#9a9080;font-style:italic;}
+  .row .score{font-weight:700;color:var(--moss);font-size:1.02rem;flex:none;}
+  .bar{height:8px;background:var(--parchment-deep);border-radius:6px;overflow:hidden;}
+  .bar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--moss),var(--gold));transition:width .9s cubic-bezier(.2,.8,.2,1);}
+  .row.lead .bar i{background:linear-gradient(90deg,var(--terracotta),var(--gold));}
+  .hero{background:linear-gradient(180deg,rgba(61,90,64,.10),rgba(255,255,255,.55));border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px;opacity:0;animation:rise .45s forwards;}
+  .hero .ro{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--moss-deep);line-height:1.1;}
+  .hero .sci{font-style:italic;color:#7a7160;margin-top:2px;font-size:.95rem;}
+  .hero .meta{display:flex;align-items:center;gap:10px;margin:12px 0 0;flex-wrap:wrap;}
+  .hero .conf{font-weight:700;color:var(--terracotta);}.hero .desc{font-size:.92rem;color:#5a5346;margin-top:10px;}
+  .filtered{background:rgba(191,91,52,.1);border:1px solid var(--terracotta-soft);}
+  .filtered .ro{color:var(--terracotta);}
+  .empty{text-align:center;color:#9a9080;padding:30px 10px;font-size:.9rem;}
+  .spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--moss);border-radius:50%;animation:rot .8s linear infinite;margin:0 auto 12px;}
+  @keyframes rot{to{transform:rotate(360deg);}}
+
+  /* authenticity card */
+  .auth{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.5);padding:16px 18px;}
+  .auth h3{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--moss-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .auth .verdict{display:inline-block;font-weight:700;font-size:.78rem;padding:4px 11px;border-radius:30px;margin:6px 0;}
+  .v-ok{background:rgba(61,90,64,.16);color:var(--moss-deep);}
+  .v-warn{background:rgba(202,162,75,.2);color:#6a5a2a;}
+  .v-bad{background:rgba(191,91,52,.16);color:var(--terracotta);}
+  .auth .line{font-size:.85rem;color:#5a5346;margin:5px 0;}
+  .auth .line b{color:var(--moss-deep);}
+  .auth .disc{font-size:.74rem;color:#9a9080;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px;}
+
+  .err-box{background:rgba(191,91,52,.1);border:1px solid var(--terracotta);color:var(--terracotta);border-radius:12px;padding:12px 15px;font-size:.86rem;margin-top:12px;display:none;}
+  .modal{position:fixed;inset:0;background:rgba(38,33,26,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50;}
+  .modal.show{display:flex;}
+  .sheet{background:var(--parchment);border:1px solid var(--line);border-radius:20px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
+  .sheet h3{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-deep);margin-bottom:4px;}
+  .sheet p.hint{font-size:.82rem;color:#7a7160;margin-bottom:16px;}
+  .field{margin-bottom:14px;}.field label{display:block;font-size:.78rem;font-weight:600;color:var(--moss-deep);margin-bottom:5px;}
+  .field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:'Spline Sans';font-size:.92rem;background:#fff;color:var(--ink);}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--moss);}
+  .warn{background:rgba(202,162,75,.14);border:1px solid var(--gold);border-radius:10px;padding:10px 12px;font-size:.78rem;color:#6a5a2a;margin-bottom:16px;}
+  .sheet-actions{display:flex;gap:10px;margin-top:6px;}
+  footer{margin-top:34px;text-align:center;font-size:.76rem;color:#8a8170;line-height:1.7;}
+  footer .leaf{color:var(--moss);}a{color:var(--terracotta);}
+  .donate{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0 14px;}
+  .donate a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:700;font-size:.84rem;padding:9px 16px;border-radius:30px;border:1.5px solid var(--line);transition:.18s;}
+  .donate a.coffee{background:var(--gold);color:#3a2f12;border-color:var(--gold);}
+  .donate a.patreon{background:transparent;color:var(--terracotta);border-color:var(--terracotta);}
+  .donate a:active{transform:translateY(1px);}
+  .donate a svg{width:16px;height:16px;}
+  .byline{font-size:.78rem;color:#7a7160;}
+  .byline b{color:var(--moss-deep);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Caiet de teren digital</div>
+    <h1>Viet<em>AR</em></h1>
+    <p class="sub">Recunoaște faună și floră din imagine, cameră sau sunet, verifică autenticitatea pozelor — calibrat pe specii din România.</p>
+    <div class="divider"></div>
+  </header>
+
+  <div class="eng-row">
+    <div class="engine" id="engineBar">
+      <button class="eng-btn active" data-engine="local">Local · RO<small>specii din România</small></button>
+      <button class="eng-btn" data-engine="general">General<small>rapid · offline</small></button>
+      <button class="eng-btn" data-engine="birds">Păsări<small>specii de păsări</small></button>
+      <button class="eng-btn" data-engine="ai">AI online<small>cea mai precisă</small></button>
+    </div>
+    <button class="gear" id="gear" title="Setări AI online"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+  </div>
+
+  <div class="scope" id="scope"></div>
+  <div class="status"><span class="dot ready" id="dot"></span><span id="statusText">Pregătit</span></div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="camera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Cameră</button>
+    <button class="tab" data-tab="upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Imagine</button>
+    <button class="tab" data-tab="sunet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>Sunet</button>
+  </div>
+
+  <section class="panel active" id="panel-camera">
+    <div class="stage">
+      <video id="video" playsinline muted autoplay></video>
+      <div class="stage-hint" id="camHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Apasă <b>Pornește camera</b> ca să începi.</span></div>
+      <div class="live-badge" id="liveBadge"><div class="lbl"><div class="live-tag" id="liveTag">Identificare live</div><div class="name" id="liveName">…</div></div><div class="pct" id="livePct"></div></div>
+    </div>
+    <div class="controls">
+      <button class="act primary" id="btnStart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Pornește camera</button>
+      <button class="act primary" id="btnCapture" disabled style="background:var(--moss-deep)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Identifică cadrul</button>
+      <button class="act ghost" id="btnFlip" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Comută</button>
+    </div>
+    <div class="err-box" id="camErr"></div>
+  </section>
+
+  <section class="panel" id="panel-upload">
+    <div class="stage" id="previewStage" style="display:none;"><img id="preview" alt="previzualizare" /></div>
+    <label class="drop" id="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><b>Alege o fotografie</b><span>sau trage imaginea aici · se verifică și autenticitatea</span><input type="file" id="file" accept="image/*" hidden /></label>
+    <div class="controls"><button class="act primary" id="btnChoose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Încarcă imagine</button></div>
+  </section>
+
+  <section class="panel" id="panel-sunet">
+    <div class="audio-stage">
+      <div class="mic" id="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+      <b id="audioTitle">Identifică după sunet</b>
+      <span id="audioHint">Înregistrează ~5 secunde (ciripit, lătrat, mieunat…) sau încarcă un fișier audio. Sunetele umane/artificiale sunt filtrate.</span>
+    </div>
+    <div class="controls">
+      <button class="act primary" id="btnRec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>Înregistrează 5s</button>
+      <button class="act ghost" id="btnAudioFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Încarcă audio</button>
+      <input type="file" id="audioInput" accept="audio/*" hidden />
+    </div>
+    <div class="err-box" id="audioErr"></div>
+  </section>
+
+  <div class="results" id="results"><div class="empty" id="emptyState">Rezultatele apar aici.</div></div>
+
+  <footer>
+    <button id="installBtn" class="act primary" style="display:none;max-width:300px;margin:0 auto 16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="3" x2="12" y2="16"/></svg>Instalează VietAR</button>
+    <div class="byline">Creat de <b>Alexio</b> · Ecoul Stringurilor</div>
+    <!-- Donații -->
+    <div class="donate">
+      <a class="coffee" href="https://buymeacoffee.com/echo.of.the.strings" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        Buy me a coffee
+      </a>
+      <a class="patreon" href="https://www.patreon.com/c/alexio_tf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="15" cy="8.5" r="5.5"/><rect x="2.5" y="2.5" width="3.4" height="19"/></svg>
+        Patreon
+      </a>
+    </div>
+    <span class="leaf">❧</span> Imagine &amp; sunet rulează local prin transformers.js (offline după prima descărcare); AI online folosește cheia ta (⚙).<br>
+    Autenticitatea combină marcaje de proveniență C2PA/IPTC + euristică + AI. Semnale orientative, nu verdict legal.
+  </footer>
+</div>
+
+<div class="modal" id="modal"><div class="sheet">
+  <h3>Setări · AI online</h3>
+  <p class="hint">Identifică specii (denumiri RO) și evaluează autenticitatea, calibrat pe regiunea București/România.</p>
+  <div class="warn">⚠ Nu pune cheia în fișierul găzduit public. Se salvează doar în browserul acestui dispozitiv și se trimite direct către furnizor.</div>
+  <div class="field"><label>Furnizor</label><select id="provider"><option value="anthropic">Anthropic (Claude) — recomandat</option><option value="openai">OpenAI-compatibil (OpenAI / OpenRouter)</option></select></div>
+  <div class="field"><label>Cheie API</label><input id="apiKey" type="password" placeholder="sk-ant-… / sk-…" autocomplete="off" /></div>
+  <div class="field"><label>Model</label><input id="model" type="text" placeholder="claude-sonnet-4-6" /></div>
+  <div class="field" id="endpointField" style="display:none"><label>Endpoint (OpenAI-compatibil)</label><input id="endpoint" type="text" placeholder="https://api.openai.com/v1/chat/completions" /></div>
+  <div class="sheet-actions"><button class="act ghost" id="btnCloseSettings" style="flex:1">Anulează</button><button class="act primary" id="btnSaveSettings" style="flex:1">Salvează</button></div>
+</div></div>
+
+<canvas id="grab" hidden></canvas>
+
+<script type="module">
+import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers';
+env.allowLocalModels=false; env.useBrowserCache=true;
+
+const $=id=>document.getElementById(id);
+const dot=$('dot'),statusText=$('statusText'),video=$('video'),camHint=$('camHint'),liveBadge=$('liveBadge'),
+  liveName=$('liveName'),livePct=$('livePct'),liveTag=$('liveTag'),btnStart=$('btnStart'),btnCapture=$('btnCapture'),
+  btnFlip=$('btnFlip'),camErr=$('camErr'),drop=$('drop'),fileInput=$('file'),btnChoose=$('btnChoose'),
+  preview=$('preview'),previewStage=$('previewStage'),results=$('results'),grab=$('grab'),engineBar=$('engineBar');
+const gctx=grab.getContext('2d',{willReadFrequently:true});
+
+/* ===== specii România (zero-shot CLIP) ===== */
+const CAT_EN={bird:'bird',mammal:'mammal',insect:'insect',spider:'spider',reptile:'reptile',amphibian:'amphibian',tree:'tree',plant:'plant',flower:'flower',fungus:'mushroom',mollusc:'snail or slug'};
+const CAT_RO={bird:'Pasăre',mammal:'Mamifer',insect:'Insectă',spider:'Păianjen',reptile:'Reptilă',amphibian:'Amfibian',tree:'Arbore',plant:'Plantă',flower:'Floare',fungus:'Ciupercă',mollusc:'Moluscă'};
+const CAT_PL={bird:'păsări',mammal:'mamifere',insect:'insecte',spider:'păianjeni',reptile:'reptile',amphibian:'amfibieni',tree:'arbori',plant:'plante',flower:'flori',fungus:'ciuperci',mollusc:'moluște'};
+const SP=[
+ ["house sparrow","Vrabie de casă","Passer domesticus","bird"],["Eurasian tree sparrow","Vrabie de câmp","Passer montanus","bird"],
+ ["common blackbird","Mierlă","Turdus merula","bird"],["song thrush","Sturz cântător","Turdus philomelos","bird"],["fieldfare","Cocoșar","Turdus pilaris","bird"],
+ ["black redstart","Codroș de munte","Phoenicurus ochruros","bird"],["common redstart","Codroș de pădure","Phoenicurus phoenicurus","bird"],
+ ["European robin","Măcăleandru","Erithacus rubecula","bird"],["great tit","Pițigoi mare","Parus major","bird"],["blue tit","Pițigoi albastru","Cyanistes caeruleus","bird"],
+ ["long-tailed tit","Pițigoi codat","Aegithalos caudatus","bird"],["Eurasian magpie","Coțofană","Pica pica","bird"],["hooded crow","Cioară grivă","Corvus cornix","bird"],
+ ["rook","Cioară de semănătură","Corvus frugilegus","bird"],["Eurasian jackdaw","Stăncuță","Coloeus monedula","bird"],["common raven","Corb","Corvus corax","bird"],
+ ["Eurasian jay","Gaiță","Garrulus glandarius","bird"],["common wood pigeon","Porumbel gulerat","Columba palumbus","bird"],["feral pigeon","Porumbel de oraș","Columba livia","bird"],
+ ["Eurasian collared dove","Guguștiuc","Streptopelia decaocto","bird"],["common swift","Drepnea neagră","Apus apus","bird"],["barn swallow","Rândunică","Hirundo rustica","bird"],
+ ["common house martin","Lăstun de casă","Delichon urbicum","bird"],["white wagtail","Codobatură albă","Motacilla alba","bird"],["European goldfinch","Sticlete","Carduelis carduelis","bird"],
+ ["European greenfinch","Florinte","Chloris chloris","bird"],["common chaffinch","Cinteză","Fringilla coelebs","bird"],["hawfinch","Botgros","Coccothraustes coccothraustes","bird"],
+ ["Eurasian blackcap","Silvie cu cap negru","Sylvia atricapilla","bird"],["common starling","Graur","Sturnus vulgaris","bird"],["common chiffchaff","Pitulice","Phylloscopus collybita","bird"],
+ ["common nightingale","Privighetoare","Luscinia megarhynchos","bird"],["spotted flycatcher","Muscar sur","Muscicapa striata","bird"],["Eurasian nuthatch","Țiclean","Sitta europaea","bird"],
+ ["great spotted woodpecker","Ciocănitoare pestriță mare","Dendrocopos major","bird"],["Syrian woodpecker","Ciocănitoare de grădini","Dendrocopos syriacus","bird"],["European green woodpecker","Ghionoaie verde","Picus viridis","bird"],
+ ["common kestrel","Vânturel roșu","Falco tinnunculus","bird"],["common buzzard","Șorecar comun","Buteo buteo","bird"],["Eurasian sparrowhawk","Uliu păsărar","Accipiter nisus","bird"],
+ ["white stork","Barză albă","Ciconia ciconia","bird"],["grey heron","Stârc cenușiu","Ardea cinerea","bird"],["mallard","Rață mare","Anas platyrhynchos","bird"],
+ ["mute swan","Lebădă de vară","Cygnus olor","bird"],["Eurasian coot","Lișiță","Fulica atra","bird"],["black-headed gull","Pescăruș râzător","Chroicocephalus ridibundus","bird"],
+ ["common cuckoo","Cuc","Cuculus canorus","bird"],["tawny owl","Huhurez mic","Strix aluco","bird"],["little owl","Cucuvea","Athene noctua","bird"],
+ ["common pheasant","Fazan","Phasianus colchicus","bird"],["yellowhammer","Presură galbenă","Emberiza citrinella","bird"],["hoopoe","Pupăză","Upupa epops","bird"],
+ ["red fox","Vulpe","Vulpes vulpes","mammal"],["European hedgehog","Arici","Erinaceus roumanicus","mammal"],["red squirrel","Veveriță","Sciurus vulgaris","mammal"],
+ ["European hare","Iepure de câmp","Lepus europaeus","mammal"],["house mouse","Șoarece de casă","Mus musculus","mammal"],["brown rat","Șobolan cenușiu","Rattus norvegicus","mammal"],
+ ["European mole","Cârtiță","Talpa europaea","mammal"],["domestic cat","Pisică","Felis catus","mammal"],["domestic dog","Câine","Canis familiaris","mammal"],
+ ["roe deer","Căprioară","Capreolus capreolus","mammal"],["wild boar","Mistreț","Sus scrofa","mammal"],["beech marten","Jder de piatră","Martes foina","mammal"],
+ ["European ground squirrel","Popândău","Spermophilus citellus","mammal"],["common pipistrelle bat","Liliac pitic","Pipistrellus pipistrellus","mammal"],
+ ["European honey bee","Albină","Apis mellifera","insect"],["buff-tailed bumblebee","Bondar","Bombus terrestris","insect"],["European hornet","Viespe mare (gărgăun)","Vespa crabro","insect"],
+ ["common wasp","Viespe","Vespula vulgaris","insect"],["seven-spot ladybird","Buburuză","Coccinella septempunctata","insect"],["harlequin ladybird","Buburuză asiatică","Harmonia axyridis","insect"],
+ ["European peacock butterfly","Fluture ochi-de-păun","Aglais io","insect"],["small tortoiseshell butterfly","Fluture urzicar","Aglais urticae","insect"],["large white butterfly","Albiliță","Pieris brassicae","insect"],
+ ["swallowtail butterfly","Fluture coada-rândunicii","Papilio machaon","insect"],["painted lady butterfly","Fluture de scaieți","Vanessa cardui","insect"],["red admiral butterfly","Fluture-amiral","Vanessa atalanta","insect"],
+ ["hummingbird hawk-moth","Fluture-colibri","Macroglossum stellatarum","insect"],["European mantis","Călugăriță","Mantis religiosa","insect"],["migratory locust","Lăcustă","Locusta migratoria","insect"],
+ ["field cricket","Greier de câmp","Gryllus campestris","insect"],["European stag beetle","Rădașcă","Lucanus cervus","insect"],["rose chafer beetle","Gândac-trandafiriu","Cetonia aurata","insect"],
+ ["firebug","Gândac-soldat","Pyrrhocoris apterus","insect"],["common darter dragonfly","Libelulă","Sympetrum striolatum","insect"],["housefly","Muscă de casă","Musca domestica","insect"],
+ ["mosquito","Țânțar","Culex pipiens","insect"],["black garden ant","Furnică neagră","Lasius niger","insect"],["wasp spider","Păianjen-viespe","Argiope bruennichi","spider"],["European garden spider","Păianjen de grădină","Araneus diadematus","spider"],
+ ["European green lizard","Gușter","Lacerta viridis","reptile"],["sand lizard","Șopârlă de câmp","Lacerta agilis","reptile"],["common wall lizard","Șopârlă de ziduri","Podarcis muralis","reptile"],
+ ["grass snake","Șarpe de casă","Natrix natrix","reptile"],["European pond turtle","Țestoasă de baltă","Emys orbicularis","reptile"],
+ ["common toad","Broască râioasă brună","Bufo bufo","amphibian"],["European green toad","Broască râioasă verde","Bufotes viridis","amphibian"],["edible frog","Broască de lac","Pelophylax esculentus","amphibian"],["fire salamander","Salamandră de foc","Salamandra salamandra","amphibian"],
+ ["silver linden tree","Tei argintiu","Tilia tomentosa","tree"],["large-leaved linden tree","Tei","Tilia platyphyllos","tree"],["Norway maple tree","Arțar","Acer platanoides","tree"],
+ ["sycamore maple tree","Paltin de munte","Acer pseudoplatanus","tree"],["horse chestnut tree","Castan porcesc","Aesculus hippocastanum","tree"],["London plane tree","Platan","Platanus acerifolia","tree"],
+ ["English oak tree","Stejar","Quercus robur","tree"],["silver birch tree","Mesteacăn","Betula pendula","tree"],["white poplar tree","Plop alb","Populus alba","tree"],
+ ["Lombardy poplar tree","Plop piramidal","Populus nigra Italica","tree"],["white willow tree","Salcie","Salix alba","tree"],["weeping willow tree","Salcie plângătoare","Salix babylonica","tree"],
+ ["black locust tree","Salcâm","Robinia pseudoacacia","tree"],["tree of heaven","Cenușar (oțetar)","Ailanthus altissima","tree"],["walnut tree","Nuc","Juglans regia","tree"],
+ ["European ash tree","Frasin","Fraxinus excelsior","tree"],["European hornbeam tree","Carpen","Carpinus betulus","tree"],["wild cherry tree","Cireș","Prunus avium","tree"],
+ ["common hazel","Alun","Corylus avellana","tree"],["catalpa tree","Catalpă","Catalpa bignonioides","tree"],["magnolia tree","Magnolie","Magnolia","tree"],
+ ["Norway spruce tree","Molid","Picea abies","tree"],["Scots pine tree","Pin","Pinus sylvestris","tree"],["white mulberry tree","Dud","Morus alba","tree"],
+ ["common dandelion","Păpădie","Taraxacum officinale","plant"],["common daisy","Bănuței","Bellis perennis","flower"],["red poppy","Mac roșu","Papaver rhoeas","flower"],
+ ["common nettle","Urzică","Urtica dioica","plant"],["greater plantain","Pătlagină","Plantago major","plant"],["white clover","Trifoi alb","Trifolium repens","plant"],
+ ["yarrow","Coada-șoricelului","Achillea millefolium","plant"],["common chicory","Cicoare","Cichorium intybus","flower"],["common mallow","Nalbă","Malva sylvestris","plant"],
+ ["field bindweed","Volbură","Convolvulus arvensis","plant"],["chamomile","Mușețel","Matricaria chamomilla","flower"],["common sunflower","Floarea-soarelui","Helianthus annuus","flower"],
+ ["common ivy","Iederă","Hedera helix","plant"],["lilac","Liliac (floare)","Syringa vulgaris","flower"],["wisteria","Glicină","Wisteria sinensis","plant"],
+ ["common reed","Stuf","Phragmites australis","plant"],["blackberry bramble","Mur","Rubus fruticosus","plant"],["grape vine","Viță-de-vie","Vitis vinifera","plant"],
+ ["rose flower","Trandafir","Rosa","flower"],["tulip flower","Lalea","Tulipa","flower"],["geranium flower","Mușcată","Pelargonium","flower"],
+ ["petunia flower","Petunie","Petunia","flower"],["hydrangea flower","Hortensie","Hydrangea","flower"],["chrysanthemum flower","Crizantemă","Chrysanthemum","flower"],
+ ["marigold flower","Crăițe (gălbenele)","Tagetes","flower"],
+ ["fly agaric mushroom","Muscăriță","Amanita muscaria","fungus"],["field mushroom","Ciupercă de câmp","Agaricus campestris","fungus"],["porcini mushroom","Hrib","Boletus edulis","fungus"],["shaggy ink cap mushroom","Burete-de-rouă","Coprinus comatus","fungus"],
+ ["yellow-legged gull","Pescăruș mediteranean","Larus michahellis","bird"],["Caspian gull","Pescăruș pontic","Larus cachinnans","bird"],["common gull","Pescăruș sur","Larus canus","bird"],["common tern","Chiră de baltă","Sterna hirundo","bird"],["great cormorant","Cormoran mare","Phalacrocorax carbo","bird"],["common moorhen","Găinușă de baltă","Gallinula chloropus","bird"],["great crested grebe","Corcodel mare","Podiceps cristatus","bird"],["common kingfisher","Pescăraș albastru","Alcedo atthis","bird"],["greylag goose","Gâscă de vară","Anser anser","bird"],["great egret","Egretă mare","Ardea alba","bird"],["little egret","Egretă mică","Egretta garzetta","bird"],["black-crowned night heron","Stârc de noapte","Nycticorax nycticorax","bird"],["northern lapwing","Nagâț","Vanellus vanellus","bird"],["black stork","Barză neagră","Ciconia nigra","bird"],["European bee-eater","Prigorie","Merops apiaster","bird"],["European roller","Dumbrăveancă","Coracias garrulus","bird"],["Eurasian golden oriole","Grangur","Oriolus oriolus","bird"],["red-backed shrike","Sfrâncioc roșiatic","Lanius collurio","bird"],["Eurasian skylark","Ciocârlie de câmp","Alauda arvensis","bird"],["crested lark","Ciocârlan","Galerida cristata","bird"],["barn owl","Strigă","Tyto alba","bird"],["long-eared owl","Ciuf de pădure","Asio otus","bird"],["Eurasian eagle-owl","Buhă","Bubo bubo","bird"],["black woodpecker","Ciocănitoare neagră","Dryocopus martius","bird"],["Eurasian bullfinch","Mugurar","Pyrrhula pyrrhula","bird"],["European serin","Cănăraș","Serinus serinus","bird"],["Eurasian siskin","Scatiu","Spinus spinus","bird"],["common linnet","Cânepar","Linaria cannabina","bird"],["coal tit","Pițigoi de brădet","Periparus ater","bird"],["crested tit","Pițigoi moțat","Lophophanes cristatus","bird"],["grey wagtail","Codobatură de munte","Motacilla cinerea","bird"],["western marsh harrier","Erete de stuf","Circus aeruginosus","bird"],["black kite","Gaie brună","Milvus migrans","bird"],["Eurasian hobby","Șoimul rândunelelor","Falco subbuteo","bird"],["white-tailed eagle","Codalb","Haliaeetus albicilla","bird"],["grey partridge","Potârniche","Perdix perdix","bird"],["common quail","Prepeliță","Coturnix coturnix","bird"],
+ ["brown bear","Urs brun","Ursus arctos","mammal"],["grey wolf","Lup","Canis lupus","mammal"],["Eurasian lynx","Râs","Lynx lynx","mammal"],["red deer","Cerb","Cervus elaphus","mammal"],["fallow deer","Cerb lopătar","Dama dama","mammal"],["chamois","Capră neagră (de munte)","Rupicapra rupicapra","mammal"],["European badger","Bursuc (viezure)","Meles meles","mammal"],["Eurasian otter","Vidră","Lutra lutra","mammal"],["pine marten","Jder de copac","Martes martes","mammal"],["European polecat","Dihor","Mustela putorius","mammal"],["least weasel","Nevăstuică","Mustela nivalis","mammal"],["European hamster","Hârciog","Cricetus cricetus","mammal"],["edible dormouse","Pârș","Glis glis","mammal"],["coypu","Nutrie (bizam-american)","Myocastor coypus","mammal"],
+ ["common European adder","Viperă comună","Vipera berus","reptile"],["nose-horned viper","Viperă cu corn","Vipera ammodytes","reptile"],["dice snake","Șarpe de apă","Natrix tessellata","reptile"],["Aesculapian snake","Șarpele lui Esculap","Zamenis longissimus","reptile"],["Caspian whipsnake","Șarpe-de-bici","Dolichophis caspius","reptile"],["smooth snake","Șarpe de alun","Coronella austriaca","reptile"],["slow worm","Năpârcă (șopârlă fără picioare)","Anguis fragilis","reptile"],["Hermann's tortoise","Țestoasă de uscat","Testudo hermanni","reptile"],["European tree frog","Brotăcel","Hyla arborea","amphibian"],["marsh frog","Broască de lac mare","Pelophylax ridibundus","amphibian"],["yellow-bellied toad","Izvoraș cu burta galbenă","Bombina variegata","amphibian"],["great crested newt","Triton crestat","Triturus cristatus","amphibian"],
+ ["garden snail","Melc de grădină","Cornu aspersum","mollusc"],["Roman snail","Melc de livadă","Helix pomatia","mollusc"],["red slug","Limax roșu","Arion rufus","mollusc"],["violet carpenter bee","Albină-tâmplar (bondar negru)","Xylocopa violacea","insect"],["hoverfly","Sirfidă (muscă-de-flori)","Syrphidae","insect"],["cockchafer","Cărăbuș de mai","Melolontha melolontha","insect"],["Colorado potato beetle","Gândac de Colorado","Leptinotarsa decemlineata","insect"],["common firefly","Licurici","Lampyris noctiluca","insect"],["brown marmorated stink bug","Ploșnița brună de pădure","Halyomorpha halys","insect"],["green shield bug","Ploșnița verde","Palomena prasina","insect"],["common blue butterfly","Albăstrel","Polyommatus icarus","insect"],["brimstone butterfly","Fluture-lămâiță","Gonepteryx rhamni","insect"],["great green bush-cricket","Cosaș verde","Tettigonia viridissima","insect"],["mole cricket","Coropișniță","Gryllotalpa gryllotalpa","insect"],["harvestman","Secerător (opilion)","Opiliones","spider"],["common woodlouse","Păduche-de-lemn","Armadillidium vulgare","insect"],
+ ["European beech tree","Fag","Fagus sylvatica","tree"],["silver fir tree","Brad","Abies alba","tree"],["sessile oak tree","Gorun","Quercus petraea","tree"],["field maple tree","Jugastru","Acer campestre","tree"],["field elm tree","Ulm","Ulmus minor","tree"],["apple tree","Măr","Malus domestica","tree"],["plum tree","Prun","Prunus domestica","tree"],["apricot tree","Cais","Prunus armeniaca","tree"],["sour cherry tree","Vișin","Prunus cerasus","tree"],["quince tree","Gutui","Cydonia oblonga","tree"],["elder tree","Soc","Sambucus nigra","tree"],["hawthorn tree","Păducel","Crataegus monogyna","tree"],["blackthorn tree","Porumbar","Prunus spinosa","tree"],["cornelian cherry tree","Corn","Cornus mas","tree"],["rowan tree","Scoruș de munte","Sorbus aucuparia","tree"],["common juniper","Ienupăr","Juniperus communis","tree"],["paulownia tree","Paulownia","Paulownia tomentosa","tree"],["ginkgo tree","Ginkgo (arborele-pagodelor)","Ginkgo biloba","tree"],
+ ["dog rose","Măceș","Rosa canina","plant"],["forsythia","Forsiția","Forsythia","plant"],["ox-eye daisy","Margaretă","Leucanthemum vulgare","flower"],["cornflower","Albăstrele","Centaurea cyanus","flower"],["common mullein","Lumânărică","Verbascum","plant"],["St John's wort","Sunătoare","Hypericum perforatum","plant"],["greater celandine","Rostopască","Chelidonium majus","plant"],["coltsfoot","Podbal","Tussilago farfara","plant"],["burdock","Brusture","Arctium lappa","plant"],["thistle","Ciulin (scaiete)","Cirsium","plant"],["common ragweed","Ambrozie","Ambrosia artemisiifolia","plant"],["snowdrop","Ghiocel","Galanthus nivalis","flower"],["cowslip primrose","Ciuboțica-cucului","Primula veris","flower"],["sweet violet","Toporaș","Viola odorata","flower"],["lily of the valley","Lăcrămioară","Convallaria majalis","flower"],["crocus","Brândușă","Crocus","flower"],["daffodil","Narcisă","Narcissus","flower"],["peony","Bujor","Paeonia","flower"],["iris","Stânjenel","Iris","flower"],["lavender","Lavandă","Lavandula","plant"],["hollyhock","Nalbă-de-grădină","Alcea rosea","flower"],["red clover","Trifoi roșu","Trifolium pratense","plant"],["water lily","Nufăr","Nymphaea alba","plant"],["common cattail","Papură","Typha latifolia","plant"],["maize","Porumb","Zea mays","plant"],["wheat","Grâu","Triticum aestivum","plant"],["oilseed rape","Rapiță","Brassica napus","plant"],
+ ["death cap mushroom","Buretele-viperei (MORTAL)","Amanita phalloides","fungus"],["chanterelle mushroom","Gălbiori","Cantharellus cibarius","fungus"],["parasol mushroom","Pălăria-șarpelui","Macrolepiota procera","fungus"],["honey fungus mushroom","Ghebe","Armillaria mellea","fungus"],["oyster mushroom","Păstrăv-de-fag","Pleurotus ostreatus","fungus"],["giant puffball mushroom","Pufai (bășina-porcului)","Calvatia gigantea","fungus"],
+ // —— val 2: păsări (silvii, pițigoi, acvatice, limicole, răpitoare) ——
+ ["willow warbler","Pitulice fluierătoare","Phylloscopus trochilus","bird"],["wood warbler","Pitulice sfârâitoare","Phylloscopus sibilatrix","bird"],["garden warbler","Silvie de zăvoi","Sylvia borin","bird"],["lesser whitethroat","Silvie mică","Curruca curruca","bird"],["barred warbler","Silvie porumbacă","Curruca nisoria","bird"],["sedge warbler","Lăcar mic","Acrocephalus schoenobaenus","bird"],["Eurasian reed warbler","Lăcar de stuf","Acrocephalus scirpaceus","bird"],["icterine warbler","Frunzăriță galbenă","Hippolais icterina","bird"],["firecrest","Aușel sprâncenat","Regulus ignicapilla","bird"],["willow tit","Pițigoi de munte","Poecile montanus","bird"],["marsh tit","Pițigoi sur","Poecile palustris","bird"],["bearded reedling","Pițigoi de stuf","Panurus biarmicus","bird"],["penduline tit","Boicuș","Remiz pendulinus","bird"],["Eurasian treecreeper","Cojoaică de pădure","Certhia familiaris","bird"],["short-toed treecreeper","Cojoaică cu degete scurte","Certhia brachydactyla","bird"],["Eurasian wren","Ochiul-boului","Troglodytes troglodytes","bird"],["dunnock","Brumăriță de pădure","Prunella modularis","bird"],["northern wheatear","Pietrar sur","Oenanthe oenanthe","bird"],["whinchat","Mărăcinar mare","Saxicola rubetra","bird"],["European stonechat","Mărăcinar negru","Saxicola rubicola","bird"],["tree pipit","Fâsă de pădure","Anthus trivialis","bird"],["meadow pipit","Fâsă de câmp","Anthus pratensis","bird"],["western yellow wagtail","Codobatură galbenă","Motacilla flava","bird"],["corn bunting","Presură sură","Emberiza calandra","bird"],["ortolan bunting","Presură de grădină","Emberiza hortulana","bird"],["cirl bunting","Presură bărboasă","Emberiza cirlus","bird"],["common pochard","Rață cu cap castaniu","Aythya ferina","bird"],["tufted duck","Rață moțată","Aythya fuligula","bird"],["garganey","Rață cârâitoare","Spatula querquedula","bird"],["northern shoveler","Rață lingurar","Spatula clypeata","bird"],["Eurasian teal","Rață mică","Anas crecca","bird"],["gadwall","Rață pestriță","Mareca strepera","bird"],["little grebe","Corcodel mic","Tachybaptus ruficollis","bird"],["pygmy cormorant","Cormoran mic","Microcarbo pygmaeus","bird"],["purple heron","Stârc roșu","Ardea purpurea","bird"],["squacco heron","Stârc galben","Ardeola ralloides","bird"],["little bittern","Stârc pitic","Ixobrychus minutus","bird"],["great bittern","Buhai de baltă","Botaurus stellaris","bird"],["glossy ibis","Țigănuș","Plegadis falcinellus","bird"],["Eurasian spoonbill","Lopătar","Platalea leucorodia","bird"],["great white pelican","Pelican comun","Pelecanus onocrotalus","bird"],["Dalmatian pelican","Pelican creț","Pelecanus crispus","bird"],["black-winged stilt","Piciorong","Himantopus himantopus","bird"],["pied avocet","Ciocîntors","Recurvirostra avosetta","bird"],["common snipe","Becațină comună","Gallinago gallinago","bird"],["whiskered tern","Chirighiță cu obraz alb","Chlidonias hybrida","bird"],["short-toed snake eagle","Șerpar","Circaetus gallicus","bird"],["lesser spotted eagle","Acvilă țipătoare mică","Clanga pomarina","bird"],["red-footed falcon","Vânturel de seară","Falco vespertinus","bird"],["peregrine falcon","Șoim călător","Falco peregrinus","bird"],["saker falcon","Șoim dunărean","Falco cherrug","bird"],["northern goshawk","Uliu porumbar","Accipiter gentilis","bird"],["European honey buzzard","Viespar","Pernis apivorus","bird"],["European turtle dove","Turturică","Streptopelia turtur","bird"],["European nightjar","Caprimulg","Caprimulgus europaeus","bird"],["sand martin","Lăstun de mal","Riparia riparia","bird"],["alpine swift","Drepnea mare","Tachymarptis melba","bird"],["Eurasian wryneck","Capîntortură","Jynx torquilla","bird"],["grey-headed woodpecker","Ghionoaie sură","Picus canus","bird"],["lesser spotted woodpecker","Ciocănitoare pestriță mică","Dryobates minor","bird"],["middle spotted woodpecker","Ciocănitoare de stejar","Dendrocoptes medius","bird"],["corncrake","Cristel de câmp","Crex crex","bird"],["great bustard","Dropie","Otis tarda","bird"],
+ // —— mamifere ——
+ ["European bison","Zimbru","Bison bonasus","mammal"],["European wildcat","Pisică sălbatică","Felis silvestris","mammal"],["golden jackal","Șacal auriu","Canis aureus","mammal"],["raccoon dog","Câine enot","Nyctereutes procyonoides","mammal"],["stoat","Hermelină","Mustela erminea","mammal"],["steppe polecat","Dihor de stepă","Mustela eversmanii","mammal"],["European mink","Nurcă europeană","Mustela lutreola","mammal"],["greater mouse-eared bat","Liliac comun","Myotis myotis","mammal"],["common noctule bat","Liliac de amurg","Nyctalus noctula","mammal"],["lesser horseshoe bat","Liliacul mic cu potcoavă","Rhinolophus hipposideros","mammal"],["common shrew","Chițcan de pădure","Sorex araneus","mammal"],["European water vole","Șobolan de apă","Arvicola amphibius","mammal"],["common vole","Șoarece de câmp","Microtus arvalis","mammal"],["bank vole","Șoarece scurmător","Myodes glareolus","mammal"],["forest dormouse","Pârș de pădure","Dryomys nitedula","mammal"],["lesser blind mole-rat","Orbete (cățelul-pământului)","Nannospalax leucodon","mammal"],
+ // —— reptile & amfibieni ——
+ ["Balkan wall lizard","Șopârlă de stepă","Podarcis tauricus","reptile"],["viviparous lizard","Șopârlă de munte","Zootoca vivipara","reptile"],["meadow viper","Viperă de fâneață","Vipera ursinii","reptile"],["leopard snake","Șarpe bălțat","Zamenis situla","reptile"],["common spadefoot","Broască de pământ","Pelobates fuscus","amphibian"],["agile frog","Broască săritoare","Rana dalmatina","amphibian"],["common frog","Broasca roșie de munte","Rana temporaria","amphibian"],["moor frog","Broasca de mlaștină","Rana arvalis","amphibian"],["fire-bellied toad","Buhai de baltă cu burta roșie","Bombina bombina","amphibian"],["smooth newt","Triton comun","Lissotriton vulgaris","amphibian"],["alpine newt","Triton de munte","Ichthyosaura alpestris","amphibian"],["Carpathian newt","Triton carpatic","Lissotriton montandoni","amphibian"],
+ // —— fluturi, libelule, gândaci, alte nevertebrate ——
+ ["scarce swallowtail","Fluture coada-rândunicii pal","Iphiclides podalirius","insect"],["Apollo butterfly","Fluture-apollo","Parnassius apollo","insect"],["clouded yellow","Fluture galben-portocaliu","Colias crocea","insect"],["orange tip","Albiliță cu vârf portocaliu","Anthocharis cardamines","insect"],["green-veined white","Albiliță de rapiță","Pieris napi","insect"],["small copper","Fluture-de-foc","Lycaena phlaeas","insect"],["holly blue","Albăstrel de iederă","Celastrina argiolus","insect"],["purple emperor","Fluturele-de-mătase","Apatura iris","insect"],["comma butterfly","Fluture-virgulă","Polygonia c-album","insect"],["map butterfly","Fluture-hartă","Araschnia levana","insect"],["silver-washed fritillary","Fluture-sidefiu","Argynnis paphia","insect"],["marbled white","Fluture tablă-de-șah","Melanargia galathea","insect"],["meadow brown","Fluture-brun-de-luncă","Maniola jurtina","insect"],["speckled wood","Fluture-de-pădure","Pararge aegeria","insect"],["six-spot burnet","Fluture cu șase pete","Zygaena filipendulae","insect"],["garden tiger moth","Fluture-urs","Arctia caja","insect"],["death's-head hawkmoth","Fluture cap-de-mort","Acherontia atropos","insect"],["elephant hawkmoth","Fluture-elefant","Deilephila elpenor","insect"],["gypsy moth","Omida păroasă a stejarului","Lymantria dispar","insect"],["emperor dragonfly","Libelula-împărat","Anax imperator","insect"],["broad-bodied chaser","Libelulă cu corp lat","Libellula depressa","insect"],["banded demoiselle","Demoazelă (fata-pădurii)","Calopteryx splendens","insect"],["blue-tailed damselfly","Libelulă cu coadă albastră","Ischnura elegans","insect"],["common blue damselfly","Libelulă albastră","Enallagma cyathigerum","insect"],["European rhinoceros beetle","Gândac-rinocer","Oryctes nasicornis","insect"],["great capricorn beetle","Croitorul-stejarului","Cerambyx cerdo","insect"],["violet ground beetle","Carab violaceu","Carabus violaceus","insect"],["dor beetle","Gândac-de-bălegar","Geotrupes stercorarius","insect"],["click beetle","Gândac-pocnitor","Elateridae","insect"],["weevil","Gărgăriță","Curculionidae","insect"],["common carder bee","Bondar-de-câmp","Bombus pascuorum","insect"],["red mason bee","Albină-zidar","Osmia bicornis","insect"],["German wasp","Viespe germană","Vespula germanica","insect"],["red wood ant","Furnică-roșie-de-pădure","Formica rufa","insect"],["common cicada","Cicadă","Lyristes plebejus","insect"],["mayfly","Rusalie (efemeridă)","Ephemera danica","insect"],["antlion","Furnicaleu","Myrmeleon formicarius","insect"],["green lacewing","Crisopă","Chrysoperla carnea","insect"],["common earwig","Urechelniță","Forficula auricularia","insect"],["common water strider","Pântăraș (scriitor-de-apă)","Gerris lacustris","insect"],["great diving beetle","Gândac-de-apă","Dytiscus marginalis","insect"],["wolf spider","Păianjen-lup","Lycosa","spider"],["nursery web spider","Păianjen-pălărier","Pisaura mirabilis","spider"],["goldenrod crab spider","Păianjen-de-flori","Misumena vatia","spider"],["European tarantula","Tarantulă","Lycosa singoriensis","spider"],["common house spider","Păianjen-de-casă","Tegenaria domestica","spider"],["castor bean tick","Căpușă","Ixodes ricinus","spider"],["grove snail","Melc-de-pădure-dungat","Cepaea nemoralis","mollusc"],["great pond snail","Limnee (melc-de-baltă)","Lymnaea stagnalis","mollusc"],["zebra mussel","Scoică-zebră","Dreissena polymorpha","mollusc"],["painter's mussel","Scoică-de-râu","Unio pictorum","mollusc"],["Spanish slug","Limax-spaniol","Arion vulgaris","mollusc"],
+ // —— arbori & arbuști ——
+ ["Turkey oak","Cer","Quercus cerris","tree"],["Hungarian oak","Gârniță","Quercus frainetto","tree"],["downy oak","Stejar pufos","Quercus pubescens","tree"],["red oak","Stejar roșu american","Quercus rubra","tree"],["Tatar maple","Arțar tătărăsc","Acer tataricum","tree"],["boxelder maple","Arțar american","Acer negundo","tree"],["manna ash","Mojdrean","Fraxinus ornus","tree"],["small-leaved lime","Tei pucios","Tilia cordata","tree"],["sweet chestnut","Castan comestibil","Castanea sativa","tree"],["black alder","Anin negru","Alnus glutinosa","tree"],["European aspen","Plop tremurător","Populus tremula","tree"],["wych elm","Ulm de munte","Ulmus glabra","tree"],["goat willow","Salcie căprească","Salix caprea","tree"],["black pine","Pin negru","Pinus nigra","tree"],["Swiss stone pine","Zâmbru","Pinus cembra","tree"],["mountain pine","Jneapăn","Pinus mugo","tree"],["European larch","Larice (zadă)","Larix decidua","tree"],["European yew","Tisă","Taxus baccata","tree"],["pear tree","Păr","Pyrus communis","tree"],["peach tree","Piersic","Prunus persica","tree"],["almond tree","Migdal","Prunus dulcis","tree"],["black mulberry","Dud negru","Morus nigra","tree"],["common fig tree","Smochin","Ficus carica","tree"],["European spindle","Salbă moale","Euonymus europaeus","tree"],["guelder rose","Călin","Viburnum opulus","tree"],["wayfaring tree","Dârmoz","Viburnum lantana","tree"],["wild privet","Lemn-câinesc","Ligustrum vulgare","tree"],["common barberry","Dracilă","Berberis vulgaris","tree"],["sea buckthorn","Cătină albă","Hippophae rhamnoides","tree"],["Russian olive","Sălcioară","Elaeagnus angustifolia","tree"],["Judas tree","Arborele-lui-Iuda","Cercis siliquastrum","tree"],["honey locust","Glădiță","Gleditsia triacanthos","tree"],["tulip tree","Arborele-lalea","Liriodendron tulipifera","tree"],
+ // —— flori, ierburi & plante (inclusiv toxice de recunoscut) ——
+ ["brown knapweed","Zglăvoc","Centaurea jacea","plant"],["tansy","Vetrice","Tanacetum vulgare","plant"],["common toadflax","Linariță","Linaria vulgaris","flower"],["viper's bugloss","Iarba-șarpelui","Echium vulgare","flower"],["marsh mallow","Nalbă-mare","Althaea officinalis","plant"],["soapwort","Săpunariță","Saponaria officinalis","flower"],["common valerian","Valeriană (odolean)","Valeriana officinalis","plant"],["meadowsweet","Aglică","Filipendula ulmaria","plant"],["purple loosestrife","Răchitan","Lythrum salicaria","flower"],["rosebay willowherb","Zburătoare","Chamerion angustifolium","flower"],["common comfrey","Tătăneasă","Symphytum officinale","plant"],["forget-me-not","Nu-mă-uita","Myosotis","flower"],["borage","Limba-mielului","Borago officinalis","flower"],["bird's-foot trefoil","Ghizdei","Lotus corniculatus","flower"],["alfalfa","Lucernă","Medicago sativa","plant"],["wild carrot","Morcov-sălbatic","Daucus carota","plant"],["cow parsley","Asmățui-de-câmp","Anthriscus sylvestris","plant"],["hogweed","Brânca-ursului","Heracleum sphondylium","plant"],["wild teasel","Scaiul-dracului","Dipsacus fullonum","plant"],["field scabious","Mușcata-dracului","Knautia arvensis","flower"],["harebell","Clopoțel","Campanula rotundifolia","flower"],["common foxglove","Degețel-roșu (toxic)","Digitalis purpurea","flower"],["bittersweet nightshade","Lăsnicior","Solanum dulcamara","plant"],["deadly nightshade","Mătrăgună (TOXICĂ)","Atropa belladonna","plant"],["henbane","Măselariță (toxică)","Hyoscyamus niger","plant"],["thorn apple","Ciumăfaie (laur, toxică)","Datura stramonium","plant"],["hemlock","Cucută (TOXICĂ)","Conium maculatum","plant"],["grape hyacinth","Ceapa-ciorii","Muscari","flower"],["hyacinth","Zambilă","Hyacinthus orientalis","flower"],["lily","Crin","Lilium","flower"],["martagon lily","Crin-de-pădure","Lilium martagon","flower"],["wild garlic","Leurdă","Allium ursinum","plant"],["spring snowflake","Ghiocel-bogat","Leucojum vernum","flower"],["common hop","Hamei","Humulus lupulus","plant"],["yellow water lily","Nufăr galben","Nuphar lutea","plant"],["common duckweed","Lintiță","Lemna minor","plant"],["barley","Orz","Hordeum vulgare","plant"],["rye","Secară","Secale cereale","plant"],["potato plant","Cartof","Solanum tuberosum","plant"],["sugar beet","Sfeclă","Beta vulgaris","plant"],["bracken fern","Ferigă-mare","Pteridium aquilinum","plant"],["field horsetail","Coada-calului","Equisetum arvense","plant"],
+ // —— ciuperci (comestibile & otrăvitoare) ——
+ ["destroying angel","Îngerul-morții (MORTAL)","Amanita virosa","fungus"],["panther cap","Buretele-pardosit (toxic)","Amanita pantherina","fungus"],["the blusher","Mânătarcă-roșietică","Amanita rubescens","fungus"],["Caesar's mushroom","Crăiță (bureți-domnești)","Amanita caesarea","fungus"],["saffron milkcap","Râșcov","Lactarius deliciosus","fungus"],["charcoal burner","Vinețică","Russula cyanoxantha","fungus"],["birch bolete","Pitarcă","Leccinum scabrum","fungus"],["bay bolete","Hrib-de-muște","Imleria badia","fungus"],["slippery jack","Hrib-untos","Suillus luteus","fungus"],["morel","Zbârciog","Morchella esculenta","fungus"],["false morel","Zbârciog-gras (toxic)","Gyromitra esculenta","fungus"],["field blewit","Nicoreț-vânăt","Lepista nuda","fungus"],["St George's mushroom","Bureți-de-mai","Calocybe gambosa","fungus"],["fairy ring mushroom","Bureți-de-rouă","Marasmius oreades","fungus"],["turkey tail","Iasca-pestriță","Trametes versicolor","fungus"],["tinder fungus","Iască","Fomes fomentarius","fungus"],["sulphur tuft","Buretele-pucios (toxic)","Hypholoma fasciculare","fungus"],["jelly ear","Urechiușă","Auricularia auricula-judae","fungus"]
+];
+const SP_COUNT=SP.length;
+
+/* dicționar RO pentru General (ImageNet) */
+const RO={'robin':'măcăleandru/sturz','magpie':'coțofană','jay':'gaiță','goldfinch':'sticlete','chickadee':'pițigoi','sparrow':'vrabie','owl':'bufniță','peacock':'păun','goose':'gâscă','stork':'barză','tabby':'pisică tigrată','persian cat':'pisică persană','lynx':'râs','lion':'leu','tiger':'tigru','brown bear':'urs brun','red fox':'vulpe roșie','wolf':'lup','badger':'bursuc','otter':'vidră','beaver':'castor','hare':'iepure de câmp','hedgehog':'arici','wild boar':'mistreț','zebra':'zebră','gorilla':'gorilă','koala':'koala','tree frog':'broască de copac','green lizard':'gușter','scorpion':'scorpion','tarantula':'tarantulă','bee':'albină','ant':'furnică','grasshopper':'lăcustă','mantis':'călugăriță','dragonfly':'libelulă','ladybug':'buburuză','snail':'melc','jellyfish':'meduză','daisy':'margaretă','corn':'porumb','mushroom':'ciupercă','banana':'banană','strawberry':'căpșună','orange':'portocală','lemon':'lămâie','bell pepper':'ardei gras','cucumber':'castravete'};
+const PLANT_HINT=/daisy|corn|mushroom|banana|strawberry|orange|lemon|pepper|cucumber|fig|pineapple|broccoli/;
+const clean=l=>l.split(',')[0].trim();
+const toRO=l=>{const x=l.toLowerCase();for(const k in RO)if(x.includes(k))return RO[k];return null;};
+const kindGen=l=>PLANT_HINT.test(l.toLowerCase())?'Floră / vegetal':'Faună';
+
+/* ===== motoare imagine + audio ===== */
+const ENGINES={
+  local:{type:'zsc',task:'zero-shot-image-classification',model:'Xenova/clip-vit-base-patch16',dt:{wasm:'q8',webgpu:'fp32'},live:false},
+  general:{type:'cls',task:'image-classification',model:'Xenova/vit-base-patch16-224',dt:{wasm:'q8',webgpu:'fp32'},live:true},
+  birds:{type:'cls',task:'image-classification',model:'chriamue/bird-species-classifier',dt:{wasm:'fp32',webgpu:'fp32'},live:true},
+  ai:{type:'online',live:false}
+};
+const AST={model:'Xenova/ast-finetuned-audioset-10-10-0.4593',dt:{wasm:'q8',webgpu:'fp32'}};
+let engine='local'; const pipes={}; let lastImageURL=null,lastFile=null,busy=false;
+const setStatus=(t,c)=>{statusText.textContent=t;dot.className='dot '+(c||'');};
+
+async function loadPipe(task,model,dt){
+  if(pipes[model])return pipes[model];
+  const device=('gpu' in navigator)?'webgpu':'wasm';
+  let dtypes=[...new Set(device==='webgpu'?[dt.webgpu]:[dt.wasm,'fp32'])]; let err;
+  for(const dtype of dtypes){try{
+    setStatus(`Se descarcă modelul (${device.toUpperCase()})…`,'loading');
+    const p=await pipeline(task,model,{device,dtype,progress_callback:x=>{if(x.status==='progress'&&x.file&&x.file.endsWith('.onnx'))setStatus(`Model… ${Math.round(x.progress||0)}%`,'loading');}});
+    pipes[model]=p; setStatus('Gata · rulează local','ready'); return p;
+  }catch(e){err=e;console.warn('dtype',dtype,e);}}
+  throw err;
+}
+const getPipe=eng=>loadPipe(ENGINES[eng].task,ENGINES[eng].model,ENGINES[eng].dt);
+const getAst=()=>loadPipe('audio-classification',AST.model,AST.dt);
+
+/* ===== CLIP cu amprente text precalculate (scalează la 500+ specii fără să încetinească) ===== */
+const CLIP_ID='Xenova/clip-vit-base-patch16';
+const CLIP_SP=SP.map(s=>'a photo of '+s[0]+', a '+CAT_EN[s[3]]);
+let clipTok=null,clipText=null,clipProc=null,clipVis=null,clipReady=false;
+const clipTextCache={};
+async function ensureClip(){
+  if(clipReady)return;
+  const device=('gpu' in navigator)?'webgpu':'wasm';
+  const dtype=device==='webgpu'?'fp32':'q8';
+  setStatus(`Se încarcă modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');
+  if(!clipTok)clipTok=await AutoTokenizer.from_pretrained(CLIP_ID);
+  if(!clipProc)clipProc=await AutoProcessor.from_pretrained(CLIP_ID);
+  try{
+    clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype});
+    clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype});
+  }catch(e){
+    console.warn('CLIP q8 eșuat, încerc fp32',e);
+    clipText=await CLIPTextModelWithProjection.from_pretrained(CLIP_ID,{device,dtype:'fp32'});
+    clipVis=await CLIPVisionModelWithProjection.from_pretrained(CLIP_ID,{device,dtype:'fp32'});
+  }
+  clipReady=true;
+}
+function l2norm(a,off,len){let s=0;for(let i=0;i<len;i++){const v=a[off+i];s+=v*v;}s=Math.sqrt(s)||1;for(let i=0;i<len;i++)a[off+i]/=s;}
+async function clipTextMatrix(key,labels){
+  if(clipTextCache[key])return clipTextCache[key];
+  await ensureClip();
+  const N=labels.length; let D=0,mat=null; const B=48;
+  for(let i=0;i<N;i+=B){
+    const batch=labels.slice(i,i+B);
+    const inp=clipTok(batch,{padding:true,truncation:true});
+    const {text_embeds}=await clipText(inp);
+    D=text_embeds.dims[1]; const data=text_embeds.data;
+    if(!mat)mat=new Float32Array(N*D);
+    for(let r=0;r<batch.length;r++){const dst=(i+r)*D,src=r*D;for(let j=0;j<D;j++)mat[dst+j]=data[src+j];l2norm(mat,dst,D);}
+    if(key==='species')setStatus(`Pregătesc amprentele speciilor… ${Math.min(i+B,N)}/${N} (o singură dată)`,'loading');
+  }
+  const obj={mat,n:N,D}; clipTextCache[key]=obj; setStatus('Gata · rulează local','ready'); return obj;
+}
+async function clipImageEmbed(dataURL){
+  await ensureClip();
+  const image=await RawImage.read(dataURL);
+  const inp=await clipProc(image);
+  const {image_embeds}=await clipVis(inp);
+  const v=Float32Array.from(image_embeds.data); l2norm(v,0,v.length); return v;
+}
+async function clipClassify(dataURL,key,labels,k){
+  const {mat,n,D}=await clipTextMatrix(key,labels);
+  const v=await clipImageEmbed(dataURL);
+  const sc=new Float32Array(n); let max=-1e9;
+  for(let i=0;i<n;i++){let dot=0;const off=i*D;for(let j=0;j<D;j++)dot+=mat[off+j]*v[j];const s=dot*100;sc[i]=s;if(s>max)max=s;}
+  let sum=0;for(let i=0;i<n;i++){sc[i]=Math.exp(sc[i]-max);sum+=sc[i];}
+  return [...sc.keys()].sort((a,b)=>sc[b]-sc[a]).slice(0,k).map(i=>({i,score:sc[i]/sum}));
+}
+
+/* ===== randare ===== */
+function renderRanked(items,note,leadFiltered){
+  if(!items||!items.length){results.innerHTML='<div class="empty">Nimic clar identificat. Încearcă o imagine/sunet mai clar.</div>';return;}
+  const t=items[0];
+  let html=`<div class="hero ${leadFiltered?'filtered':''}"><div class="ro">${t.ro}</div>${t.sci?`<div class="sci">${t.sci}</div>`:''}<div class="meta"><span class="kind">${t.kind}</span><span class="conf">${(t.score*100).toFixed(1)}%</span></div>${t.desc?`<div class="desc">${t.desc}</div>`:''}</div>`;
+  if(note)html+=`<p class="res-note">${note}</p>`;
+  items.slice(1).forEach((it,i)=>{html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${it.ro}</div>${it.sci?`<div class="en">${it.sci}</div>`:''}</div><div class="score">${(it.score*100).toFixed(1)}%</div></div><div class="bar"><i data-w="${it.score*100}"></i></div></div>`;});
+  results.innerHTML=html;
+  requestAnimationFrame(()=>results.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
+}
+function renderOnline(d){
+  const conf=Number(d.incredere)||0;
+  let html=`<div class="hero"><div class="ro">${d.nume_ro||'Nedeterminat'}</div>${d.nume_stiintific?`<div class="sci">${d.nume_stiintific}</div>`:''}<div class="meta"><span class="kind">${d.categorie||'—'}</span><span class="conf">${conf?conf+'% încredere':''}</span></div>${d.descriere?`<div class="desc">${d.descriere}</div>`:''}</div>`;
+  if(Array.isArray(d.alternative)&&d.alternative.length){html+=`<p class="res-note">Alte posibilități</p>`;d.alternative.slice(0,4).forEach((a,i)=>{const p=Number(a.incredere)||0;html+=`<div class="row" style="animation-delay:${i*70}ms"><div class="top"><div><div class="ro">${a.nume_ro||'—'}</div>${a.nume_stiintific?`<div class="en">${a.nume_stiintific}</div>`:''}</div><div class="score">${p?p+'%':''}</div></div><div class="bar"><i data-w="${p}"></i></div></div>`;});}
+  results.innerHTML=html;
+  requestAnimationFrame(()=>results.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
+  if(d.autenticitate)appendAuthCard({verdict:d.autenticitate.verdict,motiv:d.autenticitate.motiv,src:'Claude (AI)'});
+}
+const showLoading=m=>results.innerHTML=`<div class="empty"><div class="spin"></div>${m||'Se analizează…'}</div>`;
+
+/* ===== AI online ===== */
+const PROMPT=`Ești un naturalist expert. Fotografia a fost făcută cel mai probabil în România (zona București), Europa — preferă specii comune regiunii.
+Identifică specia principală de faună/floră ȘI evaluează autenticitatea imaginii (semne de editare Photoshop, generare AI, sau dacă e o reprezentare/obiect: jucărie, statuie, desen, ecran).
+Răspunde DOAR cu JSON valid, fără text suplimentar:
+{"nume_ro":"","nume_stiintific":"","categorie":"faună|floră|ciupercă|altul","incredere":0-100,"descriere":"o frază scurtă RO","alternative":[{"nume_ro":"","nume_stiintific":"","incredere":0-100}],"autenticitate":{"verdict":"reală|editată|generată AI|reprezentare/obiect|nesigur","motiv":"scurtă explicație RO"}}
+Dacă nu poți identifica, pune "Nedeterminat" la nume_ro.`;
+const getCfg=()=>{try{return JSON.parse(localStorage.getItem('iff_cfg')||'{}');}catch(e){return {};}};
+const parseJSON=t=>{const m=t.match(/\{[\s\S]*\}/);if(!m)throw new Error('Răspuns neașteptat');return JSON.parse(m[0]);};
+async function identifyOnline(dataURL){
+  const cfg=getCfg();
+  if(!cfg.key){results.innerHTML='<div class="empty">Pentru AI online, deschide ⚙ și introdu o cheie API.</div>';openSettings();return;}
+  showLoading('Trimit imaginea către AI…');
+  const mt=(dataURL.match(/^data:(.*?);/)||[])[1]||'image/jpeg',b64=dataURL.split(',')[1];
+  try{
+    let text;
+    if(cfg.provider==='openai'){
+      const r=await fetch(cfg.endpoint||'https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+cfg.key,'content-type':'application/json'},body:JSON.stringify({model:cfg.model||'gpt-4o-mini',max_tokens:800,messages:[{role:'user',content:[{type:'text',text:PROMPT},{type:'image_url',image_url:{url:dataURL}}]}]})});
+      const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);text=j.choices[0].message.content;
+    }else{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model:cfg.model||'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:PROMPT}]}]})});
+      const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);text=j.content.filter(c=>c.type==='text').map(c=>c.text).join('');
+    }
+    renderOnline(parseJSON(text));setStatus('Gata · AI','ready');
+    if(lastFile) runProvenance(lastFile);
+  }catch(e){console.error(e);results.innerHTML=`<div class="empty">Eroare AI: ${e.message}.<br>Verifică cheia/modelul (⚙).</div>`;setStatus('Eroare AI','err');}
+}
+
+/* ===== identificare imagine ===== */
+async function identify(dataURL,fromUpload){
+  lastImageURL=dataURL; const cfg=ENGINES[engine];
+  if(cfg.type==='online'){await identifyOnline(dataURL);return;}
+  showLoading(engine==='local'?'Compar cu specii din România…':'Se analizează local…');
+  try{
+    if(cfg.type==='zsc'){
+      const top=await clipClassify(dataURL,'species',CLIP_SP,5);
+      const items=top.map(t=>{const s=SP[t.i];return{ro:s[1],sci:s[2],kind:CAT_RO[s[3]],score:t.score};});
+      renderRanked(items,`Top 5 din ${SP.length} specii din România (amprente precalculate o singură dată).`);
+    }else{
+      const p=await getPipe(engine);
+      const out=await p(dataURL,{topk:5});
+      const items=out.map(o=>{const ro=toRO(o.label);return{ro:ro||clean(o.label),sci:ro?clean(o.label):'',kind:kindGen(o.label),score:o.score};});
+      renderRanked(items,`Top ${items.length} potriviri (model ${engine}).`);
+    }
+    if(fromUpload) runAuthenticity(dataURL,lastFile,true);
+  }catch(e){console.error(e);if(engine!=='general'){results.innerHTML=`<div class="empty">Modelul «${engine}» nu s-a încărcat aici. Revin la General.</div>`;selectEngine('general');identify(dataURL,fromUpload);}else results.innerHTML='<div class="empty">Eroare la analiză.</div>';}
+}
+
+/* ===== AUTENTICITATE ===== */
+function appendAuthCard({verdict,motiv,src,prov,clip}){
+  let cls='v-warn';
+  const v=(verdict||'').toLowerCase();
+  if(/real|autent|cameră/.test(v))cls='v-ok';
+  if(/generat|ai|fals|editat|reprezent|obiect/.test(v))cls='v-bad';
+  let html=`<div class="auth"><h3>🛡 Autenticitate</h3>`;
+  if(verdict)html+=`<span class="verdict ${cls}">${verdict}</span>`;
+  if(motiv)html+=`<div class="line">${motiv}${src?` <i style="opacity:.7">— ${src}</i>`:''}</div>`;
+  if(prov)html+=`<div class="line"><b>Proveniență (metadate):</b> ${prov}</div>`;
+  if(clip)html+=`<div class="line"><b>Euristică vizuală:</b> ${clip}</div>`;
+  html+=`<div class="disc">Semnale orientative, nu dovadă. Absența marcajelor ≠ autentic (metadatele se pierd la descărcare/redimensionare/screenshot). Pentru verificare semnată: contentcredentials.org/verify.</div></div>`;
+  const card=document.createElement('div'); card.innerHTML=html; results.appendChild(card.firstChild);
+}
+async function runAuthenticity(dataURL,file,doClip){
+  let prov=null,clip=null;
+  if(file){ try{prov=await scanProvenance(file);}catch(e){} }
+  if(doClip && engine!=='ai'){ try{clip=await clipAuthenticity(dataURL);}catch(e){} }
+  if(prov||clip) appendAuthCard({prov:prov?prov.text:null,clip});
+}
+function runProvenance(file){ scanProvenance(file).then(p=>{if(p)appendAuthCard({prov:p.text});}).catch(()=>{}); }
+
+async function scanProvenance(file){
+  const buf=new Uint8Array(await file.arrayBuffer());
+  let s=''; const N=Math.min(buf.length,4*1024*1024);
+  for(let i=0;i<N;i++) s+=String.fromCharCode(buf[i]);
+  const has=re=>re.test(s);
+  const ai=has(/trainedAlgorithmicMedia|algorithmicMedia|DigitalSourceType|GenAI|firefly|dall[\s-]?e|midjourney|stable\s?diffusion|stability\.ai|imagen|"?OpenAI"?|c2pa\.ai/i);
+  const c2pa=has(/jumbf|c2pa|contentauth|urn:uuid:|claim_generator/i);
+  const editor=has(/Adobe Photoshop|Photoshop|Lightroom|GIMP|Affinity Photo|Pixlr|Snapseed|Topaz|Luminar|Canva/i);
+  const hist=has(/xmpMM:History|stEvt:action/i);
+  let soft='';
+  const m=s.match(/(Adobe Photoshop[^"<\x00]{0,18}|Adobe Lightroom[^"<\x00]{0,14}|GIMP\s?[0-9.]*|Affinity Photo|Snapseed|Canva|Adobe Firefly|DALL[\s·-]?E[\s0-9]*|Midjourney)/i);
+  if(m)soft=m[0].trim();
+  let text;
+  if(ai)text=`⚠ Marcaj de generare/sinteză AI prezent în metadate (C2PA/IPTC${soft?` · ${soft}`:''}). Foarte probabil generată sau prelucrată cu AI.`;
+  else if(editor||hist)text=`Editată într-un program de imagine${soft?` (${soft})`:''}${hist?', cu istoric de modificări':''}. Editare ≠ falsificare, dar nu e cadru brut de cameră.`;
+  else if(c2pa)text=`Conține acte de proveniență C2PA. Verifică pe contentcredentials.org/verify pentru detalii semnate.`;
+  else text=`Fără marcaje de proveniență detectabile — neconcludent (metadatele se pierd des).`;
+  return {text,ai,editor,c2pa,hist};
+}
+const AUTH_LABELS=['a real photograph captured by a camera','an AI-generated or computer-synthesized image','a drawing, painting or digital illustration','a toy, statue or replica of an animal or plant'];
+const AUTH_RO=['pare fotografie reală','⚠ posibil generată AI','pare desen/ilustrație','⚠ pare obiect/reprezentare, nu vietate reală'];
+async function clipAuthenticity(dataURL){
+  const top=await clipClassify(dataURL,'auth',AUTH_LABELS,1);
+  const t=top[0]; return `${AUTH_RO[t.i]} (${(t.score*100).toFixed(0)}%)`;
+}
+
+/* ===== AUDIO (AST / AudioSet) ===== */
+const AUDIO_RO=[['rooster','Cocoș (cucurigu)','bird'],['crowing','Cucurigu de cocoș','bird'],['chicken','Găină','bird'],['cluck','Cotcodăcit de găină','bird'],['turkey','Curcan','bird'],['duck','Rață (măcăit)','bird'],['quack','Măcăit de rață','bird'],['goose','Gâscă (gâgâit)','bird'],['honk','Gâgâit','bird'],['owl','Bufniță (huhurit)','bird'],['hoot','Huhurit de bufniță','bird'],['crow','Cioară (croncănit)','bird'],['caw','Croncănit','bird'],['pigeon','Porumbel','bird'],['coo','Uguit de porumbel','bird'],['chirp','Ciripit de pasăre','bird'],['tweet','Ciripit','bird'],['bird vocalization','Cântec de pasăre','bird'],['bird call','Chemare de pasăre','bird'],['bird song','Cântec de pasăre','bird'],['bird','Pasăre','bird'],['squawk','Țipăt de pasăre','bird'],['cuckoo','Cuc','bird'],
+ ['dog','Câine','mammal'],['bark','Lătrat de câine','mammal'],['yip','Schelălăit','mammal'],['howl','Urlet (câine/lup)','mammal'],['bow-wow','Ham-ham','mammal'],['growling','Mârâit','mammal'],['whimper','Scâncet','mammal'],['cat','Pisică','mammal'],['meow','Mieunat de pisică','mammal'],['purr','Tors de pisică','mammal'],['caterwaul','Miorlăit','mammal'],['pig','Porc (grohăit)','mammal'],['oink','Grohăit de porc','mammal'],['cattle','Vită (muget)','mammal'],['moo','Muget de vacă','mammal'],['cowbell','Talangă','mammal'],['horse','Cal','mammal'],['neigh','Nechezat de cal','mammal'],['clip-clop','Tropot de copite','mammal'],['sheep','Oaie (behăit)','mammal'],['bleat','Behăit','mammal'],['goat','Capră','mammal'],['roaring cats','Răget de felină','mammal'],['roar','Răget','mammal'],['rodents','Rozătoare','mammal'],['mouse','Șoarece','mammal'],['rats','Șobolan','mammal'],['squeak','Chițăit','mammal'],['livestock','Animale de fermă','mammal'],['domestic animals','Animale domestice','mammal'],['canidae','Canide (câine/lup/vulpe)','mammal'],['fowl','Păsări de curte','bird'],['wild animals','Animale sălbatice','mammal'],['animal','Animal','mammal'],
+ ['frog','Broască (orăcăit)','amphibian'],['croak','Orăcăit de broască','amphibian'],['snake','Șarpe','reptile'],['rattle','Zornăit (șarpe cu clopoței)','reptile'],['hiss','Sâsâit / șuierat','reptile'],
+ ['cricket','Greier (țârâit)','insect'],['insect','Insectă','insect'],['mosquito','Țânțar (bâzâit)','insect'],['fly','Muscă (bâzâit)','insect'],['buzz','Bâzâit','insect'],['bee','Albină (bâzâit)','insect'],['wasp','Viespe (bâzâit)','insect']];
+const AUDIO_ARTIF=['speech','male speech','female speech','child speech','conversation','narration','monologue','babbling','shout','bellow','yell','children shouting','screaming','whispering','laughter','baby','crying','singing','choir','chant','humming','music','musical instrument','guitar','piano','drum','violin','trumpet','synthesizer','vehicle','car','engine','motorcycle','truck','bus','aircraft','helicopter','train','rail','traffic','tools','power tool','drill','hammer','sawing','jackhammer','alarm','siren','smoke detector','telephone','ringtone','cell phone','television','radio','machine','mechanisms','gears','door','sliding door','clapping','applause','footsteps','typing','keyboard','typewriter','clock','tick','beep','bleep','white noise','static','clicking','whistling','breathing','cough','sneeze','sniff','gasp','crowd','hubbub','hands','finger snapping','glass','shatter','explosion','gunshot','fireworks'];
+function mapAudio(label){const x=label.toLowerCase();for(const[k,ro,cat]of AUDIO_RO)if(x.includes(k))return{ro,cat};return null;}
+function isArtif(label){const x=label.toLowerCase();return AUDIO_ARTIF.some(k=>x.includes(k));}
+
+async function decodeMono16k(ab){
+  const AC=window.AudioContext||window.webkitAudioContext; const ac=new AC();
+  const buf=await ac.decodeAudioData(ab.slice(0)); try{ac.close();}catch(e){}
+  const len=Math.max(1,Math.ceil(buf.duration*16000));
+  const off=new OfflineAudioContext(1,Math.min(len,16000*10),16000);
+  const src=off.createBufferSource(); src.buffer=buf; src.connect(off.destination); src.start();
+  const r=await off.startRendering(); return r.getChannelData(0);
+}
+async function classifyAudio(ab){
+  showLoading('Analizez sunetul…');
+  try{
+    const data=await decodeMono16k(ab);
+    const ast=await getAst();
+    const out=await ast(data,{topk:12});
+    let animalScore=0,artifScore=0,topAnimal=null,topArtif=null;
+    out.forEach(o=>{const a=mapAudio(o.label),art=isArtif(o.label);if(a){animalScore+=o.score;if(!topAnimal)topAnimal={...a,en:o.label,score:o.score};}else if(art){artifScore+=o.score;if(!topArtif)topArtif={en:o.label,score:o.score};}});
+    if(artifScore>animalScore*1.15 && (!topAnimal || topArtif && topArtif.score>topAnimal.score)){
+      renderRanked([{ro:'Sunet artificial / uman — filtrat',sci:topArtif?topArtif.en:'',kind:'Filtrat',score:topArtif?topArtif.score:artifScore,desc:'Nu pare vocalizare de animal (voce, muzică, mașini, dispozitive). AST clasifică tipul de sunet, dar nu poate ști dacă un om imită intenționat un animal.'}],null,true);
+      setStatus('Sunet artificial — filtrat','ready'); return;
+    }
+    if(topAnimal){
+      const items=out.filter(o=>mapAudio(o.label)).slice(0,5).map(o=>{const a=mapAudio(o.label);return{ro:a.ro,sci:o.label,kind:CAT_RO[a.cat]||'Animal',score:o.score};});
+      const note=artifScore>0.15?`Fundal artificial detectat (${(artifScore*100).toFixed(0)}%) și filtrat. Top sunete de animal:`:'Top sunete de animal recunoscute:';
+      renderRanked(items,note); setStatus('Gata · sunet','ready');
+    }else{
+      renderRanked([{ro:'Sunet neclasificat ca animal',sci:out[0]?out[0].label:'',kind:'Necunoscut',score:out[0]?out[0].score:0,desc:'Încearcă o înregistrare mai curată și mai aproape de sursă.'}],null,true);
+      setStatus('Gata','ready');
+    }
+  }catch(e){console.error(e);results.innerHTML=`<div class="empty">Nu am putut analiza sunetul: ${e.message}</div>`;setStatus('Eroare audio','err');}
+}
+
+let mediaRec=null,chunks=[],recTimer=null;
+async function recordAudio(sec){
+  $('audioErr').style.display='none';
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaRec=new MediaRecorder(s); chunks=[];
+    mediaRec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
+    mediaRec.onstop=async()=>{s.getTracks().forEach(t=>t.stop());$('mic').classList.remove('rec');$('btnRec').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>Înregistrează 5s';const ab=await new Blob(chunks).arrayBuffer();classifyAudio(ab);};
+    mediaRec.start(); $('mic').classList.add('rec'); $('btnRec').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>Oprește';
+    let left=sec; $('audioTitle').textContent=`Înregistrez… ${left}s`;
+    recTimer=setInterval(()=>{left--;$('audioTitle').textContent=left>0?`Înregistrez… ${left}s`:'Procesez…';if(left<=0)stopRec();},1000);
+  }catch(e){$('audioErr').textContent='Nu pot accesa microfonul. Permite accesul și folosește HTTPS/localhost.';$('audioErr').style.display='block';}
+}
+function stopRec(){if(recTimer){clearInterval(recTimer);recTimer=null;}if(mediaRec&&mediaRec.state!=='inactive')mediaRec.stop();$('audioTitle').textContent='Identifică după sunet';}
+$('btnRec').onclick=()=>{if(mediaRec&&mediaRec.state==='recording')stopRec();else recordAudio(5);};
+$('btnAudioFile').onclick=()=>$('audioInput').click();
+$('audioInput').onchange=async e=>{const f=e.target.files[0];if(f)classifyAudio(await f.arrayBuffer());};
+
+/* ===== scop detecție pe categorii (rând informativ sub selector) ===== */
+function localScopeText(){
+  const c={}; SP.forEach(s=>c[s[3]]=(c[s[3]]||0)+1);
+  const order=['bird','mammal','insect','spider','reptile','amphibian','tree','plant','flower','fungus','mollusc'];
+  return `<b>Detectează ${SP.length} specii din România</b> · `+order.filter(k=>c[k]).map(k=>`${c[k]} ${CAT_PL[k]}`).join(' · ');
+}
+const SCOPE={
+  general:'Detectează ~1000 de categorii ImageNet: animale (mamifere, păsări, pești, insecte), unele plante și multe obiecte.',
+  birds:'Detectează ~525 de specii de păsări din lume (model dedicat) — afișează top 5 candidați.',
+  ai:'Detectează orice — faună, floră, ciuperci — cu denumire în română, alternative și verdict de autenticitate.'
+};
+function setScope(eng){const el=document.getElementById('scope');if(!el)return;el.innerHTML=(eng==='local')?localScopeText():SCOPE[eng];}
+
+/* ===== selector motor + tab-uri ===== */
+function selectEngine(eng){engine=eng;setScope(eng);document.querySelectorAll('.eng-btn').forEach(b=>b.classList.toggle('active',b.dataset.engine===eng));
+  if(!ENGINES[eng].live){stopLiveLoop();if(stream){liveTag.textContent=ENGINES[eng].type==='online'?'AI · pe cerere':'Local · pe cerere';liveName.textContent='Apasă „Identifică cadrul"';livePct.textContent='';}}
+  else{liveTag.textContent='Identificare live';if(stream)startLiveLoop();}}
+document.querySelectorAll('.eng-btn').forEach(b=>{b.onclick=()=>{selectEngine(b.dataset.engine);if(lastImageURL&&document.querySelector('.tab.active').dataset.tab==='upload')identify(lastImageURL,true);};});
+document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');$('panel-'+t.dataset.tab).classList.add('active');const sunet=t.dataset.tab==='sunet';engineBar.classList.toggle('dim',sunet);if(t.dataset.tab!=='camera')stopCamera();if(sunet){results.innerHTML='<div class="empty">Înregistrează sau încarcă un sunet.</div>';const sc=document.getElementById('scope');if(sc)sc.innerHTML='<b>Sunet</b> · recunoaște vocalizări de animale (ciripit, lătrat, mieunat, grohăit, sâsâit, orăcăit, bâzâit…) și filtrează sunetele umane/artificiale.';}else setScope(engine);};});
+
+/* ===== cameră ===== */
+let stream=null,facing='environment',liveTimer=null;
+async function startCamera(){camErr.style.display='none';try{stopCamera();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});video.srcObject=stream;await video.play();camHint.style.display='none';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg> Oprește';btnStart.dataset.on='1';btnFlip.disabled=false;btnCapture.disabled=false;liveBadge.classList.add('show');if(ENGINES[engine].live){liveTag.textContent='Identificare live';startLiveLoop();}else{liveTag.textContent=ENGINES[engine].type==='online'?'AI · pe cerere':'Local · pe cerere';liveName.textContent='Apasă „Identifică cadrul"';livePct.textContent='';}}catch(e){camErr.textContent='Nu pot accesa camera. Permite accesul și folosește HTTPS/localhost.';camErr.style.display='block';}}
+function stopCamera(){stopLiveLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}liveBadge.classList.remove('show');camHint.style.display='flex';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Pornește camera';btnStart.dataset.on='';btnFlip.disabled=true;btnCapture.disabled=true;}
+function grabFrame(){if(video.readyState<2||!video.videoWidth)return null;const S=320,vw=video.videoWidth,vh=video.videoHeight,side=Math.min(vw,vh);grab.width=S;grab.height=S;gctx.drawImage(video,(vw-side)/2,(vh-side)/2,side,side,0,0,S,S);return grab.toDataURL('image/jpeg',0.85);}
+function startLiveLoop(){stopLiveLoop();liveName.textContent='se inițializează…';livePct.textContent='';liveTimer=setInterval(async()=>{if(busy||!ENGINES[engine].live||!stream)return;const url=grabFrame();if(!url)return;busy=true;try{const p=await getPipe(engine);const out=await p(url,{topk:5});if(out&&out[0]){const ro=toRO(out[0].label);liveName.textContent=ro||clean(out[0].label);livePct.textContent=(out[0].score*100).toFixed(0)+'%';const items=out.map(o=>{const r=toRO(o.label);return{ro:r||clean(o.label),sci:r?clean(o.label):'',kind:kindGen(o.label),score:o.score};});renderRanked(items,`Top ${items.length} potriviri (model ${engine}).`);}}catch(e){}busy=false;},1700);}
+function stopLiveLoop(){if(liveTimer){clearInterval(liveTimer);liveTimer=null;}}
+btnStart.onclick=()=>{btnStart.dataset.on?stopCamera():startCamera();};
+btnFlip.onclick=()=>{facing=facing==='environment'?'user':'environment';startCamera();};
+btnCapture.onclick=()=>{const url=grabFrame();if(url)identify(url,false);};
+
+/* ===== upload ===== */
+function handleFile(file){if(!file||!file.type.startsWith('image/'))return;lastFile=file;const r=new FileReader();r.onload=e=>{preview.src=e.target.result;previewStage.style.display='flex';drop.style.display='none';identify(e.target.result,true);};r.readAsDataURL(file);}
+btnChoose.onclick=()=>fileInput.click();
+drop.onclick=e=>{if(e.target.tagName!=='INPUT')fileInput.click();};
+fileInput.onchange=e=>handleFile(e.target.files[0]);
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
+drop.addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
+previewStage.onclick=()=>{drop.style.display='flex';previewStage.style.display='none';};
+
+/* ===== setări ===== */
+const modal=$('modal'),provider=$('provider'),apiKey=$('apiKey'),modelInp=$('model'),endpoint=$('endpoint'),endpointField=$('endpointField');
+function openSettings(){const c=getCfg();provider.value=c.provider||'anthropic';apiKey.value=c.key||'';modelInp.value=c.model||'';endpoint.value=c.endpoint||'';modelInp.placeholder=provider.value==='openai'?'gpt-4o-mini':'claude-sonnet-4-6';endpointField.style.display=provider.value==='openai'?'block':'none';modal.classList.add('show');}
+provider.onchange=()=>{endpointField.style.display=provider.value==='openai'?'block':'none';modelInp.placeholder=provider.value==='openai'?'gpt-4o-mini':'claude-sonnet-4-6';};
+$('gear').onclick=openSettings;$('btnCloseSettings').onclick=()=>modal.classList.remove('show');
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove('show');};
+$('btnSaveSettings').onclick=()=>{const cfg={provider:provider.value,key:apiKey.value.trim(),model:modelInp.value.trim(),endpoint:endpoint.value.trim()};try{localStorage.setItem('iff_cfg',JSON.stringify(cfg));}catch(e){alert('Nu pot salva aici (stocare blocată). Funcționează pe domeniul tău.');}modal.classList.remove('show');if(engine==='ai')setStatus('AI online configurat','ready');};
+
+/* ===== PWA: instalare + service worker ===== */
+let deferredPrompt=null;
+const installBtn=$('installBtn');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(installBtn)installBtn.style.display='flex';});
+if(installBtn)installBtn.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();try{await deferredPrompt.userChoice;}catch(e){}deferredPrompt=null;installBtn.style.display='none';};
+window.addEventListener('appinstalled',()=>{if(installBtn)installBtn.style.display='none';});
+const swEligible=('serviceWorker' in navigator)
+  && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')
+  && !/claudeusercontent\.com|usercontent|webcontainer|stackblitz|csb\.app/.test(location.hostname);
+if(swEligible){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+
+setScope(engine);
+window.addEventListener('beforeunload',()=>{stopCamera();stopRec();});
+</script>
+</body>
+</html>
