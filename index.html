@@ -397,7 +397,7 @@
 <canvas id="grab" hidden></canvas>
 
 <script type="module">
-import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
+import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from './vendor/transformers/transformers.min.js';
 env.allowLocalModels=false; env.useBrowserCache=true;
 
 const $=id=>document.getElementById(id);
@@ -716,13 +716,13 @@ async function c2paProvenance(file){
   // întâi biblioteca nouă @contentauth/c2pa-web, apoi c2pa clasic; ambele etichetate ca "verificat C2PA"
   let manifestStore=null;
   try{
-    const m=await import('https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web@0/+esm');
-    if(m&&m.createC2pa){const c2pa=await m.createC2pa({wasmSrc:'https://cdn.jsdelivr.net/npm/@contentauth/c2pa-web/dist/resources/c2pa_bg.wasm'});const res=await c2pa.read(file);manifestStore=res&&(res.manifestStore||res);}
+    const m=await import('./vendor/c2pa-web/index.js');
+    if(m&&m.createC2pa){const c2pa=await m.createC2pa({wasmSrc:new URL('./vendor/c2pa-web/resources/c2pa_bg.wasm',location.href).href});const res=await c2pa.read(file);manifestStore=res&&(res.manifestStore||res);}
   }catch(e){console.warn('c2pa-web:',e.message);}
   if(!manifestStore){
     const ver='0.30.17';
-    const {createC2pa}=await import(`https://cdn.jsdelivr.net/npm/c2pa@${ver}/+esm`);
-    const c2pa=await createC2pa({wasmSrc:`https://cdn.jsdelivr.net/npm/c2pa@${ver}/dist/assets/wasm/toolkit_bg.wasm`,workerSrc:`https://cdn.jsdelivr.net/npm/c2pa@${ver}/dist/c2pa.worker.min.js`});
+    const {createC2pa}=await import('./vendor/c2pa/c2pa.esm.min.js');
+    const c2pa=await createC2pa({wasmSrc:new URL('./vendor/c2pa/toolkit_bg.wasm',location.href).href,workerSrc:new URL('./vendor/c2pa/c2pa.worker.min.js',location.href).href});
     const res=await c2pa.read(file);manifestStore=res&&res.manifestStore;
   }
   const am=manifestStore&&(manifestStore.activeManifest||manifestStore.active_manifest);
