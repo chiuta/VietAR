@@ -13,6 +13,10 @@
    Modelele HuggingFace sunt lăsate în seama transformers.js (cache propriu). */
 const CACHE = 'vietar-v16';
 const SHELL = [
+  './index.html',
+  './vendor/transformers/transformers.min.js',
+  './vendor/c2pa-web/index.js', './vendor/c2pa-web/c2pa-BhHHemvP.js',
+  './vendor/c2pa/c2pa.esm.min.js', './vendor/c2pa/c2pa.worker.min.js',
   './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'
 ];

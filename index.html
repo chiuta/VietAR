@@ -3,7 +3,7 @@
   ============================================================================
   VietAR
   Autor: Alexandru-Ionuț Chiuță (Alexio · „Ecoul Stringurilor")
-  Aplicație single-file, offline-first, fără telemetrie.
+  Aplicație PWA (index.html + vendor/), offline după prima descărcare a modelelor, fără telemetrie.
 
   LICENȚĂ — TRADE-FREE + CC0 1.0 (Public Domain Dedication)
   Oferită liber, fără troc, în spiritul mișcării TROM (trom.tf). În măsura
@@ -18,6 +18,7 @@
 -->
 <html lang="ro">
 <head>
+<meta charset="UTF-8" />
 <style id="tf-a11y-motion">
 /* Accesibilitate: respectă preferința utilizatorului pentru mai puțină mișcare (TROM/a11y). */
 @media (prefers-reduced-motion: reduce){
@@ -44,12 +45,11 @@
 @font-face{font-family:'Spline Sans';font-style:normal;font-weight:700;font-display:swap;src:url(data:font/woff2;base64,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) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
 </style>
 
-<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
 <title>VietAR · faună &amp; floră din România</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#2a3f2c" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' data: https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
 <meta name="description" content="VietAR — identifică faună și floră din România din imagine, cameră (AR live) sau sunet, direct în browser. 519 specii locale, offline după prima descărcare." />
 <meta property="og:title" content="VietAR · faună & floră din România" />
 <meta property="og:description" content="Identifică vietăți și plante din România — imagine, cameră AR live sau sunet. Rulează local, în browser." />
@@ -359,7 +359,7 @@
   <h3>Ghid rapid</h3>
   <p class="hint">VietAR are trei motoare. Dacă nu știi care, lasă <b>Local · RO</b> — e potrivit pentru ce vezi în România.</p>
   <ul>
-    <li><b>Local · RO</b> — 519 specii românești, complet offline. AR live peste cameră.</li>
+    <li><b>Local · RO</b> — 519 taxoni românești, offline după prima descărcare a modelului. AR live peste cameră.</li>
     <li><b>General</b> — categorii largi (animale, obiecte), foarte rapid.</li>
     <li><b>AI online</b> — cel mai precis, cu denumiri RO + autenticitate; necesită cheie proprie (⚙).</li>
   </ul>
@@ -389,7 +389,7 @@
     <li><b>Jurnalul</b> (observații, miniaturi, locație) e salvat doar pe acest dispozitiv (localStorage). Îl poți șterge oricând.</li>
     <li><b>Locația:</b> cerută doar când salvezi o observație și doar dacă accepți. Poți folosi aplicația și fără.</li>
     <li><b>AI online:</b> opțional. Doar atunci imaginea pleacă spre furnizorul ales, cu cheia ta. Cheia stă în acest browser.</li>
-    <li><b>Modelele AI</b> se descarcă de la huggingface.co și rămân în cache-ul browserului pentru offline.</li>
+    <li><b>Modelele AI</b> se descarcă de la huggingface.co, iar motorul de rulare (ONNX Runtime) de la cdn.jsdelivr.net; rămân în cache-ul browserului pentru offline. Acele servere văd adresa IP, nu imaginile.</li>
   </ul>
   <div class="sheet-actions"><button class="act primary" id="btnClosePrivacy" style="flex:1">Închide</button></div>
 </div></div>
@@ -399,6 +399,9 @@
 <script type="module">
 import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from './vendor/transformers/transformers.min.js';
 env.allowLocalModels=false; env.useBrowserCache=true;
+const lsGet=k=>{try{return localStorage.getItem(k);}catch(e){return null;}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
+const lsDel=k=>{try{localStorage.removeItem(k);}catch(e){}};
 
 const $=id=>document.getElementById(id);
 const dot=$('dot'),statusText=$('statusText'),video=$('video'),camHint=$('camHint'),
@@ -496,11 +499,14 @@ const CAT_EN={bird:'bird',mammal:'mammal',insect:'insect',spider:'spider',reptil
 const CAT_RO={bird:'Pasăre',mammal:'Mamifer',insect:'Insectă',spider:'Păianjen',reptile:'Reptilă',amphibian:'Amfibian',tree:'Arbore',plant:'Plantă',flower:'Floare',fungus:'Ciupercă',mollusc:'Moluscă'};
 const CLIP_SP=SP.map(s=>'a photo of '+s[0]+', a '+CAT_EN[s[3]]);
 const clean=l=>l.split(',')[0].trim();
-const toRO=l=>{const x=l.toLowerCase();for(const k in RO)if(x.includes(k))return RO[k];return null;};
+const RO_SKIP=/sea lion|tiger (cat|beetle|shark)|wolf spider/;
+const RO_RX=Object.keys(RO).map(k=>[new RegExp('\\b'+k+'\\b'),RO[k]]);
+const toRO=l=>{const x=l.toLowerCase();if(RO_SKIP.test(x))return null;for(const[rx,v]of RO_RX)if(rx.test(x))return v;return null;}; // cuvânt întreg: 'ant' nu mai potrivește 'elephant', 'bee' nu 'beetle'
 const PLANT_HINT=/daisy|corn|mushroom|banana|strawberry|orange|lemon|pepper|cucumber|fig|pineapple|broccoli/;
 const kindGen=l=>PLANT_HINT.test(l.toLowerCase())?'Floră / vegetal':'Faună';
 const TOXIC=/toxic|toxică|mortal|otrăv|MORTAL/i;
-const isToxic=(ro,sci,kind)=>kind==='fungus'||TOXIC.test(ro)||TOXIC.test(sci||'');
+const TOXIC_SCI=/^(Taxus|Solanum dulcamara|Euonymus|Convallaria|Heracleum|Chelidonium|Narcissus|Hedera|Wisteria|Ligustrum|Robinia|Ambrosia)/;
+const isToxic=(ro,sci,kind)=>kind==='fungus'||TOXIC.test(ro)||TOXIC.test(sci||'')||TOXIC_SCI.test(sci||'');
 
 const ENGINES={
   local:{type:'zsc',live:true},
@@ -512,9 +518,14 @@ let engine='local'; const pipes={}; let lastImageURL=null,lastFile=null,busy=fal
 const setStatus=(t,c)=>{statusText.textContent=t;dot.className='dot '+(c||'');};
 function showProgress(p){if(p==null){progress.classList.remove('show');return;}progress.classList.add('show');progressBar.style.width=Math.max(3,p)+'%';}
 
+let _devP=null;
+function pickDevice(){ // 'gpu' in navigator nu garantează un adapter → verificăm, altfel cădem pe wasm
+  if(!_devP)_devP=(async()=>{if(!('gpu' in navigator))return 'wasm';try{const a=await navigator.gpu.requestAdapter();return a?'webgpu':'wasm';}catch(e){return 'wasm';}})();
+  return _devP;
+}
 async function loadPipe(task,model,dt,opts){
   if(pipes[model])return pipes[model];
-  const device=('gpu' in navigator)?'webgpu':'wasm';
+  const device=await pickDevice();
   let dtypes=[...new Set(device==='webgpu'?['fp16',dt.webgpu,'fp32']:[dt.wasm,'fp32'])]; let err;
   for(const dtype of dtypes){for(let attempt=0;attempt<2;attempt++){try{
     setStatus(attempt?`Reîncerc descărcarea (${device.toUpperCase()})…`:`Prima rulare: descarc modelul (${device.toUpperCase()}, ~zeci de MB, o singură dată)…`,'loading');showProgress(3);
@@ -534,7 +545,7 @@ function ensureClip(){
   if(clipReady)return Promise.resolve();
   if(clipPromise)return clipPromise; // încărcare deja în curs → refolosește aceeași promisiune
   clipPromise=(async()=>{
-    const device=('gpu' in navigator)?'webgpu':'wasm';
+    const device=await pickDevice();
     const chain=device==='webgpu'?['fp16','fp32']:['q8','fp32'];
     setStatus(`Prima rulare: descarc modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');showProgress(3);
     if(!clipTok)clipTok=await AutoTokenizer.from_pretrained(CLIP_ID);
@@ -649,7 +660,7 @@ let pendingAI=null;
 function identifyOnline(dataURL){
   const cfg=getCfg();
   if(!cfg.key){results.innerHTML='<div class="empty">Pentru AI online, deschide ⚙ și introdu o cheie API.</div>';openModal('modal');return;}
-  if(localStorage.getItem('iff_consent')==='1'){return doOnline(dataURL,cfg);}
+  if(lsGet('iff_consent')==='1'){return doOnline(dataURL,cfg);}
   pendingAI={dataURL,cfg};openModal('consentModal');
 }
 async function doOnline(dataURL,cfg){
@@ -706,7 +717,7 @@ function appendAuthCard({verdict,motiv,src,prov,clip}){
 async function runAuthenticity(dataURL,file,doClip){
   let prov=null,clip=null;
   if(file){
-    if(navigator.onLine){try{prov=await c2paProvenance(file);}catch(e){console.warn('c2pa lib indisponibilă:',e.message);}}
+    try{prov=await c2paProvenance(file);}catch(e){console.warn('c2pa lib indisponibilă:',e.message);}
     if(!prov){try{prov=await scanProvenance(file);const pre=navigator.onLine?'(bibliotecă C2PA indisponibilă — doar scanare metadate) ':'(offline — verificarea C2PA semnată necesită conexiune; doar scanare metadate) ';prov.text=pre+prov.text;}catch(e){console.warn('scanProvenance:',e);}}
   }
   if(doClip&&engine!=='ai'){try{clip=await clipAuthenticity(dataURL);}catch(e){console.warn('clipAuthenticity:',e);}}
@@ -727,7 +738,7 @@ async function c2paProvenance(file){
   }
   const am=manifestStore&&(manifestStore.activeManifest||manifestStore.active_manifest);
   if(!am)return {text:'(verificat C2PA) fără acte de proveniență semnate în fișier.',c2pa:true};
-  const gen=((am.claimGenerator||am.claim_generator||'')+'').split('(')[0].trim();
+  const gen=esc(((am.claimGenerator||am.claim_generator||'')+'').split('(')[0].trim());
   const aiGen=/trainedAlgorithmicMedia|compositeWithTrainedAlgorithmicMedia|algorithmicMedia/i.test(JSON.stringify(am));
   const text=aiGen?`✓ verificat C2PA · ⚠ marcaj de conținut generat AI (generator: ${gen||'necunoscut'}).`:`✓ verificat C2PA · acte semnate (generator: ${gen||'necunoscut'}). Editare declarată, nu neapărat falsificare.`;
   return {text,c2pa:true};
@@ -741,7 +752,7 @@ async function scanProvenance(file){
   const editHist=has(/xmpMM:History|stEvt:action\s*=\s*"(saved|edited|produced)|photoshop:History/i);
   const editorSoft=has(/CreatorTool[^>]{0,40}(Photoshop|Lightroom|GIMP|Affinity|Pixlr|Snapseed|Topaz|Luminar)|Software[^>]{0,30}(Photoshop|GIMP)/i);
   const m=s.match(/(Adobe Photoshop[^"<\x00]{0,16}|GIMP\s?[0-9.]*|Affinity Photo|Snapseed|Adobe Firefly|DALL[\s·-]?E[\s0-9]*|Midjourney)/i);
-  const soft=m?m[0].trim():'';
+  const soft=m?esc(m[0].trim()):'';
   let text;
   if(ai)text=`⚠ Marcaj de generare/sinteză AI în metadate${soft?` · ${soft}`:''}.`;
   else if(editHist||editorSoft)text=`Semne de editare într-un program de imagine${soft?` (${soft})`:''}. Editare ≠ falsificare. <i>(încredere joasă — doar metadate)</i>`;
@@ -753,7 +764,10 @@ const AUTH_RO=['pare fotografie reală','⚠ posibil generată AI','pare desen/i
 async function clipAuthenticity(dataURL){const top=await clipClassify(dataURL,'auth',AUTH_LABELS,1);const t=top[0];return `${AUTH_RO[t.i]} (${(t.score*100).toFixed(0)}%)`;}
 
 /* ===== AUDIO ===== */
-function mapAudio(label){const x=label.toLowerCase();for(const[k,ro,cat]of AUDIO_RO)if(x.includes(k))return{ro,cat};return null;}
+const AUDIO_RO_RX=AUDIO_RO.map(([k,ro,cat])=>[new RegExp('\\b'+k+'\\b'),ro,cat]);
+const AUDIO_NOT=/chirp tone|buzzer|rattle \(instrument\)|\bbee?p\b|bleep/;
+// cuvânt întreg: 'owl'≠'howl', 'cat'≠'cattle', 'bee'≠'beep', 'honk'≠'honking' (claxon)
+function mapAudio(label){const x=label.toLowerCase();if(AUDIO_NOT.test(x))return null;for(const[rx,ro,cat]of AUDIO_RO_RX)if(rx.test(x))return{ro,cat};return null;}
 function isArtif(label){const x=label.toLowerCase();return AUDIO_ARTIF.some(k=>x.includes(k));}
 async function decodeMono16k(ab){
   const AC=window.AudioContext||window.webkitAudioContext;
@@ -805,17 +819,20 @@ async function classifyAudio(ab){
     }else{
       renderRanked([{ro:'Sunet neclasificat ca animal',sci:out[0]?out[0].label:'',kind:'Necunoscut',score:out[0]?out[0].score:0,desc:'Încearcă o înregistrare mai curată.'+warn}],null,true);setStatus('Gata','ready');
     }
-  }catch(e){console.error(e);results.innerHTML=`<div class="danger" style="display:flex"><span>Nu am putut analiza sunetul: ${e.message}</span></div>`;setStatus('Eroare audio','err');}
+  }catch(e){console.error(e);results.innerHTML=`<div class="danger" style="display:flex"><span>Nu am putut analiza sunetul: ${esc(e.message)}</span></div>`;setStatus('Eroare audio','err');}
 }
 let mediaRec=null,chunks=[],recTimer=null,recDur=5,vuRAF=null,vuCtx=null;
 function setDur(s){recDur=s;document.querySelectorAll('#dursel button').forEach(b=>b.classList.toggle('on',+b.dataset.sec===s));}
 document.querySelectorAll('#dursel button').forEach(b=>b.onclick=()=>setDur(+b.dataset.sec));
+let recStarting=false;
 async function recordAudio(){
+  if(recStarting)return;recStarting=true;
   camErrHide($('audioErr'));
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){showErr($('audioErr'),'Înregistrarea audio nu e disponibilă în acest browser. Poți încărca un fișier audio.');return;}
-  if(!window.isSecureContext){showErr($('audioErr'),'Microfonul necesită HTTPS (sau localhost).');return;}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){showErr($('audioErr'),'Înregistrarea audio nu e disponibilă în acest browser. Poți încărca un fișier audio.');recStarting=false;return;}
+  if(!window.isSecureContext){showErr($('audioErr'),'Microfonul necesită HTTPS (sau localhost).');recStarting=false;return;}
+  let s=null;
   try{
-    const s=await navigator.mediaDevices.getUserMedia({audio:true});
+    s=await navigator.mediaDevices.getUserMedia({audio:true});
     startVU(s);
     let mime='';try{const cands=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/aac'];mime=cands.find(c=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(c))||'';}catch(e){}
     mediaRec=mime?new MediaRecorder(s,{mimeType:mime}):new MediaRecorder(s);chunks=[];
@@ -824,7 +841,8 @@ async function recordAudio(){
     mediaRec.start();$('mic').classList.add('rec');$('btnRec').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>Oprește';
     let left=recDur;$('audioTitle').textContent=`Înregistrez… ${left}s`;
     recTimer=setInterval(()=>{left--;$('audioTitle').textContent=left>0?`Înregistrez… ${left}s`:'Procesez…';if(left<=0)stopRec();},1000);
-  }catch(e){showErr($('audioErr'),'Nu pot accesa microfonul. Permite accesul și folosește HTTPS sau localhost.');}
+  }catch(e){if(s){try{s.getTracks().forEach(t=>t.stop());}catch(_){}}stopVU();showErr($('audioErr'),'Nu pot accesa microfonul. Permite accesul și folosește HTTPS sau localhost.');}
+  finally{recStarting=false;}
 }
 function recIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>';}
 function stopRec(){if(recTimer){clearInterval(recTimer);recTimer=null;}if(mediaRec&&mediaRec.state!=='inactive')mediaRec.stop();$('audioTitle').textContent='Identifică după sunet';}
@@ -846,7 +864,7 @@ async function jClear(){try{const db=await idb();return await new Promise((res)=
 
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2600);}
 function thumbFromCurrent(){return new Promise(res=>{try{if(!lastImageURL)return res('');const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=c.height=80;const x=c.getContext('2d');const s=Math.min(img.width,img.height);x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,80,80);res(c.toDataURL('image/jpeg',0.45));};img.onerror=()=>res('');img.src=lastImageURL;}catch(e){res('');}});}
-const wantLoc=()=>localStorage.getItem('iff_loc')==='1';
+const wantLoc=()=>lsGet('iff_loc')==='1';
 async function saveObservation(){
   if(!lastResult){toast('Nimic de salvat încă.');return;}
   let loc=null;
@@ -864,13 +882,13 @@ async function renderJournal(){
   $('jrnlActions').style.display=arr.length?'flex':'none';
   const loctoggle=`<label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="locToggle" ${wantLoc()?'checked':''} style="width:18px;height:18px"> Atașează locația la observații (GPS)</label>`;
   if(!arr.length){list.innerHTML=loctoggle+'<div class="empty">Jurnalul e gol. Identifică ceva și apasă „Salvează în jurnal".</div>';wireLocToggle();return;}
-  list.innerHTML=loctoggle+arr.map(o=>{const d=new Date(o.t);const dt=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const loc=o.loc?` · ${o.loc.lat}, ${o.loc.lon}`:'';return `<div class="jrnl-item">${o.thumb?`<img src="${o.thumb}" loading="lazy" decoding="async" alt="">`:'<img alt="">'}<div class="meta"><div class="ro">${o.ro||'—'}</div><div class="sub2">${o.sci?o.sci+' · ':''}${dt}${loc}</div></div><button class="del" data-k="${o.t}" aria-label="Șterge observația">✕</button></div>`;}).join('');
+  list.innerHTML=loctoggle+arr.map(o=>{const d=new Date(o.t);const dt=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const loc=o.loc?` · ${o.loc.lat}, ${o.loc.lon}`:'';return `<div class="jrnl-item">${/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(o.thumb||'')?`<img src="${o.thumb}" loading="lazy" decoding="async" alt="">`:'<img alt="">'}<div class="meta"><div class="ro">${esc(o.ro)||'—'}</div><div class="sub2">${o.sci?esc(o.sci)+' · ':''}${dt}${loc}</div></div><button class="del" data-k="${o.t}" aria-label="Șterge observația">✕</button></div>`;}).join('');
   list.querySelectorAll('.del').forEach(b=>b.onclick=async()=>{await jDel(+b.dataset.k);renderJournal();});
   wireLocToggle();
 }
-function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>localStorage.setItem('iff_loc',c.checked?'1':'0');}
+function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>lsSet('iff_loc',c.checked?'1':'0');}
 function csvCell(v){let x=(v==null?'':v+'').replace(/[\r\n\t]+/g,' ');if(/^[=+\-@]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"';}
-async function exportCSV(){const a=await jAll();if(!a.length){toast('Jurnalul e gol.');return;}const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv',head+rows);toast(isIOS()?'CSV pregatit — se deschide într-o filă; salvează din meniul Share.':'CSV descărcat: '+a.length+' observații.');}
+async function exportCSV(){const a=await jAll();if(!a.length){toast('Jurnalul e gol.');return;}const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv;charset=utf-8','\ufeff'+head+rows);toast(isIOS()?'CSV pregatit — se deschide într-o filă; salvează din meniul Share.':'CSV descărcat: '+a.length+' observații.');}
 async function exportGeo(){const a=(await jAll()).filter(o=>o.loc);if(!a.length){toast('Nicio observație cu locație.');return;}const fc={type:'FeatureCollection',features:a.map(o=>({type:'Feature',geometry:{type:'Point',coordinates:[o.loc.lon,o.loc.lat]},properties:{nume_ro:o.ro,nume_stiintific:o.sci,categorie:o.kind,data:new Date(o.t).toISOString(),scor:o.score}}))};download('vietar-jurnal.geojson','application/geo+json',JSON.stringify(fc,null,2));toast(isIOS()?'GeoJSON pregatit — salvează din meniul Share.':'GeoJSON descărcat: '+a.length+' puncte.');}
 const isIOS=()=>/iP(hone|ad|od)/.test(navigator.platform||'')||(/Mac/.test(navigator.platform||'')&&navigator.maxTouchPoints>1);
 function download(name,type,data){const b=new Blob([data],{type});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
@@ -893,29 +911,33 @@ document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelec
   else setScope(engine);};});
 
 /* ===== cameră + AR ===== */
-let stream=null,facing='environment',liveTimer=null,liveActive=false,arLast=null;
+let stream=null,facing='environment',liveTimer=null,liveActive=false,arLast=null,camGen=0,liveGen=0;
 async function startCamera(){camErrHide(camErr);
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showErr(camErr,'Camera nu e disponibilă în acest browser. Folosește fila „Imagine" pentru a încărca o poză.');return;}
   if(!window.isSecureContext){showErr(camErr,'Camera necesită HTTPS. Deschide pagina pe https:// (sau localhost).');return;}
   try{stopCamera();
     const gum=c=>navigator.mediaDevices.getUserMedia(c);
-    const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout permisiune')),ms))]);
-    try{stream=await withTimeout(gum({video:{facingMode:{ideal:facing}},audio:false}),20000);}
-    catch(e1){console.warn('facingMode ideal eșuat/timeout, încerc generic',e1);if(e1.message==='timeout permisiune'){showErr(camErr,'Nu am primit răspuns la permisiunea camerei. Verifică permisiunile browserului și reîncearcă.');return;}stream=await withTimeout(gum({video:true,audio:false}),20000);}
-    video.srcObject=stream;try{await video.play();}catch(e2){console.warn('video.play() amânat',e2);}
+    // dacă permisiunea e acordată după timeout, oprim fluxul tardiv (altfel camera rămâne aprinsă)
+    const withTimeout=(p,ms)=>{let late=false;return Promise.race([p.then(s=>{if(late&&s&&s.getTracks)s.getTracks().forEach(t=>t.stop());return s;}),new Promise((_,rej)=>setTimeout(()=>{late=true;rej(new Error('timeout permisiune'));},ms))]);};
+    const g=camGen;let st;
+    try{st=await withTimeout(gum({video:{facingMode:{ideal:facing}},audio:false}),20000);}
+    catch(e1){console.warn('facingMode ideal eșuat/timeout, încerc generic',e1);if(e1.message==='timeout permisiune'){showErr(camErr,'Nu am primit răspuns la permisiunea camerei. Verifică permisiunile browserului și reîncearcă.');return;}st=await withTimeout(gum({video:true,audio:false}),20000);}
+    // apeluri suprapuse (comută de 2 ori / schimbare de filă în timpul permisiunii): păstrează doar ultimul flux
+    if(g!==camGen){st.getTracks().forEach(t=>t.stop());return;}
+    stream=st;video.srcObject=stream;try{await video.play();}catch(e2){console.warn('video.play() amânat',e2);}
     // #7: dacă alt app preia camera, oprim curat
     stream.getVideoTracks().forEach(t=>{t.onended=()=>{if(stream){toast('Camera a fost întreruptă.');stopCamera();}};});
     camHint.style.display='none';reticle.classList.add('show');arLabel.classList.add('show');btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg> Oprește';btnStart.dataset.on='1';btnFlip.disabled=false;btnCapture.disabled=false;
   if(ENGINES[engine].live){arTag.textContent='AR live';startLiveLoop();}else{arTag.textContent=ENGINES[engine].type==='online'?'AI · pe cerere':'Pe cerere';arName.textContent='Salvează cadrul pentru analiză';arPct.textContent='';}}
   catch(e){console.warn('startCamera',e);showErr(camErr,'Nu pot accesa camera. Permite accesul și folosește HTTPS sau localhost.');}}
-function stopCamera(){stopLiveLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}reticle.classList.remove('show');arLabel.classList.remove('show');camHint.style.display='flex';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Pornește camera';btnStart.dataset.on='';btnFlip.disabled=true;btnCapture.disabled=true;}
+function stopCamera(){camGen++;stopLiveLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}video.srcObject=null;reticle.classList.remove('show');arLabel.classList.remove('show');camHint.style.display='flex';btnStart.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Pornește camera';btnStart.dataset.on='';btnFlip.disabled=true;btnCapture.disabled=true;}
 function grabFrame(reticleOnly){if(video.readyState<2||!video.videoWidth)return null;const S=320,vw=video.videoWidth,vh=video.videoHeight;let side=Math.min(vw,vh);if(reticleOnly)side=Math.round(side*0.64);grab.width=S;grab.height=S;gctx.drawImage(video,(vw-side)/2,(vh-side)/2,side,side,0,0,S,S);return grab.toDataURL('image/jpeg',0.85);}
 const isGroup=sci=>!!sci&&!/\s/.test(sci.trim()); // gen/familie = un singur cuvânt
-function startLiveLoop(){stopLiveLoop();arName.textContent='se inițializează…';arPct.textContent='';arSci.textContent='';
+function startLiveLoop(){stopLiveLoop();const gen=liveGen;arName.textContent='se inițializează…';arPct.textContent='';arSci.textContent='';
   if(!('gpu' in navigator)){toast('Fără WebGPU: AR live e mai lent. Poți folosi „Salvează cadrul" pentru analiză la cerere.');}
   let interval=1500;
   const tick=async()=>{
-    if(!liveActive)return;
+    if(!liveActive||gen!==liveGen)return;
     if(document.hidden||busy||!ENGINES[engine].live||!stream){liveTimer=setTimeout(tick,600);return;}
     const url=grabFrame(true); // doar zona din reticul
     if(!url){liveTimer=setTimeout(tick,400);return;}
@@ -924,7 +946,7 @@ function startLiveLoop(){stopLiveLoop();arName.textContent='se inițializează�
       if(ENGINES[engine].type==='zsc'){
         const top=await clipClassify(url,'species',CLIP_SP,1);const s=SP[top[0].i];
         arName.textContent=s[1]+(isGroup(s[2])?' (grup)':'');arSci.textContent=s[2]||'';
-        arPct.textContent=(top[0].cos*100).toFixed(0)+'%';arLast=url;
+        arPct.textContent=s[3]==='fungus'?'orientativ':(top[0].cos*100).toFixed(0)+'%';arLast=url;
       }else{
         const p=await getPipe(engine);const out=await p(url,{topk:1});if(out&&out[0]){const ro=toRO(out[0].label);arName.textContent=ro||clean(out[0].label);arSci.textContent=ro?clean(out[0].label):'';arPct.textContent=(out[0].score*100).toFixed(0)+'%';arLast=url;}
       }
@@ -932,17 +954,20 @@ function startLiveLoop(){stopLiveLoop();arName.textContent='se inițializează�
     arTag.textContent='AR live';
     const dt=performance.now()-t0;
     interval=Math.min(4000,Math.max(1200,Math.round(dt*2.2))); // throttling adaptiv
-    busy=false;liveTimer=setTimeout(tick,interval);
+    busy=false;if(gen===liveGen)liveTimer=setTimeout(tick,interval);
   };
   liveActive=true;tick();
 }
-function stopLiveLoop(){liveActive=false;if(liveTimer){clearTimeout(liveTimer);liveTimer=null;}}
+function stopLiveLoop(){liveGen++;liveActive=false;if(liveTimer){clearTimeout(liveTimer);liveTimer=null;}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopLiveLoop();else if(stream&&ENGINES[engine].live&&document.querySelector('.tab.active').dataset.tab==='camera')startLiveLoop();});
 btnStart.onclick=()=>{btnStart.dataset.on?stopCamera():startCamera();};
 btnFlip.onclick=()=>{facing=facing==='environment'?'user':'environment';startCamera();};
-btnCapture.onclick=async()=>{const url=grabFrame(true)||arLast;if(!url){toast('Camera se inițializează — încearcă din nou într-o clipă.');return;}lastImageURL=url;lastFile=null;
+btnCapture.onclick=async()=>{const url=grabFrame(true)||arLast;if(!url){toast('Camera se inițializează — încearcă din nou într-o clipă.');return;}lastImageURL=url;lastFile=null;lastResult=null;
   // îngheață: rulează o identificare completă (top 5) pe cadrul capturat, apoi salvează
-  await identify(url,false);await saveObservation();};
+  await identify(url,false);
+  // motorul online răspunde asincron (identify nu așteaptă rezultatul): nu salva un rezultat vechi; folosește „Salvează în jurnal” din rezultat
+  if(ENGINES[engine].type==='online'){toast('Analiza online rulează — salvează din rezultat când apare.');return;}
+  await saveObservation();};
 
 /* ===== upload ===== */
 const MAX_BYTES=25*1024*1024;
@@ -999,7 +1024,7 @@ provider.onchange=()=>{endpointField.style.display=provider.value==='openai'?'bl
 $('gear').onclick=openSettings;
 $('btnCloseSettings').onclick=()=>closeModal('modal');
 $('btnSaveSettings').onclick=()=>{const cfg={provider:provider.value,key:apiKey.value.trim(),model:modelInp.value.trim(),endpoint:endpoint.value.trim()};const sess=$('sessionOnly').checked;if(sess){sessionCfg=cfg;try{localStorage.removeItem('iff_cfg');}catch(e){}}else{sessionCfg=null;try{localStorage.setItem('iff_cfg',JSON.stringify(cfg));}catch(e){alert('Nu pot salva aici (stocare blocată).');}}closeModal('modal');if(engine==='ai')setStatus('AI online configurat','ready');};
-$('btnForgetKey').onclick=()=>{sessionCfg=null;try{localStorage.removeItem('iff_cfg');}catch(e){}apiKey.value='';toast('Cheia a fost ștearsă din memorie și stocare.');};
+$('btnForgetKey').onclick=()=>{sessionCfg=null;lsDel('iff_cfg');lsDel('iff_consent');apiKey.value='';toast('Cheia a fost ștearsă din memorie și stocare.');};
 $('help').onclick=()=>openModal('helpModal');
 $('btnCloseHelp').onclick=()=>closeModal('helpModal');
 async function prefetchOffline(){
@@ -1027,7 +1052,7 @@ $('privacyLink').onclick=e=>{e.preventDefault();openModal('privacyModal');};
 $('clearCache').onclick=async e=>{e.preventDefault();if(!confirm('Ștergi modelele descărcate și resetezi aplicația? Se vor redescărca la următoarea folosire.'))return;try{if('caches' in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}toast('Resetat. Reîncarc…');setTimeout(()=>location.reload(),1000);}catch(err){console.warn('clear cache',err);toast('Nu am putut goli cache-ul.');}};
 $('btnClosePrivacy').onclick=()=>closeModal('privacyModal');
 $('consentNo').onclick=()=>{closeModal('consentModal');pendingAI=null;};
-$('consentYes').onclick=()=>{localStorage.setItem('iff_consent','1');closeModal('consentModal');if(pendingAI){doOnline(pendingAI.dataURL,pendingAI.cfg);pendingAI=null;}};
+$('consentYes').onclick=()=>{lsSet('iff_consent','1');closeModal('consentModal');if(pendingAI){doOnline(pendingAI.dataURL,pendingAI.cfg);pendingAI=null;}};
 
 /* ===== PWA ===== */
 let deferredPrompt=null;const installBtn=$('installBtn');
@@ -1035,9 +1060,9 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPro
 if(installBtn)installBtn.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();try{await deferredPrompt.userChoice;}catch(e){}deferredPrompt=null;installBtn.style.display='none';};
 window.addEventListener('appinstalled',()=>{if(installBtn)installBtn.style.display='none';});
 const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')&&!/claudeusercontent\.com|usercontent|webcontainer|stackblitz|csb\.app/.test(location.hostname);
-if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});}
+if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});const _hadCtl=!!navigator.serviceWorker.controller;let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded||!_hadCtl)return;_reloaded=true;location.reload();});}
 
-if(!localStorage.getItem('iff_seen')){localStorage.setItem('iff_seen','1');openModal('helpModal');}
+if(!lsGet('iff_seen')){lsSet('iff_seen','1');openModal('helpModal');}
 const APP_VER='v16';
 fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
