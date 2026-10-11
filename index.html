@@ -196,7 +196,7 @@
   .actbar button svg{width:15px;height:15px;}
 
   .auth{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.55);padding:16px 18px;}
-  .auth h3{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--moss-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .auth h2{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--moss-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
   .auth .verdict{display:inline-block;font-weight:700;font-size:.78rem;padding:4px 11px;border-radius:30px;margin:6px 0;}
   .v-ok{background:rgba(54,83,58,.16);color:var(--moss-deep);}
   .v-warn{background:rgba(185,146,58,.2);color:#6a5a2a;}
@@ -224,7 +224,7 @@
   .modal{position:fixed;inset:0;background:rgba(36,30,22,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50;}
   .modal.show{display:flex;}
   .sheet{background:var(--parchment);border:1px solid var(--line);border-radius:20px;max-width:480px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
-  .sheet h3{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-deep);margin-bottom:4px;}
+  .sheet h2{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-deep);margin-bottom:4px;}
   .sheet p.hint{font-size:.84rem;color:var(--muted);margin-bottom:16px;}
   .field{margin-bottom:14px;}.field label{display:block;font-size:.8rem;font-weight:600;color:var(--moss-deep);margin-bottom:5px;}
   .field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:'Spline Sans';font-size:.92rem;background:#fff;color:var(--ink);}
@@ -258,6 +258,7 @@
     <div class="divider"></div>
   </header>
 
+  <main id="main">
   <div class="eng-row">
     <div class="engine" id="engineBar" role="group" aria-label="Motor de identificare">
       <button class="eng-btn active" data-engine="local" aria-pressed="true">Local · RO<small>specii din România</small></button>
@@ -270,6 +271,7 @@
     </div>
   </div>
 
+  <div class="danger" id="fileWarn" role="alert" style="display:none"></div>
   <div class="scope" id="scope" aria-live="polite"></div>
   <div class="status"><span class="dot ready" id="dot" aria-hidden="true"></span><span id="statusText" role="status">Pregătit</span></div>
   <div class="progress" id="progress" aria-hidden="true"><i id="progressBar"></i></div>
@@ -329,6 +331,8 @@
 
   <div class="results" id="results" aria-live="polite" aria-atomic="false"><div class="empty" id="emptyState">Rezultatele apar aici.</div></div>
 
+  </main>
+
   <footer>
     <button id="installBtn" class="act primary" style="display:none;max-width:300px;margin:0 auto 16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="3" x2="12" y2="16"/></svg>Instalează VietAR</button>
     <div class="byline">Creat de <b>Alexio</b> · Ecoul Stringurilor</div>
@@ -338,7 +342,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v16 · 2026-05-31</span>
+    <span style="opacity:.7">VietAR v17 · 2026-10-11</span>
   </footer>
 </div>
 
@@ -346,7 +350,7 @@
 
 <!-- Settings -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Setări AI online"><div class="sheet">
-  <h3>Setări · AI online</h3>
+  <h2>Setări · AI online</h2>
   <p class="hint">Identifică specii (denumiri RO) și evaluează autenticitatea, calibrat pe regiunea București/România.</p>
   <div class="warn">⚠ <b>Risc de securitate:</b> o cheie pusă în browser e accesibilă extensiilor instalate și oricărui script. Folosește o cheie dedicată, cu limită de cheltuieli, și revocă-o dacă bănuiești expunere. Nu o pune niciodată în codul găzduit public.</div>
   <label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="sessionOnly" style="width:18px;height:18px"> Nu salva cheia (doar pentru această sesiune)</label>
@@ -360,7 +364,7 @@
 
 <!-- Help / guide -->
 <div class="modal" id="helpModal" role="dialog" aria-modal="true" aria-label="Ghid"><div class="sheet">
-  <h3>Ghid rapid</h3>
+  <h2>Ghid rapid</h2>
   <p class="hint">VietAR are trei motoare. Dacă nu știi care, lasă <b>Local · RO</b> — e potrivit pentru ce vezi în România.</p>
   <ul>
     <li><b>Local · RO</b> — 519 taxoni românești, offline după prima descărcare a modelului. AR live peste cameră.</li>
@@ -375,7 +379,7 @@
 
 <!-- Consent for AI online -->
 <div class="modal" id="consentModal" role="dialog" aria-modal="true" aria-label="Confirmare trimitere AI"><div class="sheet">
-  <h3>Trimitere către AI online</h3>
+  <h2>Trimitere către AI online</h2>
   <p class="hint">Acest mod trimite <b>imaginea</b> către furnizorul ales (Anthropic sau OpenAI-compatibil), folosind cheia ta. Restul motoarelor rulează local, fără să trimită nimic.</p>
   <ul>
     <li>Se trimite: imaginea curentă + un text de instrucțiune.</li>
@@ -388,7 +392,7 @@
 
 <!-- Privacy -->
 <div class="modal" id="privacyModal" role="dialog" aria-modal="true" aria-label="Confidențialitate"><div class="sheet">
-  <h3>Confidențialitate</h3>
+  <h2>Confidențialitate</h2>
   <ul>
     <li><b>Imagini, sunet, cameră:</b> procesate local în browser și nu se încarcă pe niciun server — <b>cu singura excepție a modului „AI online”</b> (vezi mai jos), pe care îl pornești tu explicit.</li>
     <li><b>Jurnalul</b> (observații, miniaturi, locație) e salvat doar pe acest dispozitiv (localStorage). Îl poți șterge oricând.</li>
@@ -403,8 +407,18 @@
 <canvas id="grab" hidden></canvas>
 
 <script type="module">
-import { pipeline, env, AutoTokenizer, AutoProcessor, CLIPTextModelWithProjection, CLIPVisionModelWithProjection, RawImage } from './vendor/transformers/transformers.min.js';
-env.allowLocalModels=false; env.useBrowserCache=true;
+// transformers.js se încarcă la cerere (import dinamic): pe file:// browserul blochează modulele ES (CORS),
+// așa că interfața, jurnalul și exportul rămân funcționale, iar identificarea afișează un mesaj clar.
+let pipeline,env,AutoTokenizer,AutoProcessor,CLIPTextModelWithProjection,CLIPVisionModelWithProjection,RawImage;
+const FILE_MSG='Aplicația rulează de pe file://, unde browserul blochează modulele ES: identificarea (imagine, cameră, sunet) nu poate porni. Deschide pagina publicată (GitHub Pages) sau servește folderul cu un server HTTP, de exemplu „python3 -m http.server” în acest director, apoi deschide http://localhost:8000.';
+let _tfP=null;
+function loadTf(){
+  if(!_tfP){
+    if(location.protocol==='file:'){_tfP=Promise.reject(new Error(FILE_MSG));_tfP.catch(()=>{});}
+    else _tfP=import('./vendor/transformers/transformers.min.js').then(m=>{({pipeline,env,AutoTokenizer,AutoProcessor,CLIPTextModelWithProjection,CLIPVisionModelWithProjection,RawImage}=m);env.allowLocalModels=false;env.useBrowserCache=true;return m;}).catch(e=>{_tfP=null;throw e;});
+  }
+  return _tfP;
+}
 const lsGet=k=>{try{return localStorage.getItem(k);}catch(e){return null;}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
 const lsDel=k=>{try{localStorage.removeItem(k);}catch(e){}};
@@ -531,6 +545,7 @@ function pickDevice(){ // 'gpu' in navigator nu garantează un adapter → verif
 }
 async function loadPipe(task,model,dt,opts){
   if(pipes[model])return pipes[model];
+  await loadTf();
   const device=await pickDevice();
   let dtypes=[...new Set(device==='webgpu'?['fp16',dt.webgpu,'fp32']:[dt.wasm,'fp32'])]; let err;
   for(const dtype of dtypes){for(let attempt=0;attempt<2;attempt++){try{
@@ -551,6 +566,7 @@ function ensureClip(){
   if(clipReady)return Promise.resolve();
   if(clipPromise)return clipPromise; // încărcare deja în curs → refolosește aceeași promisiune
   clipPromise=(async()=>{
+    await loadTf();
     const device=await pickDevice();
     const chain=device==='webgpu'?['fp16','fp32']:['q8','fp32'];
     setStatus(`Prima rulare: descarc modelul Local (CLIP, ${device.toUpperCase()})…`,'loading');showProgress(3);
@@ -712,7 +728,7 @@ function appendAuthCard({verdict,motiv,src,prov,clip}){
   let cls='v-warn';const v=(verdict||'').toLowerCase();
   if(/real|autent|cameră/.test(v))cls='v-ok';
   if(/generat|ai|fals|editat|reprezent|obiect/.test(v))cls='v-bad';
-  let html=`<div class="auth"><h3>🛡 Autenticitate</h3>`;
+  let html=`<div class="auth"><h2>🛡 Autenticitate</h2>`;
   if(verdict)html+=`<span class="verdict ${cls}">${verdict}</span>`;
   if(motiv)html+=`<div class="line">${motiv}${src?` <i style="opacity:.7">— ${src}</i>`:''}</div>`;
   if(prov)html+=`<div class="line"><b>Proveniență:</b> ${prov}</div>`;
@@ -732,6 +748,7 @@ async function runAuthenticity(dataURL,file,doClip){
 async function c2paProvenance(file){
   // întâi biblioteca nouă @contentauth/c2pa-web, apoi c2pa clasic; ambele etichetate ca "verificat C2PA"
   let manifestStore=null;
+  if(location.protocol==='file:')throw new Error('C2PA indisponibil pe file:// (module ES blocate); folosește un server HTTP.');
   try{
     const m=await import('./vendor/c2pa-web/index.js');
     if(m&&m.createC2pa){const c2pa=await m.createC2pa({wasmSrc:new URL('./vendor/c2pa-web/resources/c2pa_bg.wasm',location.href).href});const res=await c2pa.read(file);manifestStore=res&&(res.manifestStore||res);}
@@ -1069,8 +1086,9 @@ const swEligible=('serviceWorker' in navigator)&&(location.protocol==='https:'||
 if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(nw)nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)toast('Versiune nouă disponibilă — reîncarcă pagina.');});});}).catch(()=>{});});const _hadCtl=!!navigator.serviceWorker.controller;let _reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded||!_hadCtl)return;_reloaded=true;location.reload();});}
 
 if(!lsGet('iff_seen')){lsSet('iff_seen','1');openModal('helpModal');}
-const APP_VER='v16';
-fetch('version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
+if(location.protocol==='file:'){const fw=$('fileWarn');if(fw){fw.textContent=FILE_MSG;fw.style.display='flex';}setStatus('Identificarea nu pornește de pe file:// — vezi mesajul de mai sus','err');}
+const APP_VER='v17';
+(location.protocol==='file:'?Promise.resolve(null):fetch('version.json',{cache:'no-store'})).then(r=>r&&r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // Desincronizare pagină↔server. Curățăm cache O SINGURĂ DATĂ ca să evităm bucla de reload
     // (dacă index.html de pe server e încă vechi, reload-ul repetat n-ar rezolva nimic).
