@@ -51,7 +51,7 @@
 <title>VietAR · faună &amp; floră din România</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#2a3f2c" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net 'sha256-9BwfoLsL0BU0Ys/5t6ozd3iy66kX4DNrGQwJIK1O0H0='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' data: https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net 'sha256-C14Nbkvpy0KfAuCTvyDrrbLAZDRnAA+NNPuHQjqALW0='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' data: https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
 <meta name="description" content="VietAR — identifică faună și floră din România din imagine, cameră (AR live) sau sunet, direct în browser. 519 specii locale, offline după prima descărcare." />
 <meta property="og:title" content="VietAR · faună & floră din România" />
 <meta property="og:description" content="Identifică vietăți și plante din România — imagine, cameră AR live sau sunet. Rulează local, în browser." />
@@ -354,7 +354,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v18 · 2026-10-11</span>
+    <span style="opacity:.7">VietAR v19 · 2026-10-11</span>
   </footer>
 </div>
 
@@ -716,6 +716,18 @@ async function doOnline(dataURL,cfg){
   }catch(e){clearTimeout(timer);console.error(e);let msg;if(e.name==='AbortError')msg='Timpul de așteptare a expirat (45s). Verifică conexiunea și reîncearcă.';else if(e instanceof TypeError&&cfg.provider==='openai'&&cfg.endpoint)msg='Conexiunea către endpoint-ul custom a fost blocată (CSP sau rețea). Endpoint-urile proprii necesită ajustarea regulii CSP din pagină sau folosește Anthropic/OpenAI standard.';else msg='Eroare AI: '+esc(e.message)+'. Verifică cheia/modelul (⚙).';results.innerHTML=`<div class="empty">${msg}</div>`;setStatus('Eroare AI','err');}
 }
 
+function showAnalysisError(e){
+  let msg;
+  if(location.protocol==='file:')msg=FILE_MSG;
+  else if(navigator.onLine===false)msg='Ești offline: modelul de identificare se descarcă o singură dată (zeci–sute de MB, de pe huggingface.co). Reconectează-te și reîncearcă; după prima descărcare reușită modelul rămâne în cache și funcționează și offline.';
+  else msg='Analiza a eșuat: modelul nu a putut fi descărcat sau pornit (conexiune blocată, spațiu de stocare sau memorie insuficiente). Reîncearcă; după prima descărcare reușită modelul rămâne în cache.';
+  results.textContent='';
+  const d=document.createElement('div');d.className='empty';d.setAttribute('role','alert');d.textContent=msg;
+  const det=e&&e.message&&location.protocol!=='file:'?String(e.message).slice(0,160):'';
+  if(det){const sm=document.createElement('small');sm.style.display='block';sm.style.marginTop='8px';sm.style.opacity='.75';sm.textContent='Detalii tehnice: '+det;d.appendChild(sm);}
+  if(lastImageURL&&location.protocol!=='file:'){const rb=document.createElement('button');rb.type='button';rb.className='act primary';rb.textContent='↻ Reîncearcă analiza';rb.style.margin='12px auto 0';rb.addEventListener('click',()=>identify(lastImageURL,true));d.appendChild(rb);}
+  results.appendChild(d);setStatus('Analiza nu a reușit','err');
+}
 /* ===== identificare imagine ===== */
 async function identify(dataURL,fromUpload){
   lastImageURL=dataURL;const cfg=ENGINES[engine];
@@ -732,7 +744,7 @@ async function identify(dataURL,fromUpload){
       renderRanked(items,`Top ${items.length} potriviri (model ${engine}).`);
     }
     if(fromUpload)runAuthenticity(dataURL,lastFile,true);
-  }catch(e){console.error(e);if(engine!=='general'){results.innerHTML=`<div class="empty">Modelul «${engine}» nu s-a încărcat aici. Revin la General.</div>`;selectEngine('general');identify(dataURL,fromUpload);}else results.innerHTML='<div class="empty">Eroare la analiză.</div>';}
+  }catch(e){console.error(e);if(engine!=='general'){results.innerHTML=`<div class="empty">Modelul «${engine}» nu s-a încărcat aici. Revin la General.</div>`;selectEngine('general');identify(dataURL,fromUpload);}else showAnalysisError(e);}
 }
 
 /* ===== AUTENTICITATE (C2PA + euristică) ===== */
@@ -1102,7 +1114,7 @@ if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.regis
 
 if(!lsGet('iff_seen')){lsSet('iff_seen','1');openModal('helpModal');}
 if(location.protocol==='file:'){const fw=$('fileWarn');if(fw){fw.textContent=FILE_MSG;fw.style.display='flex';}setStatus('Identificarea nu pornește de pe file:// — vezi mesajul de mai sus','err');}
-const APP_VER='v18';
+const APP_VER='v19';
 (location.protocol==='file:'?Promise.resolve(null):fetch('version.json',{cache:'no-store'})).then(r=>r&&r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // Desincronizare pagină↔server. Curățăm cache O SINGURĂ DATĂ ca să evităm bucla de reload
