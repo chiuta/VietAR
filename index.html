@@ -4,6 +4,8 @@
   VietAR
   Autor: Alexandru-Ionuț Chiuță (Alexio · „Ecoul Stringurilor")
   Aplicație PWA (index.html + vendor/), offline după prima descărcare a modelelor, fără telemetrie.
+  Excepție opțională: modul „AI online” trimite imaginea selectată către furnizorul ales (Anthropic/OpenAI-compatibil),
+  doar după alegerea explicită a motorului, introducerea cheii proprii și confirmare. Licențele bibliotecilor din vendor/: vezi NOTICE.
 
   LICENȚĂ — TRADE-FREE + CC0 1.0 (Public Domain Dedication)
   Oferită liber, fără troc, în spiritul mișcării TROM (trom.tf). În măsura
@@ -379,6 +381,7 @@
     <li>Se trimite: imaginea curentă + un text de instrucțiune.</li>
     <li>Nu se trimite: locația, jurnalul, alte poze.</li>
     <li>Cheia ta merge direct la furnizor, nu la un server VietAR (nu există).</li>
+    <li>Dacă apeși „Trimite”, confirmarea se reține în acest browser (nu te mai întreb la fiecare imagine) până apeși „Uită cheia acum” în ⚙. Dacă nu vrei să se trimită nimic, apasă „Renunț” sau folosește motorul Local/General.</li>
   </ul>
   <div class="sheet-actions"><button class="act ghost" id="consentNo" style="flex:1">Renunț</button><button class="act primary" id="consentYes" style="flex:1">Trimite</button></div>
 </div></div>
@@ -387,10 +390,11 @@
 <div class="modal" id="privacyModal" role="dialog" aria-modal="true" aria-label="Confidențialitate"><div class="sheet">
   <h3>Confidențialitate</h3>
   <ul>
-    <li><b>Imagini, sunet, cameră:</b> procesate local în browser. Nu se încarcă pe niciun server.</li>
+    <li><b>Imagini, sunet, cameră:</b> procesate local în browser și nu se încarcă pe niciun server — <b>cu singura excepție a modului „AI online”</b> (vezi mai jos), pe care îl pornești tu explicit.</li>
     <li><b>Jurnalul</b> (observații, miniaturi, locație) e salvat doar pe acest dispozitiv (localStorage). Îl poți șterge oricând.</li>
     <li><b>Locația:</b> cerută doar când salvezi o observație și doar dacă accepți. Poți folosi aplicația și fără.</li>
     <li><b>AI online:</b> opțional. Doar atunci imaginea pleacă spre furnizorul ales, cu cheia ta. Cheia stă în acest browser.</li>
+    <li><b>Verificarea C2PA</b> (autenticitate): rulează local; validarea lanțului de certificate poate contacta contentcredentials.org (nu trimite imaginea).</li>
     <li><b>Modelele AI</b> se descarcă de la huggingface.co, iar motorul de rulare (ONNX Runtime) de la cdn.jsdelivr.net; rămân în cache-ul browserului pentru offline. Acele servere văd adresa IP, nu imaginile.</li>
   </ul>
   <div class="sheet-actions"><button class="act primary" id="btnClosePrivacy" style="flex:1">Închide</button></div>

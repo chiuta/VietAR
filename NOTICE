@@ -1,0 +1,33 @@
+VietAR — NOTICE (licențe și componente terțe)
+
+Codul și textele proprii ale aplicației (index.html, sw.js, manifest.webmanifest,
+lista de 519 taxoni) sunt oferite de Alexandru-Ionuț Chiuță sub CC0 1.0 Universal
+(vezi LICENSE și antetul din index.html).
+
+CC0 NU se aplică componentelor terțe de mai jos, care rămân sub licențele lor.
+Informațiile de licență sunt cele publicate de proiectele respective (metadatele
+pachetelor npm / fișele de pe huggingface.co) și trebuie reconfirmate din pachetele
+originale la fiecare actualizare a fișierelor din vendor/.
+
+Componente incluse în repository (vendor/)
+- vendor/transformers/transformers.min.js — @huggingface/transformers 3.8.1
+  (Hugging Face): Apache-2.0. Bundle-ul conține și onnxruntime-web (Microsoft, MIT)
+  și @huggingface/jinja (MIT).
+- vendor/c2pa-web/ — @contentauth/c2pa-web 0.11.0 (Content Authenticity Initiative /
+  Adobe): MIT sau Apache-2.0, după alegere. Include module de dependență (de ex.
+  highgain, ts-deepmerge) cu licențele lor.
+- vendor/c2pa/ — c2pa 0.30.17 (Content Authenticity Initiative / Adobe): fișierele
+  poartă antetul „Copyright 2021 Adobe"; pachetul este publicat sub MIT sau Apache-2.0.
+  Textul exact al licenței se verifică în pachetul npm.
+
+Componente încărcate la rulare (nu sunt în repository)
+- ONNX Runtime Web (WASM), de la cdn.jsdelivr.net: MIT.
+- Modelele Xenova/clip-vit-base-patch16, Xenova/vit-base-patch16-224 și
+  Xenova/ast-finetuned-audioset-10-10-0.4593, de la huggingface.co: licența fiecărui
+  model este cea din fișa lui de pe huggingface.co și nu este acoperită de CC0.
+
+Fonturi încorporate în index.html (data: URI)
+- Fraunces și Spline Sans: SIL Open Font License 1.1.
+
+Mărci: Anthropic, OpenAI, Hugging Face, Adobe, C2PA/Content Credentials și celelalte
+nume sunt ale deținătorilor lor și sunt folosite doar descriptiv.

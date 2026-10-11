@@ -22,6 +22,9 @@ Aplicația funcționează offline doar după prima descărcare a modelelor. Nu e
 - CSP-ul din pagină permite `'unsafe-inline'` pentru scripturi.
 
 ## Licență
-Codul autorului: TRADE-FREE + CC0 1.0, conform antetului din `index.html`. Bibliotecile din `vendor/` (transformers.js, c2pa) au propriile licențe (de ex. Adobe/Apache/MIT, vezi antetele fișierelor) și nu sunt acoperite de CC0. Nu există fișier `LICENSE` separat până la clarificarea acestui aspect.
+Codul și textele proprii ale autorului: TRADE-FREE + CC0 1.0 (antetul din `index.html`; vezi `LICENSE`). Bibliotecile din `vendor/` (transformers.js, c2pa-web, c2pa), ONNX Runtime încărcat de la jsDelivr, modelele descărcate de pe huggingface.co și fonturile încorporate au **propriile licențe și nu sunt acoperite de CC0**; lista și condițiile sunt în `NOTICE` (de reconfirmat din pachetele originale la fiecare actualizare).
+
+## Modul „AI online” (opt-in)
+Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”, (2) introduci o cheie API proprie și (3) confirmi în fereastra „Trimitere către AI online”. Confirmarea se reține în acest browser până apeși „Uită cheia acum” în ⚙. Motoarele „Local · RO” și „General” nu trimit imagini nicăieri. La încărcarea paginii nu se face nicio cerere externă (verificat). CSP rămâne larg intenționat pe `connect-src` (huggingface.co, jsDelivr, Anthropic/OpenAI/OpenRouter, contentcredentials.org) fiindcă fiecare gazdă corespunde unei funcții opționale descrise mai sus; `contentcredentials.org` nu este contactat direct de codul paginii, ci doar eventual de biblioteca C2PA, motiv pentru care nu l-am scos.
 
 Audit: 2026-10-10
