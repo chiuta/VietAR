@@ -51,7 +51,7 @@
 <title>VietAR · faună &amp; floră din România</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#2a3f2c" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' data: https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net 'sha256-9BwfoLsL0BU0Ys/5t6ozd3iy66kX4DNrGQwJIK1O0H0='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' data: https://cdn.jsdelivr.net https://*.jsdelivr.net https://huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.huggingface.co https://api.anthropic.com https://api.openai.com https://openrouter.ai https://contentcredentials.org; worker-src 'self' blob: https://cdn.jsdelivr.net; child-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'" />
 <meta name="description" content="VietAR — identifică faună și floră din România din imagine, cameră (AR live) sau sunet, direct în browser. 519 specii locale, offline după prima descărcare." />
 <meta property="og:title" content="VietAR · faună & floră din România" />
 <meta property="og:description" content="Identifică vietăți și plante din România — imagine, cameră AR live sau sunet. Rulează local, în browser." />
@@ -246,6 +246,17 @@
     .jrnl-item img,.bar,.progress{background:#2c3327;}
   }
 </style>
+<style>
+  .jq{width:100%;padding:10px 12px;margin-bottom:10px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.55);color:var(--ink);font:inherit;font-size:.9rem;}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .jq{background:var(--parchment-deep);}}
+  @media print{
+    body{background:#fff;color:#000;}
+    header,.eng-row,.scope,.status,.progress,.tabs,.controls,.results,footer,.toast,.jq,.jrnl-item .del,#jrnlList label,.danger{display:none!important;}
+    .panel{display:none!important;}
+    #panel-jurnal{display:block!important;}
+    .jrnl-item{break-inside:avoid;background:none;border:1px solid #999;}
+  }
+</style>
 </head>
 
 <body>
@@ -321,10 +332,11 @@
   </section>
 
   <section class="panel" id="panel-jurnal" role="tabpanel">
-    <div id="jrnlList"></div>
+    <input type="search" id="jrnlQ" class="jq" placeholder="Filtrează jurnalul (specie, categorie, dată)…" aria-label="Filtrează jurnalul" autocomplete="off" style="display:none"><div id="jrnlList"></div>
     <div class="controls" id="jrnlActions" style="display:none">
       <button class="act ghost" id="btnExportCsv">Export CSV</button>
       <button class="act ghost" id="btnExportGeo">Export GeoJSON</button>
+    <button class="act ghost" id="btnPrintJrnl">Tipărește jurnalul</button>
       <button class="act ghost" id="btnClearJrnl" style="border-color:var(--terracotta)!important;color:var(--terracotta)">Golește jurnalul</button>
     </div>
   </section>
@@ -342,7 +354,7 @@
     </div>
     <span class="leaf">❧</span> Identificarea (Local/General) și sunetul rulează local prin transformers.js — offline după prima descărcare. <a href="#" id="privacyLink">Confidențialitate</a> · <a href="#" id="clearCache">Șterge cache modele</a><br>
     Autenticitatea combină proveniență C2PA + euristică + AI. Semnale orientative, nu verdict legal.<br>
-    <span style="opacity:.7">VietAR v17 · 2026-10-11</span>
+    <span style="opacity:.7">VietAR v18 · 2026-10-11</span>
   </footer>
 </div>
 
@@ -903,12 +915,15 @@ async function saveObservation(){
 async function renderJournal(){
   const arr=await jAll();const list=$('jrnlList');
   $('jrnlActions').style.display=arr.length?'flex':'none';
+  $('jrnlQ').style.display=arr.length?'block':'none';
   const loctoggle=`<label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="locToggle" ${wantLoc()?'checked':''} style="width:18px;height:18px"> Atașează locația la observații (GPS)</label>`;
   if(!arr.length){list.innerHTML=loctoggle+'<div class="empty">Jurnalul e gol. Identifică ceva și apasă „Salvează în jurnal".</div>';wireLocToggle();return;}
   list.innerHTML=loctoggle+arr.map(o=>{const d=new Date(o.t);const dt=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const loc=o.loc?` · ${o.loc.lat}, ${o.loc.lon}`:'';return `<div class="jrnl-item">${/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(o.thumb||'')?`<img src="${o.thumb}" loading="lazy" decoding="async" alt="">`:'<img alt="">'}<div class="meta"><div class="ro">${esc(o.ro)||'—'}</div><div class="sub2">${o.sci?esc(o.sci)+' · ':''}${dt}${loc}</div></div><button class="del" data-k="${o.t}" aria-label="Șterge observația">✕</button></div>`;}).join('');
   list.querySelectorAll('.del').forEach(b=>b.onclick=async()=>{await jDel(+b.dataset.k);renderJournal();});
-  wireLocToggle();
+  wireLocToggle();applyJrnlFilter();
 }
+function applyJrnlFilter(){const q=(($('jrnlQ')||{}).value||'').trim().toLowerCase();let n=0;document.querySelectorAll('#jrnlList .jrnl-item').forEach(it=>{const hide=!!q&&it.textContent.toLowerCase().indexOf(q)===-1;it.style.display=hide?'none':'';if(!hide)n++;});const jq=$('jrnlQ');if(jq)jq.setAttribute('aria-description',q?(n+' observații afișate'):'');}
+$('jrnlQ').oninput=applyJrnlFilter;$('btnPrintJrnl').onclick=()=>window.print();
 function wireLocToggle(){const c=$('locToggle');if(c)c.onchange=()=>lsSet('iff_loc',c.checked?'1':'0');}
 function csvCell(v){let x=(v==null?'':v+'').replace(/[\r\n\t]+/g,' ');if(/^[=+\-@]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"';}
 async function exportCSV(){const a=await jAll();if(!a.length){toast('Jurnalul e gol.');return;}const head='data,nume_ro,nume_stiintific,categorie,scor,motor,lat,lon\n';const rows=a.map(o=>[new Date(o.t).toISOString(),o.ro,o.sci,o.kind,(o.score*100).toFixed(0)+'%',o.engine,o.loc?o.loc.lat:'',o.loc?o.loc.lon:''].map(csvCell).join(',')).join('\n');download('vietar-jurnal.csv','text/csv;charset=utf-8','\ufeff'+head+rows);toast(isIOS()?'CSV pregatit — se deschide într-o filă; salvează din meniul Share.':'CSV descărcat: '+a.length+' observații.');}
@@ -1087,7 +1102,7 @@ if(swEligible){window.addEventListener('load',()=>{navigator.serviceWorker.regis
 
 if(!lsGet('iff_seen')){lsSet('iff_seen','1');openModal('helpModal');}
 if(location.protocol==='file:'){const fw=$('fileWarn');if(fw){fw.textContent=FILE_MSG;fw.style.display='flex';}setStatus('Identificarea nu pornește de pe file:// — vezi mesajul de mai sus','err');}
-const APP_VER='v17';
+const APP_VER='v18';
 (location.protocol==='file:'?Promise.resolve(null):fetch('version.json',{cache:'no-store'})).then(r=>r&&r.ok?r.json():null).then(v=>{
   if(v&&v.version&&v.version!==APP_VER){
     // Desincronizare pagină↔server. Curățăm cache O SINGURĂ DATĂ ca să evităm bucla de reload

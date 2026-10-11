@@ -4,10 +4,10 @@
 
 ![VietAR — captură de ecran / screenshot](screenshot.png)
 
-**Ultima actualizare:** 11 octombrie 2026 · versiune v17
+**Ultima actualizare:** 11 octombrie 2026 · versiune v18
 
 
-PWA într-un `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): recunoaște animale și plante din fotografie, cameră (suprapunere „AR”) sau sunet, verifică orientativ semnele de proveniență C2PA ale imaginilor și ține un jurnal de teren local. Motorul local (CLIP, 519 taxoni românești) rulează în browser; opțional există un mod „AI online”.
+PWA într-un `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): recunoaște animale și plante din fotografie, cameră (suprapunere „AR”) sau sunet, verifică orientativ semnele de proveniență C2PA ale imaginilor și ține un jurnal de teren local (filtrabil și tipăribil). Motorul local (CLIP, 519 taxoni românești) rulează în browser; opțional există un mod „AI online”.
 
 **Atenție: identificarea automată poate greși. Nu consuma plante sau ciuperci pe baza acestei aplicații; unele specii sunt toxice sau mortale.** Rezultatele sunt orientative, nu determinări științifice.
 
@@ -26,7 +26,7 @@ Aplicația funcționează offline doar după prima descărcare a modelelor. Nu e
 ## Limitări
 - Motorul local compară aspectul cu o listă; nu cunoaște specii rare.
 - Verificarea de autenticitate (C2PA/AI) e semnal orientativ; absența marcajelor nu înseamnă că imaginea e autentică.
-- CSP-ul din pagină permite `'unsafe-inline'` pentru scripturi.
+- CSP-ul din pagină nu mai permite `'unsafe-inline'` pentru scripturi (scriptul propriu este acceptat pe bază de hash SHA-256); `connect-src` rămâne larg intenționat, vezi mai jos.
 
 ## Licență
 Codul și textele proprii ale autorului: TRADE-FREE + CC0 1.0 (antetul din `index.html`; vezi `LICENSE`). Bibliotecile din `vendor/` (transformers.js, c2pa-web, c2pa), ONNX Runtime încărcat de la jsDelivr, modelele descărcate de pe huggingface.co și fonturile încorporate au **propriile licențe și nu sunt acoperite de CC0**; lista și condițiile sunt în `NOTICE` (de reconfirmat din pachetele originale la fiecare actualizare).
@@ -37,6 +37,11 @@ Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”,
 Audit: 2026-10-10
 
 ## Istoric / Changelog
+
+### v18 — 11 octombrie 2026 (runda 6)
+- Adăugat: filtru de căutare în Jurnal (specie, categorie, dată) și buton „Tipărește jurnalul” cu stil de tipărire care păstrează doar observațiile.
+- Securitate: CSP cu `script-src` pe hash în locul `'unsafe-inline'`; verificat prin server HTTP local (modulul și interfața pornesc fără încălcări CSP).
+- Versiune v18 (index.html, sw.js, version.json).
 
 ### v17 — 11 octombrie 2026
 - Reparat: pe `file://` transformers.js nu mai este importat static (eroare CORS la pornire); este încărcat la cerere, interfața rămâne funcțională și apare un avertisment vizibil cu pașii pentru server HTTP local.
