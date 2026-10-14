@@ -4,7 +4,7 @@
 
 ![VietAR — captură de ecran / screenshot](screenshot.png)
 
-**Versiune:** 19.0.1 · **Ultima actualizare:** 12 octombrie 2026
+**Versiune:** 19.1.0 · **Ultima actualizare:** 14 octombrie 2026
 
 
 PWA într-un `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): recunoaște animale și plante din fotografie, cameră (suprapunere „AR”) sau sunet, verifică orientativ semnele de proveniență C2PA ale imaginilor și ține un jurnal de teren local (filtrabil și tipăribil). Motorul local (CLIP, 519 taxoni românești) rulează în browser; opțional există un mod „AI online”.
@@ -37,6 +37,9 @@ Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”,
 Audit: 2026-10-10
 
 ## Istoric / Changelog
+
+### 19.1.0 — 2026-10-14
+- Copie de rezervă și etichetare date (fff-kit).
 
 ### 19.0.1 — 2026-10-12
 - Versiunea și data ultimei actualizări sunt afișate în aplicație (subsol); versiune 19.0.1 în index.html, sw.js și version.json (numerotare majoră v19 păstrată).
