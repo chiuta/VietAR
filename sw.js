@@ -31,7 +31,7 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
-      .then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(ks => Promise.all(ks.filter(k => k.startsWith('vietar-') && k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -39,7 +39,7 @@ self.addEventListener('activate', e => {
 // kill-switch: pagina poate cere SW-ului să se autodistrugă
 self.addEventListener('message', e => {
   if (e.data === 'sw-unregister') {
-    self.registration.unregister().then(() => caches.keys().then(ks => Promise.all(ks.map(k => caches.delete(k)))));
+    self.registration.unregister().then(() => caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('vietar-')).map(k => caches.delete(k)))));
   }
 });
 
