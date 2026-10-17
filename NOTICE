@@ -1,10 +1,10 @@
 VietAR — NOTICE (licențe și componente terțe)
 
 Codul și textele proprii ale aplicației (index.html, sw.js, manifest.webmanifest,
-lista de 519 taxoni) sunt oferite de Alexandru-Ionuț Chiuță sub CC0 1.0 Universal
+lista de 519 taxoni) sunt oferite de Alexandru-Ionuț Chiuță sub licența MIT
 (vezi LICENSE și antetul din index.html).
 
-CC0 NU se aplică componentelor terțe de mai jos, care rămân sub licențele lor.
+Licența MIT NU se aplică componentelor terțe de mai jos, care rămân sub licențele lor.
 Informațiile de licență sunt cele publicate de proiectele respective (metadatele
 pachetelor npm / fișele de pe huggingface.co) și trebuie reconfirmate din pachetele
 originale la fiecare actualizare a fișierelor din vendor/.
@@ -24,7 +24,7 @@ Componente încărcate la rulare (nu sunt în repository)
 - ONNX Runtime Web (WASM), de la cdn.jsdelivr.net: MIT.
 - Modelele Xenova/clip-vit-base-patch16, Xenova/vit-base-patch16-224 și
   Xenova/ast-finetuned-audioset-10-10-0.4593, de la huggingface.co: licența fiecărui
-  model este cea din fișa lui de pe huggingface.co și nu este acoperită de CC0.
+  model este cea din fișa lui de pe huggingface.co și nu este acoperită de licența MIT.
 
 Fonturi încorporate în index.html (data: URI)
 - Fraunces și Spline Sans: SIL Open Font License 1.1.
