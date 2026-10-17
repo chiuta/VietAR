@@ -81,8 +81,8 @@
   "storageKeys": [
     "iff_cfg"
   ],
-  "sizeBytes": 508468,
-  "sha256": "531d93b09f203188c4854c450227eb7469409fbd1aa5fed778f50e5a622aeef9",
+  "sizeBytes": 509636,
+  "sha256": "17ea16271897bf03a33fdd286c85bb6623bd325dcfd54771de811098028913e9",
   "csp": {
     "present": true,
     "directives": {
