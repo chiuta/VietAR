@@ -2,8 +2,8 @@
   "schema": 1,
   "slug": "vietar",
   "name": "VietAR · faună & floră din România",
-  "version": "19.1.0",
-  "updated": "2026-10-14",
+  "version": "19.2.0",
+  "updated": "2026-10-19",
   "description": "VietAR — identifică faună și floră din România din imagine, cameră (AR live) sau sunet, direct în browser. 519 specii locale, offline după prima descărcare.",
   "egress": [
     {
@@ -79,10 +79,11 @@
     "WebGPU"
   ],
   "storageKeys": [
-    "iff_cfg"
+    "iff_cfg",
+    "vietar_lang"
   ],
-  "sizeBytes": 510272,
-  "sha256": "52b27ec0f19c1e668b1a7e9bfbc0b4da86f8c45611f01653b0d7691562d0fe42",
+  "sizeBytes": 672704,
+  "sha256": "ba8ce8f3f613541dc4867e361781c51a058e3bd46a2ddee90bd83c56ea34514b",
   "csp": {
     "present": true,
     "directives": {
@@ -104,7 +105,16 @@
   "features": {
     "export": true,
     "import": true,
-    "i18n": [],
+    "i18n": [
+      "ro",
+      "en",
+      "fr",
+      "it",
+      "es",
+      "pt",
+      "hu",
+      "de"
+    ],
     "pwa": {
       "manifest": true,
       "serviceWorker": true
