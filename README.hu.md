@@ -8,7 +8,7 @@ A felület nyelvei: **Română, English, Français, Italiano, Español, Portugu�
 
 **Online / bemutató:** https://chiuta.github.io/VietAR/
 
-![VietAR — képernyőkép](screenshot.png)
+![VietAR — képernyőkép](screenshot.hu.png)
 
 Egyetlen `index.html` fájlba csomagolt PWA (+ `vendor/`, `sw.js`, `manifest.webmanifest`): fényképről, kamerából („AR” rávetítés) vagy hangról ismeri fel az állatokat és növényeket, tájékoztató jelleggel ellenőrzi a képek C2PA-eredetjelzéseit, és helyi terepnaplót vezet (szűrhető és nyomtatható). A helyi motor (CLIP, 519 romániai taxon) a böngészőben fut; opcionálisan elérhető egy „online MI” mód is.
 

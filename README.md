@@ -8,7 +8,7 @@ Interface languages: **Română, English, Français, Italiano, Español, Portugu
 
 **Live / demo:** https://chiuta.github.io/VietAR/
 
-![VietAR — screenshot](screenshot.png)
+![VietAR — screenshot](screenshot.en.png)
 
 A PWA in a single `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): it recognises animals and plants from a photo, the camera ("AR" overlay) or sound, gives an indicative check of the C2PA provenance signals of images, and keeps a local field journal (filterable and printable). The local engine (CLIP, 519 Romanian taxa) runs in the browser; an optional "online AI" mode is also available.
 

@@ -8,7 +8,7 @@ Limbile interfeței: **Română, English, Français, Italiano, Español, Portugu
 
 **Live / demo:** https://chiuta.github.io/VietAR/
 
-![VietAR — captură de ecran / screenshot](screenshot.png)
+![VietAR — captură de ecran](screenshot.ro.png)
 
 PWA într-un `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): recunoaște animale și plante din fotografie, cameră (suprapunere „AR”) sau sunet, verifică orientativ semnele de proveniență C2PA ale imaginilor și ține un jurnal de teren local (filtrabil și tipăribil). Motorul local (CLIP, 519 taxoni românești) rulează în browser; opțional există un mod „AI online”.
 

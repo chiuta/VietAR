@@ -8,7 +8,7 @@ Idiomas da interface: **Română, English, Français, Italiano, Español, Portug
 
 **Online / demonstração:** https://chiuta.github.io/VietAR/
 
-![VietAR — captura de ecrã](screenshot.png)
+![VietAR — captura de ecrã](screenshot.pt.png)
 
 PWA num único `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): reconhece animais e plantas a partir de uma fotografia, da câmara (sobreposição «AR») ou de um som, verifica de forma indicativa os sinais de proveniência C2PA das imagens e mantém um diário de campo local (filtrável e imprimível). O motor local (CLIP, 519 táxones romenos) corre no navegador; existe também um modo opcional de «IA online».
 
