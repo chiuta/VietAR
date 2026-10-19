@@ -81,8 +81,8 @@
   "storageKeys": [
     "iff_cfg"
   ],
-  "sizeBytes": 509636,
-  "sha256": "17ea16271897bf03a33fdd286c85bb6623bd325dcfd54771de811098028913e9",
+  "sizeBytes": 510272,
+  "sha256": "52b27ec0f19c1e668b1a7e9bfbc0b4da86f8c45611f01653b0d7691562d0fe42",
   "csp": {
     "present": true,
     "directives": {
@@ -116,7 +116,7 @@
     ]
   },
   "kit": {
-    "version": "1.0.0",
+    "version": "1.1.1",
     "modules": [
       "core",
       "label",
