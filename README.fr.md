@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 19.2.3 · **Dernière mise à jour :** 2026-10-22
+**Version :** 19.2.4 · **Dernière mise à jour :** 2026-10-22
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,9 @@ L'image n'est transmise à des tiers **que** si : (1) vous choisissez le moteur 
 Audit : 2026-10-10
 
 ## Historique / Changelog
+
+### 19.2.4 — 2026-10-22
+- fff-kit 1.1.4 : cibles tactiles et taille de texte minimale; cibles tactiles/texte corrigés
 
 ### 19.2.3 — 2026-10-22
 - fff-kit 1.1.2 : PBKDF2 à 600 000 itérations, protection anti-clickjacking.

@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 19.2.3 · **Ultimo aggiornamento:** 2026-10-22
+**Versione:** 19.2.4 · **Ultimo aggiornamento:** 2026-10-22
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,9 @@ L'immagine parte verso terzi **solo** se: (1) scegli il motore «IA online», (2
 Audit: 2026-10-10
 
 ## Cronologia / Changelog
+
+### 19.2.4 — 2026-10-22
+- fff-kit 1.1.4: bersagli touch e testo minimo; bersagli touch/testo corretti
 
 ### 19.2.3 — 2026-10-22
 - fff-kit 1.1.2: PBKDF2 a 600.000 iterazioni, protezione anti-clickjacking.
