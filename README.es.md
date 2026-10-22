@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 19.2.1 · **Última actualización:** 2026-10-19
+**Versión:** 19.2.2 · **Última actualización:** 2026-10-22
 
 Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,11 @@ La imagen sale hacia terceros **solo** si: (1) eliges el motor «IA en línea»,
 Auditoría: 2026-10-10
 
 ## Historial / Changelog
+
+### 19.2.2 — 2026-10-22
+- Las tres confirmaciones bloqueantes del navegador (borrar el diario, predescargar los modelos, vaciar la caché) se sustituyen por diálogos modales traducidos (8 idiomas); la alerta de almacenamiento bloqueado pasa a ser una notificación.
+- El punto de conexión de IA personalizado se valida al guardar: debe ser una dirección https:// completa, y una dirección local, privada o una IP pide confirmación antes de que las imágenes y la clave API puedan enviarse allí.
+- Móvil: el texto mide al menos 12 px y los botones y campos tienen áreas táctiles mayores en pantallas estrechas.
 
 ### 19.1.0 — 2026-10-14
 - Copia de seguridad y etiquetado de datos (fff-kit).

@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 19.2.1 · **Ultimo aggiornamento:** 2026-10-19
+**Versione:** 19.2.2 · **Ultimo aggiornamento:** 2026-10-22
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,11 @@ L'immagine parte verso terzi **solo** se: (1) scegli il motore «IA online», (2
 Audit: 2026-10-10
 
 ## Cronologia / Changelog
+
+### 19.2.2 — 2026-10-22
+- Le tre conferme bloccanti del browser (cancellare il diario, pre-scaricare i modelli, svuotare la cache) sono sostituite da finestre modali tradotte (8 lingue); l'avviso di archiviazione bloccata diventa una notifica.
+- L'endpoint IA personalizzato viene convalidato al salvataggio: deve essere un indirizzo https:// completo e un indirizzo locale, privato o un IP richiede conferma prima che immagini e chiave API possano essere inviate lì.
+- Mobile: il testo è di almeno 12 px e pulsanti e campi hanno aree tattili più grandi sugli schermi stretti.
 
 ### 19.1.0 — 2026-10-14
 - Backup ed etichettatura dei dati (fff-kit).

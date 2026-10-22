@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 19.2.1 · **Dernière mise à jour :** 2026-10-19
+**Version :** 19.2.2 · **Dernière mise à jour :** 2026-10-22
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,11 @@ L'image n'est transmise à des tiers **que** si : (1) vous choisissez le moteur 
 Audit : 2026-10-10
 
 ## Historique / Changelog
+
+### 19.2.2 — 2026-10-22
+- Les trois confirmations bloquantes du navigateur (effacer le journal, pré-télécharger les modèles, vider le cache) sont remplacées par des dialogues modaux traduits (8 langues) ; l'alerte de stockage bloqué devient une notification.
+- Le point de terminaison IA personnalisé est validé à l'enregistrement : il doit être une adresse https:// complète, et une adresse locale, privée ou une IP demande confirmation avant que les images et la clé API puissent y être envoyées.
+- Mobile : le texte fait au moins 12 px et les boutons et champs ont des cibles tactiles plus grandes sur les écrans étroits.
 
 ### 19.1.0 — 2026-10-14
 - Sauvegarde et étiquetage des données (fff-kit).

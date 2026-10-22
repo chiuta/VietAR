@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 19.2.1 · **Última atualização:** 2026-10-19
+**Versão:** 19.2.2 · **Última atualização:** 2026-10-22
 
 Idiomas da interface: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,11 @@ A imagem segue para terceiros **apenas** se: (1) escolher o motor «IA online»,
 Auditoria: 2026-10-10
 
 ## Histórico / Changelog
+
+### 19.2.2 — 2026-10-22
+- As três confirmações bloqueantes do navegador (limpar o diário, pré-descarregar os modelos, esvaziar a cache) são substituídas por diálogos modais traduzidos (8 idiomas); o alerta de armazenamento bloqueado passa a ser uma notificação.
+- O endpoint de IA personalizado é validado ao guardar: tem de ser um endereço https:// completo, e um endereço local, privado ou um IP pede confirmação antes de as imagens e a chave API poderem ser enviadas para lá.
+- Móvel: o texto tem pelo menos 12 px e os botões e campos têm áreas táteis maiores em ecrãs estreitos.
 
 ### 19.1.0 — 2026-10-14
 - Cópia de segurança e etiquetagem de dados (fff-kit).

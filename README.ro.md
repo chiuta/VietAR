@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 19.2.1 · **Ultima actualizare:** 2026-10-19
+**Versiune:** 19.2.2 · **Ultima actualizare:** 2026-10-22
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,11 @@ Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”,
 Audit: 2026-10-10
 
 ## Istoric / Changelog
+
+### 19.2.2 — 2026-10-22
+- Cele trei confirmări blocante ale browserului (ștergerea jurnalului, pre-descărcarea modelelor, golirea cache-ului) sunt înlocuite cu dialoguri modale traduse (8 limbi); alerta de stocare blocată este acum o notificare.
+- Endpoint-ul AI personalizat este validat la salvare: trebuie să fie o adresă https:// completă, iar o adresă locală, privată sau un IP cere confirmare înainte ca imaginile și cheia API să poată fi trimise acolo.
+- Mobil: textul are cel puțin 12 px, iar butoanele și câmpurile au ținte tactile mai mari pe ecrane înguste.
 
 ### 19.1.0 — 2026-10-14
 - Copie de rezervă și etichetare date (fff-kit).

@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 19.2.1 · **Zuletzt aktualisiert:** 2026-10-19
+**Version:** 19.2.2 · **Zuletzt aktualisiert:** 2026-10-22
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,11 @@ Das Bild geht **nur dann** an Dritte, wenn: (1) Sie die Engine „Online-KI“ w
 Audit: 2026-10-10
 
 ## Verlauf / Changelog
+
+### 19.2.2 — 2026-10-22
+- Die drei blockierenden Browser-Bestätigungen (Tagebuch löschen, Modelle vorab laden, Cache leeren) werden durch übersetzte modale Dialoge (8 Sprachen) ersetzt; der Hinweis auf blockierten Speicher ist jetzt eine Benachrichtigung.
+- Der benutzerdefinierte KI-Endpunkt wird beim Speichern geprüft: Er muss eine vollständige https://-Adresse sein, und eine lokale, private oder IP-Adresse verlangt eine Bestätigung, bevor Bilder und API-Schlüssel dorthin gesendet werden können.
+- Mobil: Der Text ist mindestens 12 px groß, und Schaltflächen und Felder haben auf schmalen Bildschirmen größere Touch-Flächen.
 
 ### 19.1.0 — 2026-10-14
 - Datensicherung und Datenkennzeichnung (fff-kit).
