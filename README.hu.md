@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 19.2.5 · **Utolsó frissítés:** 2026-10-23
+**Verzió:** 19.2.6 · **Utolsó frissítés:** 2026-10-23
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,9 @@ A kép **csak akkor** kerül harmadik félhez, ha: (1) az „Online MI” motort
 Audit: 2026-10-10
 
 ## Előzmények / Changelog
+
+### 19.2.6 — 2026-10-23
+- fff-kit 1.2.0: a megerősítő párbeszédek (napló törlése, privát MI-végpont, profilimport, gyorsítótár ürítése) mostantól a készlet közös, akadálymentes párbeszédablakát (`FFF.dialog`) használják a natív tartalékkal rendelkező saját másolat helyett; a böngészőkulcsok `vietar.` előtagot kapnak (`iff_cfg`, `iff_consent`, `iff_loc`, `iff_seen`, `vietar_lang` → `vietar.cfg`, `.consent`, `.loc`, `.seen`, `.lang`), a régieket az alkalmazás induláskor automatikusan átköltözteti (régi .fff.json mentés importálása után is), így a mentett MI-beállítások, a hozzájárulás és a nyelv megmaradnak. A `version.json` és az oldalon belüli verzióellenőrzés újra egyezik.
 
 ### 19.2.4 — 2026-10-22
 - fff-kit 1.1.4: érintési célpontok és minimális szövegméret; érintési célpontok/szöveg javítva

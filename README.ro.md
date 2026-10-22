@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 19.2.5 · **Ultima actualizare:** 2026-10-23
+**Versiune:** 19.2.6 · **Ultima actualizare:** 2026-10-23
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,9 @@ Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”,
 Audit: 2026-10-10
 
 ## Istoric / Changelog
+
+### 19.2.6 — 2026-10-23
+- fff-kit 1.2.0: dialogurile de confirmare (ștergerea jurnalului, endpoint AI privat, importul profilului, golirea cache-ului) folosesc acum dialogul accesibil comun al kitului (`FFF.dialog`), nu o copie proprie cu alternativă nativă; cheile din browser poartă prefixul `vietar.` (`iff_cfg`, `iff_consent`, `iff_loc`, `iff_seen`, `vietar_lang` → `vietar.cfg`, `.consent`, `.loc`, `.seen`, `.lang`), iar cele vechi sunt migrate automat la pornire (și după importul unei copii .fff.json vechi), deci setările AI salvate, consimțământul și limba se păstrează. `version.json` și verificarea de versiune din pagină sunt din nou aliniate.
 
 ### 19.2.4 — 2026-10-22
 - fff-kit 1.1.4: ținte tactile și text minim; ținte tactile/text corectate
