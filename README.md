@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 19.2.2 · **Last updated:** 2026-10-22
+**Version:** 19.2.3 · **Last updated:** 2026-10-22
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,9 @@ The image leaves for third parties **only** if: (1) you choose the "Online AI" e
 Audit: 2026-10-10
 
 ## History / Changelog
+
+### 19.2.3 — 2026-10-22
+- fff-kit 1.1.2: PBKDF2 600,000 iterations, anti-clickjacking protection.
 
 ### 19.2.2 — 2026-10-22
 - The three blocking browser confirmations (clear journal, pre-download models, clear cache) are replaced by translated modal dialogs (8 languages); the storage-blocked alert is now a toast.

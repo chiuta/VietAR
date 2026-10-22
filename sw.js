@@ -10,7 +10,7 @@
    IMPORTANT: documentul (HTML) e NETWORK-FIRST ca o reîncărcare să aducă mereu ultima versiune
    (evită „cache zombi" care servea o versiune veche la nesfârșit).
    Modelele HuggingFace sunt lăsate în seama transformers.js (cache propriu). */
-const CACHE = 'vietar-v19.2.2';
+const CACHE = 'vietar-v19.2.3';
 const SHELL = [
   './index.html',
   './vendor/transformers/transformers.min.js',

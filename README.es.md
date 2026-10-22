@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 19.2.2 · **Última actualización:** 2026-10-22
+**Versión:** 19.2.3 · **Última actualización:** 2026-10-22
 
 Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,9 @@ La imagen sale hacia terceros **solo** si: (1) eliges el motor «IA en línea»,
 Auditoría: 2026-10-10
 
 ## Historial / Changelog
+
+### 19.2.3 — 2026-10-22
+- fff-kit 1.1.2: PBKDF2 con 600.000 iteraciones, protección anti-clickjacking.
 
 ### 19.2.2 — 2026-10-22
 - Las tres confirmaciones bloqueantes del navegador (borrar el diario, predescargar los modelos, vaciar la caché) se sustituyen por diálogos modales traducidos (8 idiomas); la alerta de almacenamiento bloqueado pasa a ser una notificación.
