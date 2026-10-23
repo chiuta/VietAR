@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 19.2.6 · **Zuletzt aktualisiert:** 2026-10-23
+**Version:** 19.2.7 · **Zuletzt aktualisiert:** 2026-10-23
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,10 @@ Das Bild geht **nur dann** an Dritte, wenn: (1) Sie die Engine „Online-KI“ w
 Audit: 2026-10-10
 
 ## Verlauf / Changelog
+
+### 19.2.7 — 2026-10-23
+- Online-KI-Modus: Die Herkunftszeile (C2PA/Metadaten) erschien nie in der zweiten Karte „Echtheit“ (sie las ein nicht existierendes Feld); jetzt erscheint sie. Ein `null`- oder Nicht-Objekt-Eintrag in den „Alternativen“ des Modells verwirft nicht mehr das ganze Ergebnis.
+- Tagebuch-CSV: Negative Breiten-/Längengrade werden vom Formelschutz nicht mehr in Text verwandelt.
 
 ### 19.2.6 — 2026-10-23
 - fff-kit 1.2.0: Die Bestätigungsdialoge (Journal löschen, privater KI-Endpunkt, Profilimport, Cache leeren) verwenden jetzt den gemeinsamen barrierefreien Dialog des Kits (`FFF.dialog`) statt einer eigenen Kopie mit nativem Fallback; die Browser-Schlüssel tragen das Präfix `vietar.` (`iff_cfg`, `iff_consent`, `iff_loc`, `iff_seen`, `vietar_lang` → `vietar.cfg`, `.consent`, `.loc`, `.seen`, `.lang`), und die alten werden beim Start automatisch migriert (auch nach dem Import einer alten .fff.json-Sicherung): gespeicherte KI-Einstellungen, Einwilligung und Sprache bleiben erhalten. `version.json` und die Versionsprüfung der Seite stimmen wieder überein.

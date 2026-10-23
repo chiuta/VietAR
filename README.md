@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 19.2.6 · **Last updated:** 2026-10-23
+**Version:** 19.2.7 · **Last updated:** 2026-10-23
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,10 @@ The image leaves for third parties **only** if: (1) you choose the "Online AI" e
 Audit: 2026-10-10
 
 ## History / Changelog
+
+### 19.2.7 — 2026-10-23
+- Online AI mode: the provenance (C2PA/metadata) line was never shown in the second “Authenticity” card (it read a field that does not exist); it is now. A `null` or non-object entry in the model's “alternatives” no longer throws away the whole result.
+- Journal CSV: negative latitude/longitude are no longer turned into text by the formula-injection guard.
 
 ### 19.2.6 — 2026-10-23
 - fff-kit 1.2.0: the confirmation dialogs (clear journal, private AI endpoint, profile import, clear cache) now use the kit's shared accessible dialog (`FFF.dialog`) instead of an own copy with a native fallback; browser keys now carry the `vietar.` prefix (`iff_cfg`, `iff_consent`, `iff_loc`, `iff_seen`, `vietar_lang` → `vietar.cfg`, `.consent`, `.loc`, `.seen`, `.lang`) and the old ones are migrated automatically at start-up (also after importing an old .fff.json backup), so the saved AI settings, consent and language are kept. The `version.json` / in-page version check are aligned again.

@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 19.2.6 · **Última actualización:** 2026-10-23
+**Versión:** 19.2.7 · **Última actualización:** 2026-10-23
 
 Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,6 +40,10 @@ La imagen sale hacia terceros **solo** si: (1) eliges el motor «IA en línea»,
 Auditoría: 2026-10-10
 
 ## Historial / Changelog
+
+### 19.2.7 — 2026-10-23
+- Modo IA en línea: la línea de procedencia (C2PA/metadatos) nunca aparecía en la segunda tarjeta «Autenticidad» (leía un campo inexistente); ahora aparece. Una entrada `null` o no objeto en las «alternativas» del modelo ya no descarta todo el resultado.
+- CSV del diario: las latitudes/longitudes negativas ya no se convierten en texto por la protección anti-fórmulas.
 
 ### 19.2.6 — 2026-10-23
 - fff-kit 1.2.0: los diálogos de confirmación (borrar el diario, endpoint de IA privado, importar el perfil, vaciar la caché) usan ahora el diálogo accesible común del kit (`FFF.dialog`) en lugar de una copia propia con alternativa nativa; las claves del navegador llevan el prefijo `vietar.` (`iff_cfg`, `iff_consent`, `iff_loc`, `iff_seen`, `vietar_lang` → `vietar.cfg`, `.consent`, `.loc`, `.seen`, `.lang`) y las antiguas se migran automáticamente al iniciar (también tras importar una copia .fff.json antigua): se conservan los ajustes de IA, el consentimiento y el idioma. `version.json` y la comprobación de versión de la página vuelven a estar alineados.
