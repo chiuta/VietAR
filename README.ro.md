@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 19.2.8 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 20.0.0 · **Ultima actualizare:** 2026-10-26
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,6 +16,9 @@ PWA într-un `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): recuno
 
 ## Utilizare
 Deschide pagina publicată (GitHub Pages) sau servește folderul cu un server HTTP static (de exemplu `python3 -m http.server`). De la `file://` browserul blochează modulele ES: interfața, jurnalul și exportul rămân utilizabile, iar aplicația afișează un mesaj clar că identificarea nu poate porni (în loc de eroare în consolă). Alege motorul (Local·RO, General, AI online), apoi: „AR live” (cameră), „Imagine”, „Sunet” sau „Jurnal”.
+
+## Jurnal de identificări (20.0.0)
+Fiecare observație salvată păstrează acum **nivelul de încredere** (potrivire bună / medie / slabă; la ciuperci „indicativ”, fără procent), **alternativele apropiate** din același rezultat (până la 3, cu procent doar când motorul îl dă) și **motivele pentru care pot fi confundate**: același gen, aceeași categorie, scor apropiat, identificare doar la nivel de grup. Motivele sunt calculate din datele aplicației (nume științific, categorie, scor) și **nu descriu trăsăturile reale ale speciilor**. Poți adăuga o notă proprie, filtra după nivel și exporta totul în CSV/GeoJSON (coloanele noi sunt la sfârșit). Intrările mai vechi rămân valabile. Avertismentul rămâne: **nu consuma și nu atinge nimic pe baza unei identificări automate; confirmă cu un specialist.**
 
 ## Ce NU este offline / ce date pleacă din browser
 Aplicația funcționează offline doar după prima descărcare a modelelor. Nu este 100% locală:
@@ -40,6 +43,9 @@ Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”,
 Audit: 2026-10-10
 
 ## Istoric / Changelog
+
+### 20.0.0 — 2026-10-26
+- Jurnal de identificări: nivel de încredere, alternative apropiate, motivele confuziilor (calculate din date), notă proprie, filtru pe nivel, export extins.
 
 ### 19.2.7 — 2026-10-23
 - Modul AI online: linia de proveniență (C2PA/metadate) nu apărea niciodată în al doilea card „Autenticitate” (citea un câmp inexistent); acum apare. O intrare `null` sau non-obiect în „alternativele” modelului nu mai aruncă tot rezultatul.

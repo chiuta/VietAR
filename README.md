@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 19.2.8 · **Last updated:** 2026-10-26
+**Version:** 20.0.0 · **Last updated:** 2026-10-26
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,6 +16,9 @@ A PWA in a single `index.html` (+ `vendor/`, `sw.js`, `manifest.webmanifest`): i
 
 ## Usage
 Open the published page (GitHub Pages) or serve the folder with a static HTTP server (for example `python3 -m http.server`). From `file://` the browser blocks ES modules: the interface, the journal and the export remain usable, and the application shows a clear message that identification cannot start (instead of a console error). Choose the engine (Local·RO, General, Online AI), then: "Live AR" (camera), "Image", "Sound" or "Journal".
+
+## Identification journal (20.0.0)
+Every saved observation now keeps its **confidence level** (good / fair / weak match; "indicative" for fungi, with no percentage), the **close alternatives** from the same result (up to 3, with a percentage only when the engine provides one) and the **reasons they may be confused**: same genus, same category, close score, identified only at group level. The reasons are computed from the app's own data (scientific name, category, score) and **do not describe the actual features of the species**. You can add your own note, filter by level and export everything to CSV/GeoJSON (the new columns come last). Older entries stay valid. The warning stays: **do not eat or touch anything based on an automatic identification; confirm with a specialist.**
 
 ## What is NOT offline / what data leaves the browser
 The application works offline only after the models have been downloaded for the first time. It is not 100% local:
@@ -40,6 +43,9 @@ The image leaves for third parties **only** if: (1) you choose the "Online AI" e
 Audit: 2026-10-10
 
 ## History / Changelog
+
+### 20.0.0 — 2026-10-26
+- Identification journal: confidence level, close alternatives, reasons for confusion (computed from data), own note, level filter, extended export.
 
 ### 19.2.7 — 2026-10-23
 - Online AI mode: the provenance (C2PA/metadata) line was never shown in the second “Authenticity” card (it read a field that does not exist); it is now. A `null` or non-object entry in the model's “alternatives” no longer throws away the whole result.
