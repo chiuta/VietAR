@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 20.0.0 · **Utolsó frissítés:** 2026-10-26
+**Verzió:** 20.1.0 · **Utolsó frissítés:** 2026-10-27
+
+**Állapot:** kísérleti · **Offline:** teljes csak az első használat után: egyszer internet kell a modellekhez (huggingface.co) és az ONNX Runtime-hoz (cdn.jsdelivr.net), utána a gyorsítótárból működik
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -30,6 +32,12 @@ Az alkalmazás csak a modellek első letöltése után működik offline. Nem 10
 - A helyi motor a megjelenést egy listához hasonlítja; a ritka fajokat nem ismeri.
 - A hitelességi ellenőrzés (C2PA/MI) tájékoztató jelzés; a jelölések hiánya nem jelenti azt, hogy a kép hiteles.
 - Az oldal CSP-je már nem engedélyezi a `'unsafe-inline'` használatát szkriptekhez (a saját szkriptet SHA-256 hash alapján fogadja el); a `connect-src` szándékosan tág marad, lásd alább.
+
+## Modellek, pontosság és offline gyorsítótár (20.1.0)
+
+- **A modellek forrása (a kódból kiolvasva).** A „local” motor = CLIP zero-shot (`Xenova/clip-vit-base-patch16`); a „general” motor = `Xenova/vit-base-patch16-224`; hang = `Xenova/ast-finetuned-audioset-10-10-0.4593`. Mindegyiket a `transformers.js` 3.8.1 (a `vendor/` mappában) tölti be a `huggingface.co`-ról, a `Xenova` fiók alatt közzétett ONNX-átalakításként; az eredeti szerzőket és az egyes modellek licencét a modellkártyán kell megerősíteni: **ellenőrizendő**.
+- **Pontosság: ellenőrizendő.** A kódban és ebben a tárolóban nincs mért pontosság, sem fajonként, sem összesítve, és itt sem állítunk ilyet. A felület csak minőségi bizonyossági szintet mutat (jó / közepes / gyenge egyezés), nem validált arányt. A ritka fajok nincsenek lefedve (lásd Korlátok).
+- **Offline gyorsítótár.** A `transformers.js` a letöltött modelleket a böngésző Cache API-jában tartja (`useBrowserCache`). Új a 20.1.0-ban: az „Offline előkészítés” után az alkalmazás tartós tárhelyet kér a böngészőtől (`navigator.storage.persist()`), hogy a gyorsítótárat kevésbé töröljék automatikusan; a böngésző elutasíthatja, a gyorsítótárak törlése gomb pedig továbbra is mindent töröl. Új függőség nincs; semmi sem hagyja el a böngészőt.
 
 ## Licenc
 A szerző kódja és saját szövegei: TRADE-FREE + MIT (az `index.html` fejléce; lásd `LICENSE`). A `vendor/` mappa könyvtárai (transformers.js, c2pa-web, c2pa), a jsDelivrről betöltött ONNX Runtime, a huggingface.co-ról letöltött modellek és a beágyazott betűtípusok **saját licenccel rendelkeznek, és a CC0 nem vonatkozik rájuk**; a lista és a feltételek a `NOTICE` fájlban találhatók (minden frissítéskor újra megerősítendő az eredeti csomagokból).

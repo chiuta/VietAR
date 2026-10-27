@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 20.0.0 · **Zuletzt aktualisiert:** 2026-10-26
+**Version:** 20.1.0 · **Zuletzt aktualisiert:** 2026-10-27
+
+**Status:** experimentell · **Offline:** vollständig erst nach der ersten Nutzung: Internet wird einmal für die Modelle (huggingface.co) und die ONNX Runtime (cdn.jsdelivr.net) benötigt, danach läuft alles aus dem Cache
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -30,6 +32,12 @@ Die Anwendung funktioniert erst nach dem ersten Herunterladen der Modelle offlin
 - Die lokale Engine vergleicht das Erscheinungsbild mit einer Liste; sie kennt keine seltenen Arten.
 - Die Echtheitsprüfung (C2PA/KI) ist ein orientierendes Signal; das Fehlen von Markierungen bedeutet nicht, dass das Bild echt ist.
 - Die CSP der Seite erlaubt für Skripte kein `'unsafe-inline'` mehr (das eigene Skript wird per SHA-256-Hash akzeptiert); `connect-src` bleibt absichtlich weit gefasst, siehe unten.
+
+## Modelle, Genauigkeit und Offline-Cache (20.1.0)
+
+- **Modellquelle (aus dem Code gelesen).** Engine „local“ = CLIP Zero-Shot (`Xenova/clip-vit-base-patch16`); Engine „general“ = `Xenova/vit-base-patch16-224`; Ton = `Xenova/ast-finetuned-audioset-10-10-0.4593`. Alle werden mit `transformers.js` 3.8.1 (in `vendor/` enthalten) von `huggingface.co` geladen, als ONNX-Konvertierungen unter dem Konto `Xenova`; die ursprünglichen Autoren und die Lizenz jedes Modells sind auf dessen Modellkarte zu bestätigen: **zu überprüfen**.
+- **Genauigkeit: zu überprüfen.** Weder im Code noch in diesem Repository gibt es eine gemessene Genauigkeit, weder je Art noch insgesamt, und hier wird keine behauptet. Die Oberfläche zeigt nur eine qualitative Vertrauensstufe (gute / mittlere / schwache Übereinstimmung), keine validierte Rate. Seltene Arten sind nicht abgedeckt (siehe Einschränkungen).
+- **Offline-Cache.** `transformers.js` hält die heruntergeladenen Modelle in der Cache API des Browsers (`useBrowserCache`). Neu in 20.1.0: Nach „Offline vorbereiten“ bittet die App den Browser um dauerhaften Speicher (`navigator.storage.persist()`), damit der Cache seltener automatisch gelöscht wird; der Browser kann ablehnen, und die Schaltfläche zum Leeren der Caches löscht weiterhin alles. Keine Abhängigkeit hinzugefügt; nichts verlässt den Browser.
 
 ## Lizenz
 Code und eigene Texte des Autors: TRADE-FREE + MIT (Kopfbereich von `index.html`; siehe `LICENSE`). Die Bibliotheken in `vendor/` (transformers.js, c2pa-web, c2pa), die von jsDelivr geladene ONNX Runtime, die von huggingface.co heruntergeladenen Modelle und die eingebetteten Schriftarten haben **eigene Lizenzen und fallen nicht unter CC0**; die Liste und die Bedingungen stehen in `NOTICE` (bei jeder Aktualisierung anhand der Originalpakete erneut zu bestätigen).
