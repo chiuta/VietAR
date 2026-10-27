@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 20.1.0 · **Última actualización:** 2026-10-27
+**Versión:** 20.2.0 · **Última actualización:** 2026-10-27
 
 **Estado:** experimental · **Sin conexión:** completo solo tras el primer uso: necesita internet una vez para los modelos (huggingface.co) y ONNX Runtime (cdn.jsdelivr.net), después funciona desde la caché
 
@@ -47,7 +47,23 @@ La imagen sale hacia terceros **solo** si: (1) eliges el motor «IA en línea»,
 
 Auditoría: 2026-10-10
 
+## Model origin and licences (20.2.0)
+
+_(English only; not yet translated into this language. Machine translation intentionally not added to avoid errors in technical statements.)_
+
+Documented in `NOTICE` and here, only as far as it could be verified on the web on 27 Oct 2026:
+
+- **CLIP** ("local" engine): original model by OpenAI, paper arXiv 2103.00020. Licence of the weights: to be verified.
+- **ViT** ("general" engine): the original `google/vit-base-patch16-224` (Google) carries the **apache-2.0** tag on huggingface.co (verified).
+- **AST** (sound): the original `MIT/ast-finetuned-audioset-10-10-0.4593`; BSD-3-Clause according to a third-party page, not confirmed on the official card.
+- The app loads the **ONNX conversions published under the `Xenova` account**; the licence of each conversion was **not verified** (the Xenova cards could not be opened), so it stays "to be verified".
+- Per-species accuracy: still unmeasured, hence not stated.
+
 ## Historial / Changelog
+
+### 20.2.0 — 2026-10-27
+- Model origin and licences documented as far as verified; Xenova conversions remain to be verified.
+
 
 ### 19.2.7 — 2026-10-23
 - Modo IA en línea: la línea de procedencia (C2PA/metadatos) nunca aparecía en la segunda tarjeta «Autenticidad» (leía un campo inexistente); ahora aparece. Una entrada `null` o no objeto en las «alternativas» del modelo ya no descarta todo el resultado.

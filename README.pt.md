@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 20.1.0 · **Última atualização:** 2026-10-27
+**Versão:** 20.2.0 · **Última atualização:** 2026-10-27
 
 **Estado:** experimental · **Offline:** completo apenas após a primeira utilização: precisa de internet uma vez para os modelos (huggingface.co) e o ONNX Runtime (cdn.jsdelivr.net), depois funciona a partir da cache
 
@@ -47,7 +47,23 @@ A imagem segue para terceiros **apenas** se: (1) escolher o motor «IA online»,
 
 Auditoria: 2026-10-10
 
+## Model origin and licences (20.2.0)
+
+_(English only; not yet translated into this language. Machine translation intentionally not added to avoid errors in technical statements.)_
+
+Documented in `NOTICE` and here, only as far as it could be verified on the web on 27 Oct 2026:
+
+- **CLIP** ("local" engine): original model by OpenAI, paper arXiv 2103.00020. Licence of the weights: to be verified.
+- **ViT** ("general" engine): the original `google/vit-base-patch16-224` (Google) carries the **apache-2.0** tag on huggingface.co (verified).
+- **AST** (sound): the original `MIT/ast-finetuned-audioset-10-10-0.4593`; BSD-3-Clause according to a third-party page, not confirmed on the official card.
+- The app loads the **ONNX conversions published under the `Xenova` account**; the licence of each conversion was **not verified** (the Xenova cards could not be opened), so it stays "to be verified".
+- Per-species accuracy: still unmeasured, hence not stated.
+
 ## Histórico / Changelog
+
+### 20.2.0 — 2026-10-27
+- Model origin and licences documented as far as verified; Xenova conversions remain to be verified.
+
 
 ### 19.2.7 — 2026-10-23
 - Modo IA online: a linha de proveniência (C2PA/metadados) nunca aparecia no segundo cartão «Autenticidade» (lia um campo inexistente); agora aparece. Uma entrada `null` ou não-objeto nas «alternativas» do modelo já não descarta todo o resultado.

@@ -25,6 +25,18 @@ Componente încărcate la rulare (nu sunt în repository)
 - Modelele Xenova/clip-vit-base-patch16, Xenova/vit-base-patch16-224 și
   Xenova/ast-finetuned-audioset-10-10-0.4593, de la huggingface.co: licența fiecărui
   model este cea din fișa lui de pe huggingface.co și nu este acoperită de licența MIT.
+  Proveniență și licențe, cât s-a putut verifica la 27.10.2026 (modelele sunt conversii
+  ONNX publicate de contul „Xenova"; licența conversiei în sine NU a fost verificată:
+  fișele Xenova/* de pe huggingface.co nu au putut fi deschise la această verificare):
+  - CLIP: modelul original aparține OpenAI (lucrarea „Learning Transferable Visual Models
+    From Natural Language Supervision", arXiv 2103.00020). Licența greutăților: de verificat.
+  - ViT: originalul google/vit-base-patch16-224 (Google) poartă eticheta de licență
+    apache-2.0 pe huggingface.co (verificat); lucrările citate: arXiv 2010.11929 și 2006.03677.
+    Licența conversiei Xenova: de verificat.
+  - AST: originalul MIT/ast-finetuned-audioset-10-10-0.4593 (autor „MIT" pe huggingface.co);
+    licență BSD-3-Clause conform unei pagini terțe (endorlabs.com), neconfirmată pe fișa
+    oficială. Licența conversiei Xenova: de verificat.
+  Nu se afirmă nicio acuratețe pe specii: niciuna nu a fost măsurată în acest depozit.
 
 Fonturi încorporate în index.html (data: URI)
 - Fraunces și Spline Sans: SIL Open Font License 1.1.
