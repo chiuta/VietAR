@@ -2,7 +2,9 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 20.0.0 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 20.1.0 · **Ultima actualizare:** 2026-10-27
+
+**Stare:** experimental · **Offline:** complet doar după prima utilizare: cere internet o dată pentru modele (huggingface.co) și ONNX Runtime (cdn.jsdelivr.net), apoi funcționează din cache
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -33,6 +35,12 @@ Aplicația funcționează offline doar după prima descărcare a modelelor. Nu e
 - Motorul local compară aspectul cu o listă; nu cunoaște specii rare.
 - Verificarea de autenticitate (C2PA/AI) e semnal orientativ; absența marcajelor nu înseamnă că imaginea e autentică.
 - CSP-ul din pagină nu mai permite `'unsafe-inline'` pentru scripturi (scriptul propriu este acceptat pe bază de hash SHA-256); `connect-src` rămâne larg intenționat, vezi mai jos.
+
+## Modele, acuratețe și cache offline (20.1.0)
+
+- **Sursa modelelor (citită din cod).** Motorul „local” = CLIP zero-shot (`Xenova/clip-vit-base-patch16`); motorul „general” = `Xenova/vit-base-patch16-224`; sunet = `Xenova/ast-finetuned-audioset-10-10-0.4593`. Toate se încarcă prin `transformers.js` 3.8.1 (inclus în `vendor/`) de pe `huggingface.co`, ca conversii ONNX publicate sub contul `Xenova`; autorii originali și licența fiecărui model trebuie confirmate pe fișa modelului: **de verificat**.
+- **Acuratețe: de verificat.** În cod și în acest repository nu există nicio acuratețe măsurată, nici pe specii, nici globală, și aici nu se pretinde niciuna. Interfața arată doar un nivel calitativ de încredere (potrivire bună / medie / slabă), nu o rată validată. Speciile rare nu sunt acoperite (vezi Limitări).
+- **Cache offline.** `transformers.js` păstrează modelele descărcate în Cache API al browserului (`useBrowserCache`). Nou în 20.1.0: după „Pregătește offline” aplicația cere browserului stocare persistentă (`navigator.storage.persist()`), ca cache-ul să fie mai greu de șters automat; browserul poate refuza, iar butonul de golire a cache-urilor șterge în continuare totul. Nu s-a adăugat nicio dependență; nimic nu pleacă din browser.
 
 ## Licență
 Codul și textele proprii ale autorului: TRADE-FREE + MIT (antetul din `index.html`; vezi `LICENSE`). Bibliotecile din `vendor/` (transformers.js, c2pa-web, c2pa), ONNX Runtime încărcat de la jsDelivr, modelele descărcate de pe huggingface.co și fonturile încorporate au **propriile licențe și nu sunt acoperite de CC0**; lista și condițiile sunt în `NOTICE` (de reconfirmat din pachetele originale la fiecare actualizare).

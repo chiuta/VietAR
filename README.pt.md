@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 20.0.0 · **Última atualização:** 2026-10-26
+**Versão:** 20.1.0 · **Última atualização:** 2026-10-27
+
+**Estado:** experimental · **Offline:** completo apenas após a primeira utilização: precisa de internet uma vez para os modelos (huggingface.co) e o ONNX Runtime (cdn.jsdelivr.net), depois funciona a partir da cache
 
 Idiomas da interface: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -30,6 +32,12 @@ A aplicação só funciona offline após a primeira transferência dos modelos. 
 - O motor local compara o aspeto com uma lista; não conhece espécies raras.
 - A verificação de autenticidade (C2PA/IA) é um sinal indicativo; a ausência de marcas não significa que a imagem seja autêntica.
 - A CSP da página já não permite `'unsafe-inline'` para scripts (o script próprio é aceite por hash SHA-256); `connect-src` continua deliberadamente amplo, ver abaixo.
+
+## Modelos, precisão e cache offline (20.1.0)
+
+- **Origem dos modelos (lida do código).** Motor «local» = CLIP zero-shot (`Xenova/clip-vit-base-patch16`); motor «general» = `Xenova/vit-base-patch16-224`; som = `Xenova/ast-finetuned-audioset-10-10-0.4593`. Todos são carregados com `transformers.js` 3.8.1 (incluído em `vendor/`) a partir de `huggingface.co`, como conversões ONNX publicadas na conta `Xenova`; os autores originais e a licença de cada modelo têm de ser confirmados na respetiva ficha: **por verificar**.
+- **Precisão: por verificar.** No código e neste repositório não existe nenhuma precisão medida, nem por espécie nem global, e aqui não se afirma nenhuma. A interface mostra apenas um nível qualitativo de confiança (correspondência boa / média / fraca), não uma taxa validada. As espécies raras não estão cobertas (ver Limitações).
+- **Cache offline.** O `transformers.js` guarda os modelos descarregados na Cache API do navegador (`useBrowserCache`). Novo na 20.1.0: depois de «Preparar offline» a aplicação pede ao navegador armazenamento persistente (`navigator.storage.persist()`), para que a cache seja menos facilmente apagada; o navegador pode recusar, e o botão de limpar caches continua a apagar tudo. Nenhuma dependência adicionada; nada sai do navegador.
 
 ## Licença
 Código e textos próprios do autor: TRADE-FREE + MIT (cabeçalho de `index.html`; ver `LICENSE`). As bibliotecas de `vendor/` (transformers.js, c2pa-web, c2pa), o ONNX Runtime carregado a partir do jsDelivr, os modelos descarregados de huggingface.co e os tipos de letra incorporados têm **licenças próprias e não estão abrangidos pela CC0**; a lista e as condições constam de `NOTICE` (a reconfirmar a partir dos pacotes originais em cada atualização).
