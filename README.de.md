@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 20.1.0 · **Zuletzt aktualisiert:** 2026-10-27
+**Version:** 20.2.0 · **Zuletzt aktualisiert:** 2026-10-27
 
 **Status:** experimentell · **Offline:** vollständig erst nach der ersten Nutzung: Internet wird einmal für die Modelle (huggingface.co) und die ONNX Runtime (cdn.jsdelivr.net) benötigt, danach läuft alles aus dem Cache
 
@@ -47,7 +47,23 @@ Das Bild geht **nur dann** an Dritte, wenn: (1) Sie die Engine „Online-KI“ w
 
 Audit: 2026-10-10
 
+## Model origin and licences (20.2.0)
+
+_(English only; not yet translated into this language. Machine translation intentionally not added to avoid errors in technical statements.)_
+
+Documented in `NOTICE` and here, only as far as it could be verified on the web on 27 Oct 2026:
+
+- **CLIP** ("local" engine): original model by OpenAI, paper arXiv 2103.00020. Licence of the weights: to be verified.
+- **ViT** ("general" engine): the original `google/vit-base-patch16-224` (Google) carries the **apache-2.0** tag on huggingface.co (verified).
+- **AST** (sound): the original `MIT/ast-finetuned-audioset-10-10-0.4593`; BSD-3-Clause according to a third-party page, not confirmed on the official card.
+- The app loads the **ONNX conversions published under the `Xenova` account**; the licence of each conversion was **not verified** (the Xenova cards could not be opened), so it stays "to be verified".
+- Per-species accuracy: still unmeasured, hence not stated.
+
 ## Verlauf / Changelog
+
+### 20.2.0 — 2026-10-27
+- Model origin and licences documented as far as verified; Xenova conversions remain to be verified.
+
 
 ### 19.2.7 — 2026-10-23
 - Online-KI-Modus: Die Herkunftszeile (C2PA/Metadaten) erschien nie in der zweiten Karte „Echtheit“ (sie las ein nicht existierendes Feld); jetzt erscheint sie. Ein `null`- oder Nicht-Objekt-Eintrag in den „Alternativen“ des Modells verwirft nicht mehr das ganze Ergebnis.

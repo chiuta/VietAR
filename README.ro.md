@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 20.1.0 · **Ultima actualizare:** 2026-10-27
+**Versiune:** 20.2.0 · **Ultima actualizare:** 2026-10-27
 
 **Stare:** experimental · **Offline:** complet doar după prima utilizare: cere internet o dată pentru modele (huggingface.co) și ONNX Runtime (cdn.jsdelivr.net), apoi funcționează din cache
 
@@ -50,7 +50,21 @@ Imaginea pleacă spre terți **numai** dacă: (1) alegi motorul „AI online”,
 
 Audit: 2026-10-10
 
+## Proveniența și licențele modelelor (20.2.0)
+
+Documentat în `NOTICE` și aici, doar cât s-a putut verifica pe web la 27.10.2026:
+
+- **CLIP** (motorul „local"): model original OpenAI, lucrarea arXiv 2103.00020. Licența greutăților: de verificat.
+- **ViT** (motorul „general"): originalul `google/vit-base-patch16-224` (Google) are eticheta **apache-2.0** pe huggingface.co (verificat).
+- **AST** (sunet): originalul `MIT/ast-finetuned-audioset-10-10-0.4593`; licență BSD-3-Clause conform unei pagini terțe, neconfirmată pe fișa oficială.
+- Aplicația încarcă **conversiile ONNX ale contului `Xenova`**; licența fiecărei conversii **nu a fost verificată** (fișele Xenova nu au putut fi deschise), deci rămâne „de verificat".
+- Acuratețea pe specii: tot nemăsurată, deci nespecificată.
+
 ## Istoric / Changelog
+
+### 20.2.0 — 2026-10-27
+- Proveniența și licențele modelelor documentate cât s-a putut verifica; conversiile Xenova rămân de verificat.
+
 
 ### 20.0.0 — 2026-10-26
 - Jurnal de identificări: nivel de încredere, alternative apropiate, motivele confuziilor (calculate din date), notă proprie, filtru pe nivel, export extins.

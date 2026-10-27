@@ -2,6 +2,15 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 20.2.0 — 2026-10-27 (anterior: 20.1.0)
+
+Proveniența și licențele modelelor:
+- `NOTICE` și README (8 limbi): CLIP (OpenAI, arXiv 2103.00020), ViT (google/vit-base-patch16-224, apache-2.0 verificat pe huggingface.co), AST (MIT/…; BSD-3-Clause după o pagină terțe, neconfirmat pe fișa oficială).
+- Licența conversiilor ONNX ale contului Xenova NU a fost verificată (fișele nu au putut fi deschise): rămâne „de verificat". Acuratețea pe specii: tot nemăsurată, nespecificată.
+- Nicio schimbare de cod în afara versiunii.
+
+---
+
 ## 20.1.0 — 2026-10-27 (anterior: v20 = 20.0.0)
 
 Stare: experimental
