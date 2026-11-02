@@ -82,8 +82,8 @@
     "vietar.cfg",
     "vietar.lang"
   ],
-  "sizeBytes": 796391,
-  "sha256": "858524209482c69c9d598acbb7c8f597e908d6f0aff6bd2f6baeda8bf0c4da5c",
+  "sizeBytes": 796505,
+  "sha256": "5d526020fea0f0c4d25b2748b337ddf566213caaea9d4ae62c62315377c8c996",
   "csp": {
     "present": true,
     "directives": {
