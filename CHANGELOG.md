@@ -2,6 +2,12 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 20.2.1 — 2026-11-02
+
+Actualizare a surselor la 2026-11-02 (modul „AI cu cheia ta”).
+- Model implicit OpenAI-compatibil: `gpt-4o-mini` -> `gpt-6-luna` (OpenAI a anunțat închiderea `gpt-4o-mini-2024-07-18` la 14 ianuarie 2027, înlocuitor `gpt-6-luna`; developers.openai.com/api/docs/deprecations).
+- Model implicit Anthropic: `claude-sonnet-4-6` -> `claude-sonnet-5-5` (cel mai nou Sonnet activ; `claude-sonnet-4-6` e încă activ, retragere cel mai devreme 17 februarie 2027; platform.claude.com/docs/en/about-claude/model-deprecations). Câmpul „Model” rămâne editabil.
+
 ## 20.2.0 — 2026-10-27 (anterior: 20.1.0)
 
 Proveniența și licențele modelelor:
