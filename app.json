@@ -82,8 +82,8 @@
     "vietar.cfg",
     "vietar.lang"
   ],
-  "sizeBytes": 796505,
-  "sha256": "5d526020fea0f0c4d25b2748b337ddf566213caaea9d4ae62c62315377c8c996",
+  "sizeBytes": 936939,
+  "sha256": "216791b51bbb8dc128d6c69f13c334aa20900f31ba5a576df261f78ff0934b2e",
   "csp": {
     "present": true,
     "directives": {
@@ -124,7 +124,11 @@
       "store",
       "dialog",
       "label",
-      "bundle"
+      "bundle",
+      "qr",
+      "p2p",
+      "sync",
+      "history"
     ]
   },
   "kit": {
@@ -134,7 +138,11 @@
       "store",
       "dialog",
       "label",
-      "bundle"
+      "bundle",
+      "qr",
+      "p2p",
+      "sync",
+      "history"
     ]
   },
   "selfSerializing": false,
