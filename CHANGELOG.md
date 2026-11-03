@@ -2,6 +2,10 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 20.2.3 — 2026-11-03
+
+Etapa 9: versiunea API Anthropic (anthropic-version 2026-10-21, verificată în documentația oficială la 2026-11-03) și modelele vin dintr-un singur loc, nucleul AI comun (FFF.ai); temperature/top_p/top_k nu se mai trimit niciodată (eliminate în 2026-10-21); modele retrase înlocuite.
+
 ## 20.2.2 — 2026-11-03
 
 Etapa 7: constanta APP_VER (comparată cu version.json de pe server) rămăsese pe 19.2.7 și declanșa curățarea cache-ului la prima vizită din sesiune; acum urmează versiunea reală.
