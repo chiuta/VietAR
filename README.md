@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 20.2.5 · **Last updated:** 2026-11-08
+**Version:** 20.2.6 · **Last updated:** 2026-11-10
 
 **Status:** experimental · **Offline:** complete only after the first use: it needs internet once for the models (huggingface.co) and the ONNX Runtime (cdn.jsdelivr.net), then works from the cache
 
