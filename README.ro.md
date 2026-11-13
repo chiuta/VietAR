@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 20.2.8 · **Ultima actualizare:** 2026-11-10
+**Versiune:** 20.2.9 · **Ultima actualizare:** 2026-11-13
 
 **Stare:** experimental · **Offline:** complet doar după prima utilizare: cere internet o dată pentru modele (huggingface.co) și ONNX Runtime (cdn.jsdelivr.net), apoi funcționează din cache
 
