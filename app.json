@@ -76,19 +76,20 @@
     "serviceWorker",
     "indexedDB",
     "localStorage",
+    "WebGL",
     "WebGPU"
   ],
   "storageKeys": [
     "vietar.cfg",
     "vietar.lang"
   ],
-  "sizeBytes": 1004496,
-  "sha256": "9c253c12fc738133bdc7cda22628d6336bd0c3f0d746dae57f5d9ff5d1d822f4",
+  "sizeBytes": 1056137,
+  "sha256": "8e9e6d497649233e130bb69ee0f4527d88871d1d4d20c93e91c0bc8f8def7c6e",
   "csp": {
     "present": true,
     "directives": {
       "default-src": "'self'",
-      "script-src": "'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net sha256×3",
+      "script-src": "'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net sha256×4",
       "style-src": "'self' 'unsafe-inline'",
       "font-src": "'self' data:",
       "img-src": "'self' data: blob:",
