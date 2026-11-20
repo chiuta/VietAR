@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 20.3.2 · **Última actualización:** 2026-11-17
+**Versión:** 20.3.3 · **Última actualización:** 2026-11-19
 
 **Estado:** experimental · **Sin conexión:** completo solo tras el primer uso: necesita internet una vez para los modelos (huggingface.co) y ONNX Runtime (cdn.jsdelivr.net), después funciona desde la caché
 

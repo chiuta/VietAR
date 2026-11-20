@@ -2,6 +2,10 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 20.3.3 — 2026-11-19
+
+- `<meta charset>` este acum primul element din `<head>`, în primii 1024 de octeți, cum cere specificația HTML; înainte îl depărta un comentariu-banner de câțiva KB, deci declarația codificării era în afara ferestrei pe care browserele o citesc înainte de analiză (constatat de analiza statică din 19 noiembrie 2026; nu s-a observat o afișare greșită în Chrome)
+
 ## 20.3.2 — 2026-11-17
 
 - Compatibilitate cu browsere mai vechi (Chrome/Edge 55+, Firefox 52+, Safari 10.1+/iOS 10.3+): kitul 1.8.0 aduce stratul de compatibilitate (rezerve pentru API-urile care lipsesc în motoarele vechi), iar sintaxa JavaScript mai nouă decât ES2017 a fost înlocuită cu forme echivalente acolo unde exista; expresiile regulate noi și `import()` trec prin rezerve. Fără modificări de funcționalitate intenționate. Verificat cu parser ES2017 și într-un motor vechi simulat, nu pe dispozitive reale.
