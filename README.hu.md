@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 20.3.3 · **Utolsó frissítés:** 2026-11-19
+**Verzió:** 20.3.3 · **Utolsó frissítés:** 2026-11-22
 
 **Állapot:** kísérleti · **Offline:** teljes csak az első használat után: egyszer internet kell a modellekhez (huggingface.co) és az ONNX Runtime-hoz (cdn.jsdelivr.net), utána a gyorsítótárból működik
 
